@@ -134,8 +134,9 @@ static vec3_t trace(vec3_t ro, vec3_t rd, uint* state)
     return ray_light;
 }
 
-vec4_t sphere_tracing_main(vec2_t fragCoord, vec2_t resolution, float time, uint frame)
-{
+vec4_t sphere_tracing_main(vec2_t fragCoord, vec2_t resolution, float time, uint frame) {
+    (void)time;
+
     vec2_t uv = vec2(fragCoord.x - resolution.x * 0.5, fragCoord.y - resolution.y * 0.5);
     uv = vec2(uv.x / resolution.y, uv.y / resolution.y);
 

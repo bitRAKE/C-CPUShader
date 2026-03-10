@@ -50,6 +50,7 @@ static float rand_1_nd(uint* state)
     return rho * cos(theta);
 }
 
+__attribute__((unused))
 static vec2_t rand_dir(uint* state)
 {
     float x = rand_1_nd(state);
@@ -188,6 +189,8 @@ vec3_t get_dispersed_color( float w ) {
 
 vec4_t glass_disks_main(vec2_t fragCoord, vec2_t resolution, float time, uint frame)
 {
+    (void)time;
+
     vec2_t uv = vec2(fragCoord.x - resolution.x * 0.5, fragCoord.y - resolution.y * 0.5);
     uv = vec2(uv.x / resolution.y, uv.y / resolution.y);
 
