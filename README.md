@@ -1,5 +1,5 @@
 > [!CAUTION]
-> **Experimental HDR DX12 Branch**
+> **Experimental HDR DX12 Branch**  
 > This branch uses DX12 to present the image data without texture processing.
 
 ---
