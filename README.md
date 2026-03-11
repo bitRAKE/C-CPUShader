@@ -4,6 +4,21 @@
 
 ---
 
+<details>
+<summary>Open Shader Gallery</summary>
+
+[![master_class](docs/img/master_class.png)](docs/shaders.md#master_class)
+[![crystal_hall](docs/img/crystal_hall.png)](docs/shaders.md#crystal_hall)
+[![sphere_tracing](docs/img/sphere_tracing.png)](docs/shaders.md#sphere_tracing)
+[![glass_disks](docs/img/glass_disks.png)](docs/shaders.md#glass_disks)
+[![hsv_picker](docs/img/hsv_picker.png)](pocs/hsv_picker_tool.md)
+
+</details>
+
+[![User Interface](docs/img/ui.png)](docs/shaders.md)
+
+---
+
 # C-CPUShader
 Minimal CPU shader multithreaded renderer written in pure C - raw Win32, no libraries, no abstraction layers. Pixels, threads, and math from scratch.</br>
 I just felt like doing something with C.</br>
@@ -40,10 +55,3 @@ int main(void)
     return 0;
 }
 ```
-
-## Screenshots
-<img width="600" height="600" alt="Renderer _ Rendering _ 8 0fps, 125 0ms _ Time _ 191 61s 3_9_2026 6_16_08 PM" src="https://github.com/user-attachments/assets/3687d4c3-d36d-4664-85d7-57085d8ecd13" />
-
-<img width="700" height="450" alt="Renderer _ Rendering _ 21 3fps, 47 0ms _ Time _ 182 14s 3_10_2026 7_42_16 AM" src="https://github.com/user-attachments/assets/329ec804-9ee1-4c0f-a44a-c7dea17d80db" />
-
-

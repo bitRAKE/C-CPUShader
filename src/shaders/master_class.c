@@ -2,7 +2,7 @@
 
 #include "master_class.h"
 
-#define MAX_BOUNCES 7
+#define MAX_BOUNCES 17
 #define LIGHT_HALF_WIDTH 0.80f
 #define LIGHT_HALF_DEPTH 0.58f
 #define LIGHT_EPSILON 0.0010f
@@ -304,10 +304,12 @@ static HitData intersect_scene(vec3_t ro, vec3_t rd)
     set_hit_plane(&hit, ro, rd, vec3(2.30f, 0.0f, 0.0f), vec3(-1.0f, 0.0f, 0.0f), SURFACE_DIFFUSE, vec3(0.16f, 0.48f, 0.84f), vec3_o(0.0f), 0.0f, 1.0f, vec3_o(0.0f));
     set_hit_plane(&hit, ro, rd, vec3(0.0f, 0.0f, 5.10f), vec3(0.0f, 0.0f, -1.0f), SURFACE_DIFFUSE, vec3(0.76f, 0.78f, 0.83f), vec3_o(0.0f), 0.0f, 1.0f, vec3_o(0.0f));
 
+    // Foreground spheres stay dominant, but the rear accents are staged to read as
+    // separate silhouettes rather than disappearing behind the hero glass.
     set_hit_sphere(&hit, ro, rd, vec3(-0.62f, -0.33f, 2.28f), 0.83f, SURFACE_GLASS, vec3_o(1.0f), vec3_o(0.0f), 0.0f, 1.48f, vec3(0.28f, 0.09f, 0.03f));
-    set_hit_sphere(&hit, ro, rd, vec3(0.94f, -0.57f, 1.72f), 0.57f, SURFACE_METAL, vec3(0.98f, 0.77f, 0.47f), vec3_o(0.0f), 0.08f, 1.0f, vec3_o(0.0f));
-    set_hit_sphere(&hit, ro, rd, vec3(0.52f, -0.84f, 3.06f), 0.34f, SURFACE_DIFFUSE, vec3(0.86f, 0.79f, 0.72f), vec3_o(0.0f), 0.0f, 1.0f, vec3_o(0.0f));
-    set_hit_sphere(&hit, ro, rd, vec3(-1.42f, -0.92f, 3.34f), 0.24f, SURFACE_METAL, vec3(0.90f, 0.93f, 0.97f), vec3_o(0.0f), 0.02f, 1.0f, vec3_o(0.0f));
+    set_hit_sphere(&hit, ro, rd, vec3(1.18f, -0.60f, 1.95f), 0.57f, SURFACE_METAL, vec3(0.98f, 0.77f, 0.47f), vec3_o(0.0f), 0.08f, 1.0f, vec3_o(0.0f));
+    set_hit_sphere(&hit, ro, rd, vec3(0.24f, -0.78f, 2.86f), 0.30f, SURFACE_DIFFUSE, vec3(0.86f, 0.79f, 0.72f), vec3_o(0.0f), 0.0f, 1.0f, vec3_o(0.0f));
+    set_hit_sphere(&hit, ro, rd, vec3(-1.58f, -0.94f, 2.72f), 0.28f, SURFACE_METAL, vec3(0.90f, 0.93f, 0.97f), vec3_o(0.0f), 0.02f, 1.0f, vec3_o(0.0f));
 
     return hit;
 }
@@ -458,8 +460,10 @@ static vec3_t trace(vec3_t ro, vec3_t rd, uint* state)
     return radiance;
 }
 
-vec4_t master_class_main(vec2_t fragCoord, vec2_t resolution, float time, uint frame)
+vec4_t master_class_main(vec2_t fragCoord, const shader_uniforms_t *uniforms)
 {
+    const vec2_t resolution = uniforms->resolution;
+    const uint frame = uniforms->frame;
     uint state;
     vec2_t jitter;
     vec2_t pixel;
@@ -472,15 +476,13 @@ vec4_t master_class_main(vec2_t fragCoord, vec2_t resolution, float time, uint f
     vec3_t ray_dir;
     vec3_t color;
 
-    (void)time;
-
     state = (uint)(fragCoord.x) + (uint)(fragCoord.y * resolution.x) + frame * 78423u;
     jitter = vec2(rand_1(&state) - 0.5f, rand_1(&state) - 0.5f);
     pixel = vec2(fragCoord.x + jitter.x, fragCoord.y + jitter.y);
     uv = vec2(pixel.x - resolution.x * 0.5f, pixel.y - resolution.y * 0.5f);
     uv = vec2(uv.x / resolution.y, uv.y / resolution.y);
 
-    ray_origin = vec3(0.15f, 0.02f, -4.95f);
+    ray_origin = vec3(0.15f, 0.02f, -1.95f);
     target = vec3(0.02f, -0.35f, 2.15f);
     forward = v3_normalize(v3_sub(target, ray_origin));
     right = v3_normalize(v3_cross(vec3(0.0f, 1.0f, 0.0f), forward));

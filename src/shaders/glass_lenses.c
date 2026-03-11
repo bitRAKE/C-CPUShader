@@ -238,9 +238,10 @@ static vec3_t trace(vec2_t ro, vec2_t rd, float wavelength, uint* state)
 
 #define DIRECTIONAL_SAMPLES 360
 
-vec4_t glass_lenses_main(vec2_t fragCoord, vec2_t resolution, float time, uint frame)
+vec4_t glass_lenses_main(vec2_t fragCoord, const shader_uniforms_t *uniforms)
 {
-    (void)time;
+    const vec2_t resolution = uniforms->resolution;
+    const uint frame = uniforms->frame;
 
     vec2_t uv = vec2(fragCoord.x - resolution.x * 0.5f, fragCoord.y - resolution.y * 0.5f);
     uv = vec2(uv.x / resolution.y, uv.y / resolution.y);

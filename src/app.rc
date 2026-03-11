@@ -1,0 +1,31 @@
+#include <windows.h>
+#include "resource.h"
+
+IDD_STATUS_DIALOG DIALOGEX 0, 0, 280, 170
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_CLIPCHILDREN
+CAPTION "Renderer Status"
+FONT 8, "Segoe UI"
+BEGIN
+    LTEXT           "Shader:",        -1, 10, 10, 56, 10
+    LTEXT           "Accumulation:",  -1, 10, 24, 56, 10
+    LTEXT           "Performance:",   -1, 10, 38, 56, 10
+    LTEXT           "Time:",          -1, 10, 52, 56, 10
+    LTEXT           "Workers:",       -1, 10, 66, 56, 10
+    LTEXT           "Display:",       -1, 10, 80, 56, 10
+    LTEXT           "PgUp/PgDn switch shaders\r\nV toggles vsync, R resets, Esc exits\r\nRight mouse drag moves the display window",
+                                      -1, 10, 124, 252, 28
+
+    AUTOCHECKBOX    "VSync", IDC_CHECK_VSYNC, 10, 102, 54, 12, WS_TABSTOP
+    PUSHBUTTON      "Prev", IDC_BUTTON_PREV, 110, 100, 46, 14, WS_TABSTOP
+    PUSHBUTTON      "Next", IDC_BUTTON_NEXT, 162, 100, 46, 14, WS_TABSTOP
+    PUSHBUTTON      "Reset", IDC_BUTTON_RESET, 214, 100, 46, 14, WS_TABSTOP
+
+    LTEXT           "unknown",        IDC_STATUS_SHADER,  78, 10, 188, 10
+    LTEXT           "off",            IDC_STATUS_ACCUM,   78, 24, 188, 10
+    LTEXT           "0.0 fps, 0.00 ms avg/0", IDC_STATUS_PERF,    78, 38, 188, 10
+    LTEXT           "0.00 s",         IDC_STATUS_TIME,    78, 52, 188, 10
+    LTEXT           "0 render + gui", IDC_STATUS_WORKERS, 78, 66, 188, 10
+    LTEXT           "popup",          IDC_STATUS_DISPLAY, 78, 80, 188, 10
+END
+
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "app.manifest"

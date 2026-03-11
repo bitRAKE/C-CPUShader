@@ -1,37 +1,59 @@
-//Initialize the window and handle rendering in multiple threads
+//Coordinate the render loop, worker pool, and window modules
 
 #include "defines.h"
 #include "win.h"
 #include "dxx12.h"
+#include "display.h"
+#include "stats.h"
 
 #include <string.h>
 
 #define FRAME_TIME_HISTORY_COUNT 64
+#define WINDOW_GAP 24
 
-static int         g_width   = 0;
-static int         g_height  = 0;
-static const char *g_title   = NULL;
-static HWND        g_hwnd    = NULL;
-static int         g_is_open = 0;
+typedef struct {
+    int        y_start;
+    int        y_end;
+    int        worker_index;
+    shader_uniforms_t uniforms;
+    RenderFunc render;
+} Worker;
+
+static int           g_width = 0;
+static int           g_height = 0;
+static const char   *g_title = NULL;
+static int           g_is_open = 0;
+static bool          g_is_closing = false;
 static LARGE_INTEGER g_perf_frequency = {0};
-static LARGE_INTEGER g_start_counter  = {0};
-static uint        g_frame_counter = 0;
-static bool        g_tempolatal_accumulation = false;
-static bool        g_has_history = false;
-static vec4_t     *g_frame_pixels = NULL;
-static vec4_t     *g_history_pixels = NULL;
-static ShaderCycleFunc g_shader_cycle = NULL;
-static ShaderNameFunc  g_shader_name = NULL;
+static LARGE_INTEGER g_start_counter = {0};
+static uint          g_frame_counter = 0;
+static bool          g_tempolatal_accumulation = false;
+static bool          g_has_history = false;
+static vec4_t       *g_frame_pixels = NULL;
+static vec4_t       *g_history_pixels = NULL;
+static ShaderCycleFunc        g_shader_cycle = NULL;
+static ShaderNameFunc         g_shader_name = NULL;
+static ShaderAccumulationFunc g_shader_accumulation = NULL;
 
-static DWORD_PTR   g_affinity_masks[64];
-static DWORD       g_affinity_processors[64];
-static int         g_affinity_count = 0;
+static DWORD_PTR     g_affinity_masks[64];
+static DWORD         g_affinity_processors[64];
+static int           g_affinity_count = 0;
 
-static double      g_frame_times[FRAME_TIME_HISTORY_COUNT];
-static double      g_frame_time_sum = 0.0;
-static int         g_frame_time_index = 0;
-static int         g_frame_time_count = 0;
-static double      g_last_title_update = 0.0;
+static double        g_frame_times[FRAME_TIME_HISTORY_COUNT];
+static double        g_frame_time_sum = 0.0;
+static int           g_frame_time_index = 0;
+static int           g_frame_time_count = 0;
+static double        g_last_status_update = 0.0;
+
+static int           g_total_workers = 0;
+static int           g_background_threads = 0;
+static Worker       *g_workers = NULL;
+static HANDLE       *g_threads = NULL;
+static HANDLE        g_work_sem = NULL;
+static HANDLE        g_done_sem = NULL;
+static volatile int  g_shutdown = 0;
+
+static void update_status_window(double frame_end_seconds, bool force);
 
 static void timing_init(void)
 {
@@ -54,13 +76,32 @@ static void frame_timing_reset(void)
     g_frame_time_count = 0;
 }
 
+static void refresh_shader_quality(void)
+{
+    g_tempolatal_accumulation = (g_shader_accumulation != NULL) ? g_shader_accumulation() : false;
+}
+
+static void request_status_refresh(void)
+{
+    g_last_status_update = 0.0;
+}
+
+static HWND status_parent_window(void)
+{
+    if (stats_window() != NULL) {
+        return stats_window();
+    }
+
+    return display_window();
+}
+
 static void runtime_reset(void)
 {
     timing_init();
     frame_timing_reset();
-    g_last_title_update = 0.0;
     g_frame_counter = 0;
     g_has_history = false;
+    request_status_refresh();
 
     if (g_history_pixels != NULL) {
         memset(g_history_pixels, 0, (size_t)g_width * (size_t)g_height * sizeof(vec4_t));
@@ -89,112 +130,132 @@ static double frame_timing_average(void)
     return g_frame_time_sum / (double)g_frame_time_count;
 }
 
-static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
-    switch (msg) {
-        case WM_KEYDOWN:
-            if (wp == VK_ESCAPE) {
-                DestroyWindow(hwnd);
-                return 0;
-            }
-            if ((wp == VK_PRIOR || wp == VK_NEXT) && g_shader_cycle != NULL) {
-                g_shader_cycle((wp == VK_PRIOR) ? -1 : 1);
-                runtime_reset();
-                return 0;
-            }
-            if (wp == 'V') {
-                dxx12_set_vsync(!dxx12_get_vsync());
-                frame_timing_reset();
-                g_last_title_update = 0.0;
-                return 0;
-            }
-            break;
-        case WM_ERASEBKGND:
-            return 1;
-        case WM_PAINT: {
-            PAINTSTRUCT ps;
-            BeginPaint(hwnd, &ps);
-            EndPaint(hwnd, &ps);
-            return 0;
-        }
-        case WM_CLOSE:
-            DestroyWindow(hwnd);
-            return 0;
-        case WM_DESTROY:
-            g_is_open = 0;
-            PostQuitMessage(0);
-            return 0;
-    }
-
-    return DefWindowProcA(hwnd, msg, wp, lp);
-}
-
-bool window_create(const char *title, int width, int height)
+static void close_application(void)
 {
-    HINSTANCE hInst = GetModuleHandle(NULL);
-    WNDCLASSA wc    = {0};
-    RECT rect = { 0, 0, width, height };
-
-    g_width  = width;
-    g_height = height;
-    g_title  = title;
-    timing_init();
-
-    wc.lpfnWndProc  = WndProc;
-    wc.hInstance    = hInst;
-    wc.hCursor      = LoadCursor(NULL, IDC_ARROW);
-    wc.lpszClassName = title;
-    RegisterClassA(&wc);
-
-    AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
-
-    g_hwnd = CreateWindowA(
-        title, title,
-        WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-        CW_USEDEFAULT, CW_USEDEFAULT,
-        rect.right - rect.left,
-        rect.bottom - rect.top,
-        NULL, NULL, hInst, NULL);
-
-    if (g_hwnd == NULL) {
-        MessageBoxA(NULL, "CreateWindowA failed.", title, MB_OK | MB_ICONERROR);
-        return false;
+    if (g_is_closing) {
+        return;
     }
 
-    if (!dxx12_create(g_hwnd, width, height)) {
-        MessageBoxA(g_hwnd, dxx12_error(), title, MB_OK | MB_ICONERROR);
-        DestroyWindow(g_hwnd);
-        g_hwnd = NULL;
-        return false;
-    }
-
-    g_is_open = 1;
-    return true;
+    g_is_closing = true;
+    g_is_open = 0;
+    display_destroy();
+    stats_destroy();
 }
 
-void window_set_shader_switcher(ShaderCycleFunc cycle_func, ShaderNameFunc name_func)
+static void cycle_shader(int direction)
 {
-    g_shader_cycle = cycle_func;
-    g_shader_name = name_func;
+    if (g_shader_cycle == NULL) {
+        return;
+    }
+
+    g_shader_cycle(direction);
+    refresh_shader_quality();
+    runtime_reset();
+    update_status_window(timing_now_seconds(), true);
 }
 
-typedef struct {
-    int        y_start;
-    int        y_end;
-    int        worker_index;
-    uint       current_frame;
-    ULONGLONG  current_time;
-    double     current_time_seconds;
-    RenderFunc render;
-} Worker;
+static void set_vsync_enabled(bool enabled)
+{
+    dxx12_set_vsync(enabled);
+    frame_timing_reset();
+    request_status_refresh();
+    update_status_window(timing_now_seconds(), true);
+}
 
-static int      g_total_workers = 0;
-static int      g_background_threads = 0;
-static Worker  *g_workers     = NULL;
-static Worker   g_main_worker = {0};
-static HANDLE  *g_threads     = NULL;
-static HANDLE   g_work_sem    = NULL;
-static HANDLE   g_done_sem    = NULL;
-static volatile int g_shutdown = 0;
+static bool handle_keydown(HWND hwnd, WPARAM key)
+{
+    (void)hwnd;
+
+    if (key == VK_ESCAPE) {
+        close_application();
+        return true;
+    }
+
+    if (key == VK_PRIOR) {
+        cycle_shader(-1);
+        return true;
+    }
+
+    if (key == VK_NEXT) {
+        cycle_shader(1);
+        return true;
+    }
+
+    if (key == 'V') {
+        set_vsync_enabled(!dxx12_get_vsync());
+        return true;
+    }
+
+    if (key == 'R') {
+        runtime_reset();
+        update_status_window(timing_now_seconds(), true);
+        return true;
+    }
+
+    return false;
+}
+
+static bool shared_on_keydown(HWND hwnd, WPARAM key, void *user_data)
+{
+    (void)user_data;
+    return handle_keydown(hwnd, key);
+}
+
+static void shared_on_close(HWND hwnd, void *user_data)
+{
+    (void)hwnd;
+    (void)user_data;
+    close_application();
+}
+
+static void stats_on_cycle_shader(int direction, void *user_data)
+{
+    (void)user_data;
+    cycle_shader(direction);
+}
+
+static void stats_on_reset(void *user_data)
+{
+    (void)user_data;
+    runtime_reset();
+    update_status_window(timing_now_seconds(), true);
+}
+
+static void stats_on_set_vsync(bool enabled, void *user_data)
+{
+    (void)user_data;
+    set_vsync_enabled(enabled);
+}
+
+static void update_status_window(double frame_end_seconds, bool force)
+{
+    stats_state_t state;
+    double average_frame_seconds;
+
+    if (stats_window() == NULL) {
+        return;
+    }
+
+    if (!force && frame_end_seconds - g_last_status_update < 0.1) {
+        return;
+    }
+
+    average_frame_seconds = frame_timing_average();
+    state.shader_name = (g_shader_name != NULL) ? g_shader_name() : "unknown";
+    state.temporal_accumulation = g_tempolatal_accumulation;
+    state.fps = (average_frame_seconds > 0.0) ? (1.0 / average_frame_seconds) : 0.0;
+    state.milliseconds = average_frame_seconds * 1000.0;
+    state.frame_sample_count = g_frame_time_count;
+    state.time_seconds = frame_end_seconds;
+    state.total_workers = g_total_workers;
+    state.background_workers = g_background_threads;
+    state.display_width = g_width;
+    state.display_height = g_height;
+    state.vsync_enabled = dxx12_get_vsync();
+
+    stats_update(&state);
+    g_last_status_update = frame_end_seconds;
+}
 
 static void detect_affinity_targets(void)
 {
@@ -234,32 +295,35 @@ static void setup_worker(Worker *worker, int worker_index, int total_workers, Re
     LONGLONG height = g_height;
 
     worker->y_start = (int)((height * worker_index) / total_workers);
-    worker->y_end   = (int)((height * (worker_index + 1)) / total_workers);
+    worker->y_end = (int)((height * (worker_index + 1)) / total_workers);
     worker->worker_index = worker_index;
     worker->render = render;
 }
 
-static void worker_render(const Worker *w)
+static void worker_render(const Worker *worker)
 {
-    const bool use_history = g_tempolatal_accumulation && g_has_history && g_history_pixels != NULL;
+    const bool keep_history = g_tempolatal_accumulation && g_history_pixels != NULL;
+    const bool use_history = keep_history && g_has_history;
     vec4_t *history_pixels = g_history_pixels;
     vec4_t *frame_pixels = g_frame_pixels;
 
-    for (int y = w->y_start; y < w->y_end; y++) {
-            size_t row_base = (size_t)y * (size_t)g_width;
+    for (int y = worker->y_start; y < worker->y_end; y++) {
+        size_t row_base = (size_t)y * (size_t)g_width;
+
         for (int x = 0; x < g_width; x++) {
             size_t pixel_index = row_base + (size_t)x;
-            vec4_t color = w->render(vec2(x, y), vec2(g_width, g_height), (float)w->current_time_seconds, w->current_frame);
+            vec4_t color = worker->render(vec2((float)x, (float)y), &worker->uniforms);
 
             if (use_history) {
                 vec4_t old_color = history_pixels[pixel_index];
-                float weight = 1.0f / (w->current_frame + 1);
+                float weight = 1.0f / (worker->uniforms.frame + 1);
                 color = v4_add(v4_mul1(old_color, 1.0f - weight), v4_mul1(color, weight));
             }
 
-            if (history_pixels != NULL) {
+            if (keep_history) {
                 history_pixels[pixel_index] = color;
             }
+
             frame_pixels[pixel_index] = color;
         }
     }
@@ -267,37 +331,33 @@ static void worker_render(const Worker *w)
 
 static DWORD WINAPI worker_thread(LPVOID arg)
 {
-    Worker *w = (Worker *)arg;
+    Worker *worker = (Worker *)arg;
+
     while (1) {
         WaitForSingleObject(g_work_sem, INFINITE);
         if (g_shutdown) {
             break;
         }
 
-        worker_render(w);
+        worker_render(worker);
         ReleaseSemaphore(g_done_sem, 1, NULL);
     }
+
     return 0;
 }
 
 static void pool_create(int num_threads, RenderFunc render)
 {
     g_total_workers = (num_threads > 0) ? num_threads : 1;
-    g_background_threads = (g_total_workers > 1) ? (g_total_workers - 1) : 0;
+    g_background_threads = g_total_workers;
     g_shutdown = 0;
 
     detect_affinity_targets();
-    setup_worker(&g_main_worker, g_total_workers - 1, g_total_workers, render);
-    pin_thread_to_worker(GetCurrentThread(), g_main_worker.worker_index);
 
-    if (g_background_threads <= 0) {
-        return;
-    }
-
-    g_workers     = (Worker *)malloc((size_t)g_background_threads * sizeof(Worker));
-    g_threads     = (HANDLE *)malloc((size_t)g_background_threads * sizeof(HANDLE));
-    g_work_sem    = CreateSemaphore(NULL, 0, g_background_threads, NULL);
-    g_done_sem    = CreateSemaphore(NULL, 0, g_background_threads, NULL);
+    g_workers = (Worker *)malloc((size_t)g_background_threads * sizeof(Worker));
+    g_threads = (HANDLE *)malloc((size_t)g_background_threads * sizeof(HANDLE));
+    g_work_sem = CreateSemaphore(NULL, 0, g_background_threads, NULL);
+    g_done_sem = CreateSemaphore(NULL, 0, g_background_threads, NULL);
 
     for (int i = 0; i < g_background_threads; i++) {
         setup_worker(&g_workers[i], i, g_total_workers, render);
@@ -306,42 +366,38 @@ static void pool_create(int num_threads, RenderFunc render)
     }
 }
 
-static bool pool_render_frame(void) {
-    ULONGLONG current_time = GetTickCount64();
-    double current_time_seconds = timing_now_seconds();
+static bool pool_render_frame(void)
+{
+    shader_uniforms_t uniforms;
 
     if (!dxx12_begin_frame(&g_frame_pixels)) {
         return false;
     }
 
-    g_main_worker.current_frame = g_frame_counter;
-    g_main_worker.current_time = current_time;
-    g_main_worker.current_time_seconds = current_time_seconds;
+    uniforms.resolution = vec2((float)g_width, (float)g_height);
+    uniforms.time = (float)timing_now_seconds();
+    uniforms.frame = g_frame_counter;
+    display_get_mouse_uniform(&uniforms.mouse, g_height);
 
     for (int i = 0; i < g_background_threads; i++) {
-        g_workers[i].current_frame = g_frame_counter;
-        g_workers[i].current_time = current_time;
-        g_workers[i].current_time_seconds = current_time_seconds;
+        g_workers[i].uniforms = uniforms;
     }
 
-    if (g_background_threads > 0) {
-        ReleaseSemaphore(g_work_sem, g_background_threads, NULL);
-    }
-
-    worker_render(&g_main_worker);
+    ReleaseSemaphore(g_work_sem, g_background_threads, NULL);
 
     for (int i = 0; i < g_background_threads; i++) {
         WaitForSingleObject(g_done_sem, INFINITE);
     }
 
-    if (g_history_pixels != NULL) {
+    if (g_tempolatal_accumulation && g_history_pixels != NULL) {
         g_has_history = true;
     }
 
     return true;
 }
 
-static void pool_destroy(void) {
+static void pool_destroy(void)
+{
     g_shutdown = 1;
 
     if (g_background_threads > 0) {
@@ -367,29 +423,148 @@ static void pool_destroy(void) {
     g_background_threads = 0;
 }
 
-void window_run(RenderFunc render, int num_threads, bool temporal_accumulation)
+static void position_windows(void)
+{
+    RECT work_area;
+    RECT stats_rect;
+    int stats_x;
+    int stats_y;
+    int display_x;
+    int display_y;
+
+    if (!SystemParametersInfoA(SPI_GETWORKAREA, 0, &work_area, 0)) {
+        work_area.left = 0;
+        work_area.top = 0;
+        work_area.right = GetSystemMetrics(SM_CXSCREEN);
+        work_area.bottom = GetSystemMetrics(SM_CYSCREEN);
+    }
+
+    stats_x = work_area.left + 32;
+    stats_y = work_area.top + 32;
+    SetWindowPos(stats_window(), NULL, stats_x, stats_y, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+
+    if (!stats_get_window_rect(&stats_rect)) {
+        stats_rect.left = stats_x;
+        stats_rect.top = stats_y;
+        stats_rect.right = stats_x + 320;
+        stats_rect.bottom = stats_y + 220;
+    }
+
+    display_x = stats_rect.right + WINDOW_GAP;
+    display_y = stats_rect.top;
+
+    if (display_x + g_width > work_area.right) {
+        display_x = work_area.right - g_width;
+    }
+    if (display_y + g_height > work_area.bottom) {
+        display_y = work_area.bottom - g_height;
+    }
+    if (display_x < work_area.left) {
+        display_x = work_area.left;
+    }
+    if (display_y < work_area.top) {
+        display_y = work_area.top;
+    }
+
+    SetWindowPos(display_window(), NULL, display_x, display_y, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+}
+
+bool window_create(const char *title, int width, int height)
+{
+    HINSTANCE instance = GetModuleHandleA(NULL);
+    stats_callbacks_t stats_callbacks;
+    display_callbacks_t display_callbacks;
+
+    g_width = width;
+    g_height = height;
+    g_title = title;
+    g_is_closing = false;
+    timing_init();
+
+    ZeroMemory(&stats_callbacks, sizeof(stats_callbacks));
+    stats_callbacks.on_keydown = shared_on_keydown;
+    stats_callbacks.on_cycle_shader = stats_on_cycle_shader;
+    stats_callbacks.on_reset = stats_on_reset;
+    stats_callbacks.on_set_vsync = stats_on_set_vsync;
+    stats_callbacks.on_close = shared_on_close;
+
+    if (!stats_create(instance, title, &stats_callbacks, NULL)) {
+        MessageBoxA(NULL, "CreateDialogParamA(status) failed.", title, MB_OK | MB_ICONERROR);
+        return false;
+    }
+
+    ZeroMemory(&display_callbacks, sizeof(display_callbacks));
+    display_callbacks.on_keydown = shared_on_keydown;
+    display_callbacks.on_close = shared_on_close;
+
+    if (!display_create(instance, title, stats_window(), 0, 0, width, height, &display_callbacks, NULL)) {
+        MessageBoxA(stats_window(), "CreateWindowExA(display) failed.", title, MB_OK | MB_ICONERROR);
+        stats_destroy();
+        return false;
+    }
+
+    position_windows();
+
+    if (!dxx12_create(display_window(), width, height)) {
+        MessageBoxA(status_parent_window(), dxx12_error(), title, MB_OK | MB_ICONERROR);
+        display_destroy();
+        stats_destroy();
+        return false;
+    }
+
+    stats_show();
+    display_show();
+    display_focus();
+
+    g_is_open = 1;
+    update_status_window(0.0, true);
+    return true;
+}
+
+void window_set_shader_switcher(ShaderCycleFunc cycle_func, ShaderNameFunc name_func, ShaderAccumulationFunc accumulation_func)
+{
+    g_shader_cycle = cycle_func;
+    g_shader_name = name_func;
+    g_shader_accumulation = accumulation_func;
+    refresh_shader_quality();
+    update_status_window(0.0, true);
+}
+
+void window_run(RenderFunc render, int num_threads)
 {
     size_t pixel_count = (size_t)g_width * (size_t)g_height;
 
-    g_tempolatal_accumulation = temporal_accumulation;
     g_has_history = false;
+    refresh_shader_quality();
 
-    if (g_tempolatal_accumulation) {
-        g_history_pixels = (vec4_t *)malloc(pixel_count * sizeof(vec4_t));
-        if (g_history_pixels == NULL) {
-            MessageBoxA(g_hwnd, "Failed to allocate CPU history buffer.", g_title, MB_OK | MB_ICONERROR);
-            dxx12_destroy();
-            return;
-        }
+    g_history_pixels = (vec4_t *)malloc(pixel_count * sizeof(vec4_t));
+    if (g_history_pixels == NULL) {
+        MessageBoxA(status_parent_window(), "Failed to allocate CPU history buffer.", g_title, MB_OK | MB_ICONERROR);
+        dxx12_destroy();
+        return;
     }
 
     pool_create(num_threads, render);
-
     runtime_reset();
+    update_status_window(0.0, true);
 
     while (g_is_open) {
         MSG msg;
+
         while (PeekMessageA(&msg, NULL, 0, 0, PM_REMOVE)) {
+            if (msg.message == WM_QUIT) {
+                g_is_open = 0;
+                break;
+            }
+
+            if ((msg.message == WM_KEYDOWN || msg.message == WM_SYSKEYDOWN) && handle_keydown(msg.hwnd, msg.wParam)) {
+                continue;
+            }
+
+            if (stats_is_dialog_message(&msg)) {
+                continue;
+            }
+
             TranslateMessage(&msg);
             DispatchMessageA(&msg);
         }
@@ -398,54 +573,36 @@ void window_run(RenderFunc render, int num_threads, bool temporal_accumulation)
             break;
         }
 
-        if (IsIconic(g_hwnd)) {
-            Sleep(10);
-            continue;
+        {
+            double frame_start_seconds = timing_now_seconds();
+
+            if (!pool_render_frame()) {
+                MessageBoxA(status_parent_window(), dxx12_error(), g_title, MB_OK | MB_ICONERROR);
+                close_application();
+                break;
+            }
+
+            if (!dxx12_end_frame()) {
+                MessageBoxA(status_parent_window(), dxx12_error(), g_title, MB_OK | MB_ICONERROR);
+                close_application();
+                break;
+            }
+
+            {
+                double frame_end_seconds = timing_now_seconds();
+                frame_timing_push(frame_end_seconds - frame_start_seconds);
+                update_status_window(frame_end_seconds, false);
+            }
         }
 
-        double frame_start_seconds = timing_now_seconds();
-
-        if (!pool_render_frame()) {
-            MessageBoxA(g_hwnd, dxx12_error(), g_title, MB_OK | MB_ICONERROR);
-            g_is_open = 0;
-            break;
-        }
-
-        if (!dxx12_end_frame()) {
-            MessageBoxA(g_hwnd, dxx12_error(), g_title, MB_OK | MB_ICONERROR);
-            g_is_open = 0;
-            break;
-        }
-
-        double frame_end_seconds = timing_now_seconds();
-        frame_timing_push(frame_end_seconds - frame_start_seconds);
-
-        //Update title with FPS and render time
-        if (frame_end_seconds - g_last_title_update >= 0.1) {
-            char title[256];
-            double average_frame_seconds = frame_timing_average();
-            double ms = average_frame_seconds * 1000.0;
-            double fps = (average_frame_seconds > 0.0) ? (1.0 / average_frame_seconds) : 0.0;
-            const char *shader_name = (g_shader_name != NULL) ? g_shader_name() : "unknown";
-
-            snprintf(title, sizeof(title), "%s | Shader : %s | Rendering : %.1ffps, %.2fms avg/%d | VSync : %s | Time : %.2fs",
-                g_title,
-                shader_name,
-                fps,
-                ms,
-                g_frame_time_count,
-                dxx12_get_vsync() ? "on" : "off",
-                frame_end_seconds);
-
-            SetWindowTextA(g_hwnd, title);
-            g_last_title_update = frame_end_seconds;
-        }
-
-        g_frame_counter ++;
+        g_frame_counter++;
     }
 
     pool_destroy();
     free(g_history_pixels);
     g_history_pixels = NULL;
     dxx12_destroy();
+    display_destroy();
+    stats_destroy();
+    g_is_closing = false;
 }

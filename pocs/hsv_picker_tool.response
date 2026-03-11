@@ -17,26 +17,10 @@
 -fno-builtin
 -luser32
 -lgdi32
--lcomctl32
--ld3d12
--ldxgi
--ldxguid
--ld3dcompiler
 -flto
 -fuse-ld=lld
 -Xlinker "-subsystem:windows,10.0"
--o bin.exe
-src/main.c
-src/dxx12.c
-src/display.c
-src/stats.c
-src/win.c
+-o pocs/hsv_picker_tool.exe
+pocs/hsv_picker_tool.c
 src/defines.c
-src/app.res
-src/shaders/sphere_tracing.c
-src/shaders/kinetic_orbs.c
 src/shaders/hsv_picker.c
-src/shaders/glass_lenses.c
-src/shaders/glass_disks.c
-src/shaders/crystal_hall.c
-src/shaders/master_class.c
