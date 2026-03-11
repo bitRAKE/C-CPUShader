@@ -1,3 +1,9 @@
+> [!CAUTION]
+> **Experimental HDR DX12 Branch**
+> This branch uses DX12 to present the image data without texture processing.
+
+---
+
 # C-CPUShader
 Minimal CPU shader multithreaded renderer written in pure C - raw Win32, no libraries, no abstraction layers. Pixels, threads, and math from scratch.</br>
 I just felt like doing something with C.</br>
