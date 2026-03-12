@@ -1,0 +1,229 @@
+{
+  "scene": "blue_wall",
+  "role_overrides": {
+    "Window": "window_light",
+    "Ceiling": "ceiling_light",
+    "Ceiling Spot": "ceiling_light",
+    "Point": "lamp_light",
+    "Point.001": "lamp_light",
+    "Point.002": "lamp_light",
+    "Point.003": "lamp_light",
+    "Spot": "lamp_light",
+    "Spot.001": "lamp_light",
+    "Spot.002": "lamp_light",
+    "Spot.003": "lamp_light",
+    "Cylinder": "lamp_fixture",
+    "Cylinder.002": "lamp_fixture",
+    "Cylinder.003": "lamp_fixture",
+    "Cylinder.004": "lamp_fixture",
+    "Cylinder.005": "lamp_fixture"
+  },
+  "proxy_overrides": {
+    "Window": "area_light",
+    "Ceiling": "light_cluster",
+    "Ceiling Spot": "light_cluster",
+    "Point": "point_light",
+    "Point.001": "point_light",
+    "Point.002": "point_light",
+    "Point.003": "point_light",
+    "Spot": "spot_light",
+    "Spot.001": "spot_light",
+    "Spot.002": "spot_light",
+    "Spot.003": "spot_light",
+    "Cylinder": "floor_lamp_stand",
+    "Cylinder.002": "floor_lamp_box_shade",
+    "Cylinder.003": "floor_lamp_box_shade",
+    "Cylinder.004": "floor_lamp_box_shade",
+    "Cylinder.005": "floor_lamp_box_shade"
+  },
+  "semantic_weights": {
+    "room_shell": 0.45,
+    "window_light": 0.90,
+    "ceiling_light": 0.65,
+    "lamp_light": 0.75,
+    "lamp_fixture": 0.92,
+    "painting": 0.95,
+    "bookshelf": 0.86,
+    "sideboard": 0.88,
+    "chair": 0.90,
+    "table": 0.72,
+    "instrument": 0.78,
+    "plant": 0.62,
+    "clock": 0.60,
+    "camera_prop": 0.36,
+    "statue": 0.52,
+    "box_prop": 0.28,
+    "lamp": 0.58,
+    "mesh": 0.12
+  },
+  "stage_thresholds": {
+    "B": 0.16,
+    "C": 0.24,
+    "D": 0.42
+  },
+  "groups": [
+    {
+      "id": "room_shell",
+      "label": "Room Shell",
+      "stage": "A",
+      "proxy_family": "room_shell",
+      "selector": {
+        "roles": [
+          "room_shell"
+        ]
+      }
+    },
+    {
+      "id": "window_key_light",
+      "label": "Window Key Light",
+      "stage": "A",
+      "proxy_family": "area_light",
+      "selector": {
+        "names": [
+          "Window"
+        ]
+      }
+    },
+    {
+      "id": "ceiling_fill",
+      "label": "Ceiling Fill",
+      "stage": "A",
+      "proxy_family": "light_cluster",
+      "selector": {
+        "names": [
+          "Ceiling",
+          "Ceiling Spot"
+        ]
+      }
+    },
+    {
+      "id": "floor_lamp",
+      "label": "Floor Lamp",
+      "stage": "C",
+      "proxy_family": "floor_lamp_cluster",
+      "selector": {
+        "names": [
+          "Cylinder",
+          "Cylinder.002",
+          "Cylinder.003",
+          "Cylinder.004",
+          "Cylinder.005",
+          "Point",
+          "Point.001",
+          "Point.002",
+          "Point.003",
+          "Spot",
+          "Spot.001",
+          "Spot.002",
+          "Spot.003"
+        ]
+      }
+    },
+    {
+      "id": "bookshelf_left",
+      "label": "Bookshelf Left",
+      "stage": "C",
+      "proxy_family": "box_frame",
+      "selector": {
+        "names": [
+          "VerticalBookShelf_01.003"
+        ]
+      }
+    },
+    {
+      "id": "bookshelf_right",
+      "label": "Bookshelf Right",
+      "stage": "C",
+      "proxy_family": "box_frame",
+      "selector": {
+        "names": [
+          "VerticalBookShelf_01.004"
+        ]
+      }
+    },
+    {
+      "id": "sideboard",
+      "label": "Sideboard",
+      "stage": "C",
+      "proxy_family": "box_stack",
+      "selector": {
+        "names": [
+          "Sideboard_01"
+        ]
+      }
+    },
+    {
+      "id": "painting",
+      "label": "Painting",
+      "stage": "C",
+      "proxy_family": "framed_textured_quad",
+      "selector": {
+        "names": [
+          "CanvasPainting_01"
+        ]
+      }
+    },
+    {
+      "id": "chair",
+      "label": "Chair",
+      "stage": "C",
+      "proxy_family": "chair_boxes",
+      "selector": {
+        "names": [
+          "GreenChair_01.002"
+        ]
+      }
+    },
+    {
+      "id": "table_tall",
+      "label": "Tall Table",
+      "stage": "C",
+      "proxy_family": "cylinder_table",
+      "selector": {
+        "names": [
+          "side_table_tall_01.001"
+        ]
+      }
+    },
+    {
+      "id": "table_small",
+      "label": "Small Table",
+      "stage": "C",
+      "proxy_family": "cylinder_table",
+      "selector": {
+        "names": [
+          "WoodenTable_02.002"
+        ]
+      }
+    },
+    {
+      "id": "ukulele",
+      "label": "Ukulele",
+      "stage": "C",
+      "proxy_family": "capsule_plus_boxes",
+      "selector": {
+        "names": [
+          "Ukulele_01.001"
+        ]
+      }
+    },
+    {
+      "id": "sideboard_props",
+      "label": "Sideboard Top Props",
+      "stage": "D",
+      "proxy_family": "hero_prop_cluster",
+      "selector": {
+        "names": [
+          "Lantern_01.002",
+          "mantel_clock_01.001",
+          "potted_plant_04.001",
+          "horse_statue_01.001",
+          "Camera_01",
+          "Camera_01_strap",
+          "CheeseBox_01",
+          "CheeseBox_01_lid"
+        ]
+      }
+    }
+  ]
+}

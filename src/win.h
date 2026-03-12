@@ -1,10 +1,17 @@
 #pragma once
 
-typedef vec4_t (*RenderFunc)(vec2_t fragCoord, const shader_uniforms_t *uniforms);
-typedef void (*ShaderCycleFunc)(int direction);
-typedef const char *(*ShaderNameFunc)(void);
-typedef bool (*ShaderAccumulationFunc)(void);
+#include "shader_catalog.h"
 
-bool  window_create   (const char *title, int width, int height);
-void  window_set_shader_switcher(ShaderCycleFunc cycle_func, ShaderNameFunc name_func, ShaderAccumulationFunc accumulation_func);
-void  window_run      (RenderFunc render, int num_threads);
+typedef struct {
+    const shader_desc_t *(*get_catalog)(int *count_out);
+    int                  (*get_selected_index)(void);
+    const shader_desc_t *(*get_selected_shader)(void);
+    const shader_desc_t *(*get_active_shader)(void);
+    void                 (*select_shader)(int index);
+    bool                 (*execute_selected_shader)(void);
+    void                 (*stop_active_shader)(void);
+} shader_host_callbacks_t;
+
+bool  window_create(const char *title, int width, int height);
+void  window_set_shader_host(const shader_host_callbacks_t *callbacks);
+void  window_run(int num_threads);

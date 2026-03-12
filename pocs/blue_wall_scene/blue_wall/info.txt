@@ -1,0 +1,6 @@
+Blue Wall scene file created by Greg for 3D Model Haven's launch in 2019. Licensed as CC0: https://polyhaven.com/license
+
+Peak VRAM usage is around 700MB.
+
+Command line render:
+blender -b .\blue_wall.blend -f 5

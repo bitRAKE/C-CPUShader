@@ -1,31 +1,39 @@
 #include <windows.h>
 #include "resource.h"
 
-IDD_STATUS_DIALOG DIALOGEX 0, 0, 280, 170
+IDD_STATUS_DIALOG DIALOGEX 0, 0, 372, 262
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_CLIPCHILDREN
 CAPTION "Renderer Status"
 FONT 8, "Segoe UI"
 BEGIN
-    LTEXT           "Shader:",        -1, 10, 10, 56, 10
-    LTEXT           "Accumulation:",  -1, 10, 24, 56, 10
-    LTEXT           "Performance:",   -1, 10, 38, 56, 10
-    LTEXT           "Time:",          -1, 10, 52, 56, 10
-    LTEXT           "Workers:",       -1, 10, 66, 56, 10
-    LTEXT           "Display:",       -1, 10, 80, 56, 10
-    LTEXT           "PgUp/PgDn switch shaders\r\nV toggles vsync, R resets, Esc exits\r\nRight mouse drag moves the display window",
-                                      -1, 10, 124, 252, 28
+    LTEXT           "Shaders:",       -1, 10, 8, 48, 10
+    LISTBOX         IDC_SHADER_LIST,  10, 20, 118, 180, LBS_NOTIFY | WS_VSCROLL | WS_TABSTOP
 
-    AUTOCHECKBOX    "VSync", IDC_CHECK_VSYNC, 10, 102, 54, 12, WS_TABSTOP
-    PUSHBUTTON      "Prev", IDC_BUTTON_PREV, 110, 100, 46, 14, WS_TABSTOP
-    PUSHBUTTON      "Next", IDC_BUTTON_NEXT, 162, 100, 46, 14, WS_TABSTOP
-    PUSHBUTTON      "Reset", IDC_BUTTON_RESET, 214, 100, 46, 14, WS_TABSTOP
+    LTEXT           "Expectations:",  -1, 140, 10, 70, 10
+    LTEXT           "Select a shader.", IDC_STATUS_EXPECT, 140, 22, 220, 16
+    CONTROL         "Select a shader to inspect its details.", IDC_STATUS_BLURB, "SysLink",
+                                      WS_CHILD | WS_VISIBLE | WS_TABSTOP, 140, 44, 220, 52
 
-    LTEXT           "unknown",        IDC_STATUS_SHADER,  78, 10, 188, 10
-    LTEXT           "off",            IDC_STATUS_ACCUM,   78, 24, 188, 10
-    LTEXT           "0.0 fps, 0.00 ms avg/0", IDC_STATUS_PERF,    78, 38, 188, 10
-    LTEXT           "0.00 s",         IDC_STATUS_TIME,    78, 52, 188, 10
-    LTEXT           "0 render + gui", IDC_STATUS_WORKERS, 78, 66, 188, 10
-    LTEXT           "popup",          IDC_STATUS_DISPLAY, 78, 80, 188, 10
+    LTEXT           "Active:",        -1, 140, 102, 40, 10
+    LTEXT           "Performance:",   -1, 140, 116, 56, 10
+    LTEXT           "Time:",          -1, 140, 130, 56, 10
+    LTEXT           "Workers:",       -1, 140, 144, 56, 10
+    LTEXT           "Render:",        -1, 140, 158, 56, 10
+    LTEXT           "Display:",       -1, 140, 172, 56, 10
+
+    LTEXT           "idle",           IDC_STATUS_SHADER,  188, 102, 172, 10
+    LTEXT           "0.0 fps, 0.00 ms avg/0", IDC_STATUS_PERF, 206, 116, 154, 10
+    LTEXT           "0.00 s",         IDC_STATUS_TIME,    206, 130, 154, 10
+    LTEXT           "0 render + gui", IDC_STATUS_WORKERS, 206, 144, 154, 10
+    LTEXT           "not running",    IDC_STATUS_RENDER,  206, 158, 154, 10
+    LTEXT           "not running",    IDC_STATUS_DISPLAY, 206, 172, 154, 22
+
+    PUSHBUTTON      "Execute", IDC_BUTTON_EXECUTE, 10, 200, 56, 14, WS_TABSTOP
+    PUSHBUTTON      "Reset", IDC_BUTTON_RESET, 72, 200, 56, 14, WS_TABSTOP
+    AUTOCHECKBOX    "VSync", IDC_CHECK_VSYNC, 140, 200, 54, 12, WS_TABSTOP
+
+    LTEXT           "Select a shader, inspect its description, then execute.\r\nExecute switches to Stop while a shader is running.\r\nV toggles vsync, R resets the active shader, Esc exits.\r\nRight mouse drag moves the display window.",
+                                      -1, 10, 220, 350, 36
 END
 
 CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "app.manifest"

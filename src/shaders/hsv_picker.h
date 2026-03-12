@@ -27,3 +27,11 @@ vec4_t hsv_picker_render(
     const hsv_picker_state_t *base_state,
     hsv_picker_region_t active_region);
 vec4_t hsv_picker_main(vec2_t fragCoord, const shader_uniforms_t *uniforms);
+
+#define HSV_PICKER_SHADER(X) X( \
+    hsv_picker, "HSV Picker", hsv_picker_main, \
+    NULL, \
+    SHADER_FEATURE_MOUSE, \
+    512, 512, \
+    "Interactive color picker study driven by mouse hover and drag input." \
+)

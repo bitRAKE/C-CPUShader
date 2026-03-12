@@ -2,32 +2,56 @@
 
 #include "glass_disks.h"
 
-#define MAX_BOUNCES 4
+#define MAX_BOUNCES 8
+#define LIGHT_INTENSITY 50.0f
+
+enum {
+    SURFACE_NONE = 0,
+    SURFACE_LIGHT = 1,
+    SURFACE_GLASS = 2
+};
 
 typedef struct {
     int surface_type;
-    vec3_t color;
+    bool is_entering;
     vec2_t normal;
     float distance;
+    float ior;
+    float absorption;
+    vec3_t emission;
 } HitData;
 
-static float ray_circle(vec2_t ro, vec2_t rd, vec2_t c, float r)
+typedef struct {
+    vec2_t center;
+    float radius;
+    float ior_scale;
+    float absorption_scale;
+} DiskSpec;
+
+static float ray_circle(vec2_t ro, vec2_t rd, vec2_t center, float radius)
 {
-    vec2_t oc = v2_sub(ro, c);
-
+    vec2_t oc = v2_sub(ro, center);
     float b = v2_dot(oc, rd);
-    float c0 = v2_dot(oc, oc) - r * r;
-    float h = b * b - c0;
+    float c = v2_dot(oc, oc) - radius * radius;
+    float h = b * b - c;
 
-    if (h < 0.0) return -1.0;
+    if (h < 0.0f) {
+        return -1.0f;
+    }
 
-    h = sqrt(h);
+    h = sqrtf(h);
 
-    float t = -b - h;
-    if (t < 0.0) t = -b + h;
-    if (t < 0.0) return -1.0;
+    float near_hit = -b - h;
+    if (near_hit > 0.0001f) {
+        return near_hit;
+    }
 
-    return t;
+    float far_hit = -b + h;
+    if (far_hit > 0.0001f) {
+        return far_hit;
+    }
+
+    return -1.0f;
 }
 
 static uint next_rand(uint* state)
@@ -40,171 +64,199 @@ static uint next_rand(uint* state)
 
 static float rand_1(uint* state)
 {
-    return next_rand(state) / 4294967295.0;
+    return next_rand(state) / 4294967295.0f;
 }
 
-static float rand_1_nd(uint* state)
+static float spectral_lobe(float wavelength, float center, float width)
 {
-    float theta = 2 * 3.1415926 * rand_1(state);
-    float rho = sqrt(-2 * log(rand_1(state)));
-    return rho * cos(theta);
+    float t = 1.0f - fabsf(wavelength - center) / width;
+    return smoothstepf(0.0f, 1.0f, t);
 }
 
-__attribute__((unused))
-static vec2_t rand_dir(uint* state)
+static vec3_t get_dispersed_color(float wavelength)
 {
-    float x = rand_1_nd(state);
-    float y = rand_1_nd(state);
-    return v2_normalize(vec2(x, y));
+    float r = spectral_lobe(wavelength, 0.78f, 0.24f);
+    float g = spectral_lobe(wavelength, 0.52f, 0.22f);
+    float b = spectral_lobe(wavelength, 0.24f, 0.20f);
+    return vec3(r, g, b);
 }
 
-#define NEAR_DISK_COUNT 3
-#define FAR_DISK_COUNT 6
+static float wavelength_ior(float wavelength)
+{
+    return 1.28f + 0.24f * wavelength;
+}
 
-static HitData intersect(vec2_t ro, vec2_t rd)
+static float wavelength_absorption(float wavelength, float base_density)
+{
+    return base_density * lerpf(1.15f, 0.75f, wavelength);
+}
+
+static float schlick(float cosine, float eta_i, float eta_t)
+{
+    float r0 = (eta_i - eta_t) / (eta_i + eta_t);
+    r0 *= r0;
+    return r0 + (1.0f - r0) * powf(1.0f - cosine, 5.0f);
+}
+
+static HitData make_empty_hit(void)
 {
     HitData hit;
-    hit.distance = 10000.0;
-    
-    float light = ray_circle(ro, rd, vec2(-0.6, 0.0), 0.03);
-    if(light > 0.0)
-    {
-        hit.distance = light;
-        hit.color = vec3_o(6.0);
-        hit.surface_type = 0;
-    }
-    
-    for(int i = 0; i < NEAR_DISK_COUNT; i++)
-    {
-        float angle = 2 * PI * (float)i / NEAR_DISK_COUNT;
-        vec2_t pos = v2_mul1(vec2(cos(angle), sin(angle)), 0.125);
-        float radius = 0.075;
-        
-        float t = ray_circle(ro, rd, pos, radius);
-        
-        if(t < hit.distance && t > 0.0)
-        {
-            hit.distance = light;
-            
-            bool isEntering = v2_length(v2_sub(ro, pos)) > radius;
-                
-            vec2_t p = v2_add(ro, v2_mul1(rd, t));
-
-            hit.normal = v2_mul1(v2_normalize(v2_sub(p, pos)), (isEntering ? 1.0 : -1.0));
-            hit.surface_type = isEntering ? 1 : 2;
-        }
-    }
-    
-    for(int i = 0; i < FAR_DISK_COUNT; i++)
-    {
-        float angle = 2 * PI * (i + 0.25) / FAR_DISK_COUNT;
-        vec2_t pos = v2_mul1(vec2(cos(angle), sin(angle)), 0.32);
-        float radius = 0.1;
-        
-        float t = ray_circle(ro, rd, pos, radius);
-        
-        if(t < hit.distance && t > 0.0)
-        {
-            hit.distance = light;
-            
-            bool isEntering = v2_length(v2_sub(ro, pos)) > radius;
-                
-            vec2_t p = v2_add(ro, v2_mul1(rd, t));
-
-            hit.normal = v2_mul1(v2_normalize(v2_sub(p, pos)), (isEntering ? 1.0 : -1.0));
-            hit.surface_type = isEntering ? 1 : 2;
-        }
-    }
-    
+    hit.surface_type = SURFACE_NONE;
+    hit.is_entering = true;
+    hit.normal = vec2_o(0.0f);
+    hit.distance = 10000.0f;
+    hit.ior = 1.0f;
+    hit.absorption = 0.0f;
+    hit.emission = vec3_o(0.0f);
     return hit;
 }
 
-static float get_reflectance(vec2_t i, vec2_t t, vec2_t nor, float iora, float iorb)
+static const vec2_t LIGHT_CENTER = { -0.72f, 0.04f };
+static const float LIGHT_RADIUS = 0.05f;
+
+// This slightly skewed cluster creates more near-tangent crossings than the old
+// concentric ring layout, which gives the tracer more opportunities to build up
+// multi-bounce caustic structure.
+static const DiskSpec GLASS_DISKS[] = {
+    { { -0.34f,  0.00f }, 0.14f, 1.05f, 0.95f },
+    { { -0.10f,  0.18f }, 0.12f, 1.02f, 0.75f },
+    { { -0.06f, -0.19f }, 0.12f, 1.03f, 0.75f },
+    { {  0.14f,  0.02f }, 0.13f, 1.08f, 1.10f },
+    { {  0.36f,  0.18f }, 0.12f, 0.99f, 0.65f },
+    { {  0.40f, -0.17f }, 0.12f, 1.00f, 0.65f },
+    { {  0.19f, -0.22f }, 0.07f, 1.10f, 0.85f },
+    { {  0.22f,  0.30f }, 0.06f, 1.07f, 0.80f }
+};
+
+#define GLASS_DISK_COUNT ((int)(sizeof(GLASS_DISKS) / sizeof(GLASS_DISKS[0])))
+
+static void set_light_hit(HitData* hit, vec2_t ro, vec2_t rd)
 {
-    float cosi = v2_dot(i, nor);
-    float cost = v2_dot(t, nor);
-    float rs = powf((iora * cosi - iorb * cost) / (iora * cosi + iorb * cost), 2.0f);
-    float rp = powf((iorb * cosi - iora * cost) / (iorb * cosi + iora * cost), 2.0f);
-    return (rs + rp) * 0.5f;
+    float distance = ray_circle(ro, rd, LIGHT_CENTER, LIGHT_RADIUS);
+
+    if (distance > 0.0f && distance < hit->distance) {
+        hit->surface_type = SURFACE_LIGHT;
+        hit->distance = distance;
+        hit->emission = vec3_o(LIGHT_INTENSITY);
+    }
 }
 
-static vec3_t trace(vec2_t ro, vec2_t rd, float ior, uint* state)
+static void set_glass_hit(
+    HitData* hit,
+    vec2_t ro,
+    vec2_t rd,
+    vec2_t center,
+    float radius,
+    float ior,
+    float absorption)
 {
-    const float eps = 0.0001;
-    vec3_t transmittance = vec3_o(1.0);
+    float distance = ray_circle(ro, rd, center, radius);
 
-    for(int i = 0; i < MAX_BOUNCES; i++)
-    {
-        HitData hit = intersect(ro, rd);
+    if (distance <= 0.0f || distance >= hit->distance) {
+        return;
+    }
 
-        if(hit.distance > 9999.0) {
+    vec2_t point = v2_add(ro, v2_mul1(rd, distance));
+    vec2_t outward_normal = v2_normalize(v2_sub(point, center));
+    bool is_entering = v2_length_sq(v2_sub(ro, center)) > radius * radius;
+
+    hit->surface_type = SURFACE_GLASS;
+    hit->is_entering = is_entering;
+    hit->normal = is_entering ? outward_normal : v2_mul1(outward_normal, -1.0f);
+    hit->distance = distance;
+    hit->ior = ior;
+    hit->absorption = absorption;
+}
+
+static HitData intersect(vec2_t ro, vec2_t rd, float wavelength)
+{
+    HitData hit = make_empty_hit();
+    float base_ior = wavelength_ior(wavelength);
+
+    set_light_hit(&hit, ro, rd);
+
+    for (int i = 0; i < GLASS_DISK_COUNT; i++) {
+        const DiskSpec* disk = &GLASS_DISKS[i];
+        float absorption = wavelength_absorption(wavelength, disk->absorption_scale);
+        set_glass_hit(
+            &hit,
+            ro,
+            rd,
+            disk->center,
+            disk->radius,
+            base_ior * disk->ior_scale,
+            absorption);
+    }
+
+    return hit;
+}
+
+static vec3_t trace(vec2_t ro, vec2_t rd, float wavelength, uint* state)
+{
+    const float eps = 0.0001f;
+    float throughput = 1.0f;
+
+    for (int bounce = 0; bounce < MAX_BOUNCES; bounce++) {
+        HitData hit = intersect(ro, rd, wavelength);
+
+        if (hit.distance > 9999.0f) {
             break;
         }
 
-        if(hit.surface_type == 0)
-        {
-            return v3_mul(hit.color, transmittance);
+        if (hit.surface_type == SURFACE_LIGHT) {
+            return v3_mul1(hit.emission, throughput);
         }
 
-        if(hit.surface_type == 1 || hit.surface_type == 2)
-        {
-            bool isEntering = hit.surface_type == 1;//entering or exiting the glass
-            ro = v2_add(ro, v2_mul1(rd, hit.distance));
+        ro = v2_add(ro, v2_mul1(rd, hit.distance));
 
-            vec2_t reflected = v2_reflect(rd, hit.normal);
-            vec2_t refracted = v2_refract(rd, hit.normal, isEntering ? 1.0/ior : ior);
-            float reflectance  = get_reflectance(rd, refracted, hit.normal, isEntering ? 1.0 : ior, isEntering ? ior : 1.0);
-            bool reflect_it = rand_1(state) < reflectance;
-            
-            if(!isEntering){
-                //Absorbtion
-                //trasmittance *= exp(-hit.distance * hit.color * ABSORBTION_STRENGTH);
+        // The segment leading to an exit event was traveled inside the medium.
+        if (!hit.is_entering) {
+            throughput *= expf(-hit.absorption * hit.distance);
+            if (throughput < 0.0001f) {
+                break;
             }
+        }
 
-            if(reflect_it)
-            {
-                ro = v2_add(ro, v2_mul1(hit.normal, eps));
-                rd = reflected;
-                transmittance = v3_mul1(transmittance, reflectance);
-            }
-            else{
-                ro = v2_sub(ro, v2_mul1(hit.normal, eps));
-                rd = refracted;
-                transmittance = v3_mul1(transmittance, 1.0 - reflectance);
-            }
+        float eta_i = hit.is_entering ? 1.0f : hit.ior;
+        float eta_t = hit.is_entering ? hit.ior : 1.0f;
+        vec2_t reflected = v2_reflect(rd, hit.normal);
+        vec2_t refracted = v2_refract(rd, hit.normal, eta_i / eta_t);
+        bool can_refract = v2_length_sq(refracted) > 0.0f;
+        float cosine = saturate(v2_dot(v2_mul1(rd, -1.0f), hit.normal));
+        float reflectance = can_refract ? schlick(cosine, eta_i, eta_t) : 1.0f;
+
+        // We sample one branch using Fresnel as the PDF, so throughput should not
+        // be multiplied by Fresnel again here.
+        if (rand_1(state) < reflectance) {
+            rd = reflected;
+            ro = v2_add(ro, v2_mul1(hit.normal, eps));
+        } else {
+            rd = refracted;
+            ro = v2_sub(ro, v2_mul1(hit.normal, eps));
         }
     }
 
-    return vec3_o(0.0);
-}
-
-vec3_t get_dispersed_color( float w ) {
-    float r = sin(w * PI * 2.0);
-    float g = sin((w - 0.25) * PI * 2.0);
-    float b = sin((w - 0.5) * PI * 2.0);
-    return vec3(saturate(r), saturate(g), saturate(b));
+    return vec3_o(0.0f);
 }
 
 #define DIRECTIONAL_SAMPLES 360
 
-vec4_t glass_disks_main(vec2_t fragCoord, const shader_uniforms_t* uniforms) {
+vec4_t glass_disks_main(vec2_t fragCoord, const shader_uniforms_t *uniforms) {
     const vec2_t resolution = uniforms->resolution;
     const uint frame = uniforms->frame;
 
-    vec2_t uv = vec2(fragCoord.x - resolution.x * 0.5, fragCoord.y - resolution.y * 0.5);
+    vec2_t uv = vec2(fragCoord.x - resolution.x * 0.5f, fragCoord.y - resolution.y * 0.5f);
     uv = vec2(uv.x / resolution.y, uv.y / resolution.y);
 
     uint state = (uint)(fragCoord.x) + (uint)(fragCoord.y * resolution.x) + frame * 78423;
 
-    float angle = 2 * PI * (frame + rand_1(&state)) / DIRECTIONAL_SAMPLES;
-    vec2_t dir = vec2(cos(angle), sin(angle));
+    float angle = 2.0f * PI * ((float)frame + rand_1(&state)) / DIRECTIONAL_SAMPLES;
+    vec2_t dir = vec2(cosf(angle), sinf(angle));
 
-    float spec = rand_1(&state);
-    float ior = 1.3 + 0.2 * spec;
-    vec3_t color_mask = get_dispersed_color(spec);
+    float wavelength = rand_1(&state);
+    vec3_t color_mask = get_dispersed_color(wavelength);
+    vec3_t light = trace(uv, dir, wavelength, &state);
 
-    vec3_t t = trace(uv, dir, ior, &state);
-    t = v3_mul(t, color_mask);
-
-    return vec4(t.x, t.y, t.z, 1.0);
+    light = v3_mul(light, color_mask);
+    return vec4(light.x, light.y, light.z, 1.0f);
 }

@@ -18,6 +18,9 @@
 -luser32
 -lgdi32
 -lcomctl32
+-lshell32
+-lole32
+-lwindowscodecs
 -ld3d12
 -ldxgi
 -ldxguid
@@ -31,7 +34,9 @@ src/dxx12.c
 src/display.c
 src/stats.c
 src/win.c
+src/runtime_session.c
 src/defines.c
+src/shader_buffers.c
 src/app.res
 src/shaders/sphere_tracing.c
 src/shaders/kinetic_orbs.c
@@ -40,3 +45,10 @@ src/shaders/glass_lenses.c
 src/shaders/glass_disks.c
 src/shaders/crystal_hall.c
 src/shaders/master_class.c
+pocs/blue_wall_scene/blue_wall_v2_A.c
+pocs/blue_wall_scene/blue_wall_v2_B.c
+pocs/blue_wall_scene/blue_wall_v2_C.c
+pocs/blue_wall_scene/blue_wall_v2_D.c
+pocs/blue_wall_scene/blue_wall_v2_E.c
+pocs/mtsdf/mtsdf_hello_world.c
+pocs/sdf_fixed/sdf_fixed_hello_world.c

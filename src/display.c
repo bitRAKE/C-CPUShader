@@ -15,6 +15,7 @@ static POINT               g_drag_cursor = {0};
 static POINT               g_drag_origin = {0};
 static POINT               g_mouse_current = {0};
 static POINT               g_mouse_anchor = {0};
+static uint                g_input_generation = 1;
 
 static void sync_capture(HWND hwnd)
 {
@@ -47,11 +48,48 @@ static POINT clamp_client_point(POINT point)
     return point;
 }
 
+static float scale_client_coordinate(int value, int client_extent, int render_extent)
+{
+    if (render_extent <= 1 || client_extent <= 1) {
+        return 0.0f;
+    }
+
+    if (value <= 0) {
+        return 0.0f;
+    }
+
+    if (value >= client_extent - 1) {
+        return (float)(render_extent - 1);
+    }
+
+    return ((float)value * (float)(render_extent - 1)) / (float)(client_extent - 1);
+}
+
+static vec2_t map_client_point_to_render(POINT point, int render_width, int render_height)
+{
+    RECT client_rect = {0};
+    POINT clamped = point;
+    vec2_t mapped;
+
+    mapped.x = 0.0f;
+    mapped.y = 0.0f;
+
+    if (g_display_hwnd == NULL || !GetClientRect(g_display_hwnd, &client_rect)) {
+        return mapped;
+    }
+
+    clamped = clamp_client_point(clamped);
+    mapped.x = scale_client_coordinate(clamped.x, client_rect.right, render_width);
+    mapped.y = scale_client_coordinate(clamped.y, client_rect.bottom, render_height);
+    return mapped;
+}
+
 static void update_mouse_from_lparam(LPARAM lp)
 {
     g_mouse_current.x = (int)(short)LOWORD(lp);
     g_mouse_current.y = (int)(short)HIWORD(lp);
     g_has_mouse_position = true;
+    g_input_generation++;
 }
 
 static void clear_drag(void)
@@ -76,7 +114,6 @@ static void begin_drag(HWND hwnd)
     g_drag_origin.y = rect.top;
     g_drag_active = true;
     sync_capture(hwnd);
-    SetFocus(hwnd);
 }
 
 static void continue_drag(HWND hwnd)
@@ -105,16 +142,10 @@ static void continue_drag(HWND hwnd)
 
 static LRESULT CALLBACK DisplayWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 {
+    (void)wp;
     (void)lp;
 
     switch (msg) {
-        case WM_KEYDOWN:
-        case WM_SYSKEYDOWN:
-            if (g_callbacks.on_keydown != NULL && g_callbacks.on_keydown(hwnd, wp, g_user_data)) {
-                return 0;
-            }
-            break;
-
         case WM_RBUTTONDOWN:
             begin_drag(hwnd);
             return 0;
@@ -124,7 +155,6 @@ static LRESULT CALLBACK DisplayWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp
             g_mouse_anchor = g_mouse_current;
             g_left_button_down = true;
             sync_capture(hwnd);
-            SetFocus(hwnd);
             return 0;
 
         case WM_LBUTTONUP:
@@ -172,6 +202,7 @@ static LRESULT CALLBACK DisplayWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp
             clear_drag();
             g_left_button_down = false;
             g_has_mouse_position = false;
+            g_input_generation++;
             return 0;
     }
 
@@ -258,7 +289,7 @@ void display_focus(void)
     }
 }
 
-void display_get_mouse_uniform(vec4_t *mouse_out, int render_height)
+void display_get_mouse_uniform(vec4_t *mouse_out, int render_width, int render_height)
 {
     vec4_t mouse = vec4(-1.0f, -1.0f, -1.0f, -1.0f);
 
@@ -266,23 +297,28 @@ void display_get_mouse_uniform(vec4_t *mouse_out, int render_height)
         return;
     }
 
-    if (g_display_hwnd != NULL && g_has_mouse_position) {
-        POINT current = clamp_client_point(g_mouse_current);
+    if (g_display_hwnd != NULL && g_has_mouse_position && render_width > 0 && render_height > 0) {
+        vec2_t current = map_client_point_to_render(g_mouse_current, render_width, render_height);
 
         if (g_left_button_down) {
-            POINT anchor = clamp_client_point(g_mouse_anchor);
+            vec2_t anchor = map_client_point_to_render(g_mouse_anchor, render_width, render_height);
 
-            mouse.x = (float)anchor.x;
-            mouse.y = (float)(render_height - 1 - anchor.y);
-            mouse.z = (float)current.x;
-            mouse.w = (float)(render_height - 1 - current.y);
+            mouse.x = anchor.x;
+            mouse.y = (float)(render_height - 1) - anchor.y;
+            mouse.z = current.x;
+            mouse.w = (float)(render_height - 1) - current.y;
         } else {
-            mouse.x = (float)current.x;
-            mouse.y = (float)(render_height - 1 - current.y);
+            mouse.x = current.x;
+            mouse.y = (float)(render_height - 1) - current.y;
         }
     }
 
     *mouse_out = mouse;
+}
+
+uint display_input_generation(void)
+{
+    return g_input_generation;
 }
 
 bool display_get_window_rect(RECT *rect_out)

@@ -1,78 +1,144 @@
 #include "defines.h"
 #include "win.h"
+
+#include "shader_catalog.h"
 #include "shaders/sphere_tracing.h"
 #include "shaders/kinetic_orbs.h"
-#include "shaders/hsv_picker.h"
 #include "shaders/glass_lenses.h"
 #include "shaders/glass_disks.h"
 #include "shaders/crystal_hall.h"
 #include "shaders/master_class.h"
+#include "../pocs/sdf_fixed/sdf_fixed_hello_world.h"
+#include "../pocs/mtsdf/mtsdf_hello_world.h"
+#include "shaders/hsv_picker.h"
+#include "../pocs/blue_wall_scene/blue_wall_v2_A.h"
+#include "../pocs/blue_wall_scene/blue_wall_v2_B.h"
+#include "../pocs/blue_wall_scene/blue_wall_v2_C.h"
+#include "../pocs/blue_wall_scene/blue_wall_v2_D.h"
+#include "../pocs/blue_wall_scene/blue_wall_v2_E.h"
 
-typedef struct {
-    const char *name;
-    RenderFunc  render;
-    bool        temporal_accumulation;
-} ShaderEntry;
+#define SHADER_ENTRY(id, display_name, entry, buffers_init, features, width, height, blurb) \
+    {#id, display_name, blurb, entry, buffers_init, features, width, height},
 
-static ShaderEntry g_shaders[] = {
-    // display name     shader entry-point      accumulation
-    {"sphere_tracing",  sphere_tracing_main,    true},
-    {"kinetic_orbs",    kinetic_orbs_main,      false},
-    {"hsv_picker",      hsv_picker_main,        false},
-    {"glass_lenses",    glass_lenses_main,      true},
-    {"glass_disks",     glass_disks_main,       true},
-    {"crystal_hall",    crystal_hall_main,      false},
-    {"master_class",    master_class_main,      true}
+static const shader_desc_t g_shader_catalog[] = {
+    SPHERE_TRACING_SHADER(SHADER_ENTRY)
+    KINETIC_ORBS_SHADER(SHADER_ENTRY)
+    GLASS_LENSES_SHADER(SHADER_ENTRY)
+    GLASS_DISKS_SHADER(SHADER_ENTRY)
+    CRYSTAL_HALL_SHADER(SHADER_ENTRY)
+    MASTER_CLASS_SHADER(SHADER_ENTRY)
+    SDF_FIXED_HELLO_WORLD_SHADER(SHADER_ENTRY)
+    MTSDF_HELLO_WORLD_SHADER(SHADER_ENTRY)
+    HSV_PICKER_SHADER(SHADER_ENTRY)
+    BLUE_WALL_V2_A_SHADER(SHADER_ENTRY)
+    BLUE_WALL_V2_B_SHADER(SHADER_ENTRY)
+    BLUE_WALL_V2_C_SHADER(SHADER_ENTRY)
+    BLUE_WALL_V2_D_SHADER(SHADER_ENTRY)
+    BLUE_WALL_V2_E_SHADER(SHADER_ENTRY)
 };
 
-static const int g_shader_count = (int)(sizeof(g_shaders) / sizeof(g_shaders[0]));
-static int       g_current_shader_index = 6;
-static RenderFunc g_current_shader = master_class_main;
+#undef SHADER_ENTRY
 
-static const char *shader_current_name(void)
+static const int g_shader_count = (int)(sizeof(g_shader_catalog) / sizeof(g_shader_catalog[0]));
+static int       g_selected_shader_index = -1;
+static int       g_active_shader_index = -1;
+
+static int shader_find_index_by_id(const char *id)
 {
-    return g_shaders[g_current_shader_index].name;
-}
-
-static bool shader_current_accumulates(void)
-{
-    return g_shaders[g_current_shader_index].temporal_accumulation;
-}
-
-static void shader_cycle(int direction)
-{
-    int next_index = g_current_shader_index + direction;
-
-    if (next_index < 0) {
-        next_index = g_shader_count - 1;
-    } else if (next_index >= g_shader_count) {
-        next_index = 0;
+    if (id == NULL || id[0] == '\0') {
+        return -1;
     }
 
-    g_current_shader_index = next_index;
-    g_current_shader = g_shaders[g_current_shader_index].render;
+    for (int index = 0; index < g_shader_count; index++) {
+        if (strcmp(g_shader_catalog[index].id, id) == 0) {
+            return index;
+        }
+    }
+
+    return -1;
 }
 
-vec4_t main_image(vec2_t fragCoord, const shader_uniforms_t *uniforms)
+static const shader_desc_t *shader_get_by_index(int index)
 {
-    return g_current_shader(fragCoord, uniforms);
+    if (index < 0 || index >= g_shader_count) {
+        return NULL;
+    }
+
+    return &g_shader_catalog[index];
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
+static const shader_desc_t *shader_get_catalog(int *count_out)
+{
+    if (count_out != NULL) {
+        *count_out = g_shader_count;
+    }
+
+    return g_shader_catalog;
+}
+
+static int shader_get_selected_index(void)
+{
+    return g_selected_shader_index;
+}
+
+static const shader_desc_t *shader_get_selected_shader(void)
+{
+    return shader_get_by_index(g_selected_shader_index);
+}
+
+static const shader_desc_t *shader_get_active_shader(void)
+{
+    return shader_get_by_index(g_active_shader_index);
+}
+
+static void shader_select(int index)
+{
+    if (index >= 0 && index < g_shader_count) {
+        g_selected_shader_index = index;
+    }
+}
+
+static bool shader_execute_selected(void)
+{
+    if (g_selected_shader_index < 0 || g_selected_shader_index >= g_shader_count) {
+        return false;
+    }
+
+    g_active_shader_index = g_selected_shader_index;
+    return true;
+}
+
+static void shader_stop_active(void)
+{
+    g_active_shader_index = -1;
+}
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
+{
+    shader_host_callbacks_t shader_host = {0};
+    int default_shader_index;
+
     (void)hInstance;
     (void)hPrevInstance;
     (void)lpCmdLine;
     (void)nShowCmd;
 
-    //Init Window
+    default_shader_index = shader_find_index_by_id("sdf_fixed_hello_world");
+    g_selected_shader_index = (default_shader_index >= 0) ? default_shader_index : 0;
+
     if (!window_create("Renderer", 1024, 1024)) {
         return 1;
     }
 
-    window_set_shader_switcher(shader_cycle, shader_current_name, shader_current_accumulates);
+    shader_host.get_catalog = shader_get_catalog;
+    shader_host.get_selected_index = shader_get_selected_index;
+    shader_host.get_selected_shader = shader_get_selected_shader;
+    shader_host.get_active_shader = shader_get_active_shader;
+    shader_host.select_shader = shader_select;
+    shader_host.execute_selected_shader = shader_execute_selected;
+    shader_host.stop_active_shader = shader_stop_active;
+    window_set_shader_host(&shader_host);
 
-    //Render loop with 31 dedicated render workers plus a separate GUI thread
-    window_run(main_image, 31);
-
+    window_run(30);
     return 0;
 }

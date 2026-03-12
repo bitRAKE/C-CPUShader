@@ -11,7 +11,7 @@ That split is the point.
 
 ## What It Demonstrates
 
-The standalone tool in `poc/hsv_picker_tool.c` reuses the picker shader logic from `src/shaders/hsv_picker.c` directly. It does not re-implement the math in a second place. Instead, it provides a tiny host application that:
+The standalone tool in `pocs/hsv_picker_tool.c` reuses the picker shader logic from `src/shaders/hsv_picker.c` directly. It does not re-implement the math in a second place. Instead, it provides a tiny host application that:
 
 - owns persistent picker state
 - translates window mouse input into shader-style uniforms
