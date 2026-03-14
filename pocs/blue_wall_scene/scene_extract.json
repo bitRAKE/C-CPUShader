@@ -62,7 +62,7 @@
       "OUTPUT_WORLD"
     ],
     "images": [
-      "textures\\hamburg_canal_1k.hdr"
+      "blue_wall/textures/hamburg_canal_1k.hdr"
     ]
   },
   "recipe": {
@@ -2324,7 +2324,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\white_plaster_02_nor_4k.jpg",
+              "path": "blue_wall/textures/white_plaster_02_nor_4k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -2350,7 +2350,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\WoodFloor007_4K_Color.jpg",
+              "path": "blue_wall/textures/WoodFloor007_4K_Color.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -2358,13 +2358,13 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\WoodFloor007_4K_Normal.jpg",
+              "path": "blue_wall/textures/WoodFloor007_4K_Normal.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": []
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\WoodFloor007_4K_Roughness.jpg",
+              "path": "blue_wall/textures/WoodFloor007_4K_Roughness.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -2390,7 +2390,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\concrete_floor_02_Nor_4k.jpg",
+              "path": "blue_wall/textures/concrete_floor_02_Nor_4k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -2589,7 +2589,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\concrete_floor_02_Nor_4k.jpg",
+              "path": "blue_wall/textures/concrete_floor_02_Nor_4k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -2788,7 +2788,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\concrete_floor_02_Nor_4k.jpg",
+              "path": "blue_wall/textures/concrete_floor_02_Nor_4k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -2987,7 +2987,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\concrete_floor_02_Nor_4k.jpg",
+              "path": "blue_wall/textures/concrete_floor_02_Nor_4k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -3186,7 +3186,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\concrete_floor_02_Nor_4k.jpg",
+              "path": "blue_wall/textures/concrete_floor_02_Nor_4k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -3385,7 +3385,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\concrete_floor_02_Nor_4k.jpg",
+              "path": "blue_wall/textures/concrete_floor_02_Nor_4k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -3584,7 +3584,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\concrete_floor_02_Nor_4k.jpg",
+              "path": "blue_wall/textures/concrete_floor_02_Nor_4k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -3956,7 +3956,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\CheeseBox_01_diff_1k.jpg",
+              "path": "blue_wall/textures/CheeseBox_01_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -3964,7 +3964,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\CheeseBox_01_metallic_1k.jpg",
+              "path": "blue_wall/textures/CheeseBox_01_metallic_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Metallic"
@@ -3972,7 +3972,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\CheeseBox_01_roughness_1k.jpg",
+              "path": "blue_wall/textures/CheeseBox_01_roughness_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -3980,7 +3980,7 @@
             },
             {
               "node": "Image Texture.003",
-              "path": "textures\\CheeseBox_01_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/CheeseBox_01_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -4179,7 +4179,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\CheeseBox_01_diff_1k.jpg",
+              "path": "blue_wall/textures/CheeseBox_01_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -4187,7 +4187,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\CheeseBox_01_metallic_1k.jpg",
+              "path": "blue_wall/textures/CheeseBox_01_metallic_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Metallic"
@@ -4195,7 +4195,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\CheeseBox_01_roughness_1k.jpg",
+              "path": "blue_wall/textures/CheeseBox_01_roughness_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -4203,7 +4203,7 @@
             },
             {
               "node": "Image Texture.003",
-              "path": "textures\\CheeseBox_01_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/CheeseBox_01_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -4402,7 +4402,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\Lantern_01_brass_diff_1k.jpg",
+              "path": "blue_wall/textures/Lantern_01_brass_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -4410,7 +4410,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\Lantern_01_brass_metallic_1k.jpg",
+              "path": "blue_wall/textures/Lantern_01_brass_metallic_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Metallic"
@@ -4418,7 +4418,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\Lantern_01_brass_roughness_1k.jpg",
+              "path": "blue_wall/textures/Lantern_01_brass_roughness_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -4426,7 +4426,7 @@
             },
             {
               "node": "Image Texture.003",
-              "path": "textures\\Lantern_01_brass_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/Lantern_01_brass_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -4625,7 +4625,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\GreenChair_01_diff_1k.jpg",
+              "path": "blue_wall/textures/GreenChair_01_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -4633,7 +4633,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\GreenChair_01_metallic_1k.jpg",
+              "path": "blue_wall/textures/GreenChair_01_metallic_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Metallic"
@@ -4641,7 +4641,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\GreenChair_01_roughness_1k.jpg",
+              "path": "blue_wall/textures/GreenChair_01_roughness_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -4649,7 +4649,7 @@
             },
             {
               "node": "Image Texture.003",
-              "path": "textures\\GreenChair_01_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/GreenChair_01_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -4848,7 +4848,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\Camera_01_strap_diff_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_strap_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -4856,7 +4856,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\Camera_01_strap_metallic_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_strap_metallic_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Metallic"
@@ -4864,7 +4864,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\Camera_01_strap_roughness_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_strap_roughness_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -4872,7 +4872,7 @@
             },
             {
               "node": "Image Texture.003",
-              "path": "textures\\Camera_01_strap_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_strap_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -5071,7 +5071,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\Camera_01_lens_body_diff_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_lens_body_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -5079,7 +5079,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\Camera_01_lens_body_metallic_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_lens_body_metallic_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Metallic"
@@ -5087,7 +5087,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\Camera_01_lens_body_roughness_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_lens_body_roughness_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -5095,7 +5095,7 @@
             },
             {
               "node": "Image Texture.003",
-              "path": "textures\\Camera_01_lens_body_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_lens_body_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -5138,7 +5138,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\Camera_01_body_diff_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_body_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -5146,7 +5146,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\Camera_01_body_metallic_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_body_metallic_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Metallic"
@@ -5154,7 +5154,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\Camera_01_body_roughness_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_body_roughness_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -5162,7 +5162,7 @@
             },
             {
               "node": "Image Texture.003",
-              "path": "textures\\Camera_01_body_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_body_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -5188,7 +5188,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\Camera_01_strap_diff_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_strap_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -5196,7 +5196,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\Camera_01_strap_metallic_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_strap_metallic_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Metallic"
@@ -5204,7 +5204,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\Camera_01_strap_roughness_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_strap_roughness_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -5212,7 +5212,7 @@
             },
             {
               "node": "Image Texture.003",
-              "path": "textures\\Camera_01_strap_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/Camera_01_strap_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -5411,7 +5411,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\Ukulele_01_diff_1k.jpg",
+              "path": "blue_wall/textures/Ukulele_01_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -5419,7 +5419,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\Ukulele_01_metallic_1k.jpg",
+              "path": "blue_wall/textures/Ukulele_01_metallic_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Metallic"
@@ -5427,7 +5427,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\Ukulele_01_roughness_1k.jpg",
+              "path": "blue_wall/textures/Ukulele_01_roughness_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -5435,7 +5435,7 @@
             },
             {
               "node": "Image Texture.003",
-              "path": "textures\\Ukulele_01_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/Ukulele_01_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -5634,7 +5634,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\WoodenTable_02_diff_1k.jpg",
+              "path": "blue_wall/textures/WoodenTable_02_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -5642,7 +5642,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\WoodenTable_02_metallic_1k.jpg",
+              "path": "blue_wall/textures/WoodenTable_02_metallic_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Metallic"
@@ -5650,7 +5650,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\WoodenTable_02_roughness_1k.jpg",
+              "path": "blue_wall/textures/WoodenTable_02_roughness_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -5658,7 +5658,7 @@
             },
             {
               "node": "Image Texture.003",
-              "path": "textures\\WoodenTable_02_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/WoodenTable_02_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -5857,7 +5857,7 @@
           "texture_images": [
             {
               "node": "Image Texture.003",
-              "path": "textures\\potted_plant_04_diff_1k.jpg",
+              "path": "blue_wall/textures/potted_plant_04_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -5865,7 +5865,7 @@
             },
             {
               "node": "Image Texture",
-              "path": "textures\\potted_plant_04_metal_1k.jpg",
+              "path": "blue_wall/textures/potted_plant_04_metal_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Metallic"
@@ -5873,7 +5873,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\potted_plant_04_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/potted_plant_04_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -5881,7 +5881,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\potted_plant_04_rough_1k.jpg",
+              "path": "blue_wall/textures/potted_plant_04_rough_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -6080,7 +6080,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\mantel_clock_01_diff_1k.jpg",
+              "path": "blue_wall/textures/mantel_clock_01_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -6088,7 +6088,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\mantel_clock_01_metal_1k.jpg",
+              "path": "blue_wall/textures/mantel_clock_01_metal_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Metallic"
@@ -6096,7 +6096,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\mantel_clock_01_rough_1k.jpg",
+              "path": "blue_wall/textures/mantel_clock_01_rough_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -6104,7 +6104,7 @@
             },
             {
               "node": "Image Texture.005",
-              "path": "textures\\mantel_clock_01_anisotropy_angle_1k.jpg",
+              "path": "blue_wall/textures/mantel_clock_01_anisotropy_angle_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Anisotropic Rotation"
@@ -6112,7 +6112,7 @@
             },
             {
               "node": "Image Texture.003",
-              "path": "textures\\mantel_clock_01_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/mantel_clock_01_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -6120,7 +6120,7 @@
             },
             {
               "node": "Image Texture.004",
-              "path": "textures\\mantel_clock_01_anisotropy_level_1k.jpg",
+              "path": "blue_wall/textures/mantel_clock_01_anisotropy_level_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Anisotropic"
@@ -6319,7 +6319,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\mantel_clock_01_diff_1k.jpg",
+              "path": "blue_wall/textures/mantel_clock_01_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -6327,7 +6327,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\mantel_clock_01_rough_1k.jpg",
+              "path": "blue_wall/textures/mantel_clock_01_rough_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -6335,7 +6335,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\mantel_clock_01_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/mantel_clock_01_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -6532,7 +6532,7 @@
           "texture_images": [
             {
               "node": "Image Texture.002",
-              "path": "textures\\side_table_tall_01_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/side_table_tall_01_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -6540,7 +6540,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\side_table_tall_01_rough_1k.jpg",
+              "path": "blue_wall/textures/side_table_tall_01_rough_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -6548,7 +6548,7 @@
             },
             {
               "node": "Image Texture",
-              "path": "textures\\side_table_tall_01_metal_1k.jpg",
+              "path": "blue_wall/textures/side_table_tall_01_metal_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Metallic"
@@ -6556,7 +6556,7 @@
             },
             {
               "node": "Image Texture.003",
-              "path": "textures\\side_table_tall_01_diff_1k.jpg",
+              "path": "blue_wall/textures/side_table_tall_01_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -6755,7 +6755,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\horse_statue_01_diff_1k.jpg",
+              "path": "blue_wall/textures/horse_statue_01_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "A",
@@ -6764,7 +6764,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\horse_statue_01_rough_1k.jpg",
+              "path": "blue_wall/textures/horse_statue_01_rough_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -6772,7 +6772,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\horse_statue_01_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/horse_statue_01_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -6798,7 +6798,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\horse_statue_01_diff_1k.jpg",
+              "path": "blue_wall/textures/horse_statue_01_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -6806,7 +6806,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\horse_statue_01_rough_1k.jpg",
+              "path": "blue_wall/textures/horse_statue_01_rough_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -6814,7 +6814,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\horse_statue_01_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/horse_statue_01_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -7013,7 +7013,7 @@
           "texture_images": [
             {
               "node": "Opacity",
-              "path": "textures\\Lantern_01_brass_opacity_1k.jpg",
+              "path": "blue_wall/textures/Lantern_01_brass_opacity_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Alpha"
@@ -7021,7 +7021,7 @@
             },
             {
               "node": "Image Texture.003",
-              "path": "textures\\Lantern_01_brass_nor_gl_1k.jpg",
+              "path": "blue_wall/textures/Lantern_01_brass_nor_gl_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Color"
@@ -7029,7 +7029,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\Lantern_01_brass_roughness_1k.jpg",
+              "path": "blue_wall/textures/Lantern_01_brass_roughness_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -7037,7 +7037,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\Lantern_01_brass_metallic_1k.jpg",
+              "path": "blue_wall/textures/Lantern_01_brass_metallic_1k.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Metallic"
@@ -7045,7 +7045,7 @@
             },
             {
               "node": "Image Texture",
-              "path": "textures\\Lantern_01_brass_diff_1k.jpg",
+              "path": "blue_wall/textures/Lantern_01_brass_diff_1k.jpg",
               "colorspace": "sRGB",
               "linked_sockets": []
             }
@@ -8275,7 +8275,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\Wood030_4K_Color.jpg",
+              "path": "blue_wall/textures/Wood030_4K_Color.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -8283,7 +8283,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\Wood030_4K_Normal.jpg",
+              "path": "blue_wall/textures/Wood030_4K_Normal.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Image"
@@ -8291,7 +8291,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\Wood030_4K_Roughness.jpg",
+              "path": "blue_wall/textures/Wood030_4K_Roughness.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -8507,7 +8507,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\Wood030_4K_Color.jpg",
+              "path": "blue_wall/textures/Wood030_4K_Color.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -8515,7 +8515,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\Wood030_4K_Normal.jpg",
+              "path": "blue_wall/textures/Wood030_4K_Normal.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Image"
@@ -8523,7 +8523,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\Wood030_4K_Roughness.jpg",
+              "path": "blue_wall/textures/Wood030_4K_Roughness.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -8722,7 +8722,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\Wood030_4K_Color.jpg",
+              "path": "blue_wall/textures/Wood030_4K_Color.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -8730,7 +8730,7 @@
             },
             {
               "node": "Image Texture.001",
-              "path": "textures\\Wood030_4K_Normal.jpg",
+              "path": "blue_wall/textures/Wood030_4K_Normal.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Image"
@@ -8738,7 +8738,7 @@
             },
             {
               "node": "Image Texture.002",
-              "path": "textures\\Wood030_4K_Roughness.jpg",
+              "path": "blue_wall/textures/Wood030_4K_Roughness.jpg",
               "colorspace": "Non-Color",
               "linked_sockets": [
                 "Roughness"
@@ -8937,7 +8937,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\painting.jpg",
+              "path": "blue_wall/textures/painting.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -9170,7 +9170,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\01.jpg",
+              "path": "blue_wall/textures/01.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -9196,7 +9196,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -9393,7 +9393,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\03.jpg",
+              "path": "blue_wall/textures/03.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -9419,7 +9419,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -9616,7 +9616,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\04.jpg",
+              "path": "blue_wall/textures/04.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -9642,7 +9642,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -9839,7 +9839,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\05.jpg",
+              "path": "blue_wall/textures/05.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -9865,7 +9865,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -10062,7 +10062,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\06.jpg",
+              "path": "blue_wall/textures/06.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -10088,7 +10088,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -10285,7 +10285,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\07.jpg",
+              "path": "blue_wall/textures/07.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -10311,7 +10311,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -10508,7 +10508,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\08.jpg",
+              "path": "blue_wall/textures/08.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -10534,7 +10534,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -10731,7 +10731,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\09.jpg",
+              "path": "blue_wall/textures/09.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -10757,7 +10757,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -10954,7 +10954,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\10.jpg",
+              "path": "blue_wall/textures/10.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -10980,7 +10980,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -11177,7 +11177,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\11.jpg",
+              "path": "blue_wall/textures/11.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -11203,7 +11203,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -11400,7 +11400,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\12.jpg",
+              "path": "blue_wall/textures/12.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -11426,7 +11426,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -11623,7 +11623,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\13.jpg",
+              "path": "blue_wall/textures/13.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -11649,7 +11649,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -11846,7 +11846,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\14.jpg",
+              "path": "blue_wall/textures/14.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -11872,7 +11872,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -12069,7 +12069,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\16.jpg",
+              "path": "blue_wall/textures/16.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -12095,7 +12095,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -12292,7 +12292,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\17.jpg",
+              "path": "blue_wall/textures/17.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -12318,7 +12318,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -12515,7 +12515,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\18.jpg",
+              "path": "blue_wall/textures/18.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -12541,7 +12541,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -12738,7 +12738,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\19.jpg",
+              "path": "blue_wall/textures/19.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -12764,7 +12764,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -12961,7 +12961,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\20.jpg",
+              "path": "blue_wall/textures/20.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -12987,7 +12987,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -13184,7 +13184,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\21.jpg",
+              "path": "blue_wall/textures/21.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -13210,7 +13210,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -13407,7 +13407,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\22.jpg",
+              "path": "blue_wall/textures/22.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -13433,7 +13433,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -13630,7 +13630,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\23.jpg",
+              "path": "blue_wall/textures/23.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -13656,7 +13656,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -13853,7 +13853,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\24.jpg",
+              "path": "blue_wall/textures/24.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -13879,7 +13879,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -14076,7 +14076,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\25.jpg",
+              "path": "blue_wall/textures/25.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -14102,7 +14102,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -14299,7 +14299,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\27.jpg",
+              "path": "blue_wall/textures/27.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -14325,7 +14325,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -14522,7 +14522,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\28.jpg",
+              "path": "blue_wall/textures/28.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -14548,7 +14548,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -14745,7 +14745,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\29.jpg",
+              "path": "blue_wall/textures/29.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -14771,7 +14771,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -14968,7 +14968,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\31.jpg",
+              "path": "blue_wall/textures/31.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -14994,7 +14994,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -15191,7 +15191,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\32.jpg",
+              "path": "blue_wall/textures/32.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -15217,7 +15217,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -15414,7 +15414,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\33.jpg",
+              "path": "blue_wall/textures/33.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -15440,7 +15440,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -15637,7 +15637,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\34.jpg",
+              "path": "blue_wall/textures/34.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -15663,7 +15663,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -15860,7 +15860,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\35.jpg",
+              "path": "blue_wall/textures/35.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -15886,7 +15886,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -16083,7 +16083,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\36.jpg",
+              "path": "blue_wall/textures/36.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -16109,7 +16109,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -16306,7 +16306,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\37.jpg",
+              "path": "blue_wall/textures/37.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -16332,7 +16332,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -16529,7 +16529,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\38.jpg",
+              "path": "blue_wall/textures/38.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -16555,7 +16555,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -16752,7 +16752,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\39.jpg",
+              "path": "blue_wall/textures/39.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -16778,7 +16778,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -16975,7 +16975,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\40.jpg",
+              "path": "blue_wall/textures/40.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -17001,7 +17001,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -17198,7 +17198,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\41.jpg",
+              "path": "blue_wall/textures/41.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -17224,7 +17224,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -17421,7 +17421,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\43.jpg",
+              "path": "blue_wall/textures/43.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -17447,7 +17447,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -17644,7 +17644,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\44.jpg",
+              "path": "blue_wall/textures/44.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -17670,7 +17670,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -17867,7 +17867,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\45.jpg",
+              "path": "blue_wall/textures/45.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -17893,7 +17893,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -18090,7 +18090,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\46.jpg",
+              "path": "blue_wall/textures/46.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -18116,7 +18116,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -18313,7 +18313,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\47.jpg",
+              "path": "blue_wall/textures/47.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -18339,7 +18339,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -18536,7 +18536,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\48.jpg",
+              "path": "blue_wall/textures/48.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -18562,7 +18562,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -18759,7 +18759,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\49.jpg",
+              "path": "blue_wall/textures/49.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -18785,7 +18785,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -18982,7 +18982,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\51.jpg",
+              "path": "blue_wall/textures/51.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -19008,7 +19008,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -19205,7 +19205,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\52.jpg",
+              "path": "blue_wall/textures/52.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -19231,7 +19231,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -19428,7 +19428,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\53.jpg",
+              "path": "blue_wall/textures/53.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -19454,7 +19454,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -19651,7 +19651,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\54.jpg",
+              "path": "blue_wall/textures/54.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -19677,7 +19677,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -19874,7 +19874,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\55.jpg",
+              "path": "blue_wall/textures/55.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -19900,7 +19900,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -20097,7 +20097,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\56.jpg",
+              "path": "blue_wall/textures/56.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -20123,7 +20123,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -20320,7 +20320,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\57.jpg",
+              "path": "blue_wall/textures/57.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -20346,7 +20346,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -20543,7 +20543,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\59.jpg",
+              "path": "blue_wall/textures/59.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -20569,7 +20569,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -20766,7 +20766,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\60.jpg",
+              "path": "blue_wall/textures/60.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -20792,7 +20792,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -20989,7 +20989,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\61.jpg",
+              "path": "blue_wall/textures/61.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -21015,7 +21015,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -21212,7 +21212,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\62.jpg",
+              "path": "blue_wall/textures/62.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -21238,7 +21238,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -21435,7 +21435,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\63.jpg",
+              "path": "blue_wall/textures/63.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -21461,7 +21461,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -21658,7 +21658,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\64.jpg",
+              "path": "blue_wall/textures/64.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -21684,7 +21684,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -21881,7 +21881,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\65.jpg",
+              "path": "blue_wall/textures/65.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -21907,7 +21907,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -22104,7 +22104,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\66.jpg",
+              "path": "blue_wall/textures/66.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -22130,7 +22130,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -22327,7 +22327,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\68.jpg",
+              "path": "blue_wall/textures/68.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -22353,7 +22353,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -22550,7 +22550,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\69.jpg",
+              "path": "blue_wall/textures/69.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -22576,7 +22576,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -22773,7 +22773,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\70.jpg",
+              "path": "blue_wall/textures/70.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -22799,7 +22799,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -22996,7 +22996,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\71.jpg",
+              "path": "blue_wall/textures/71.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -23022,7 +23022,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -23219,7 +23219,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\72.jpg",
+              "path": "blue_wall/textures/72.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -23245,7 +23245,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -23442,7 +23442,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\73.jpg",
+              "path": "blue_wall/textures/73.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -23468,7 +23468,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -23665,7 +23665,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\74.jpg",
+              "path": "blue_wall/textures/74.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -23691,7 +23691,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -23888,7 +23888,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\75.jpg",
+              "path": "blue_wall/textures/75.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -23914,7 +23914,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -24111,7 +24111,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\77.jpg",
+              "path": "blue_wall/textures/77.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -24137,7 +24137,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -24334,7 +24334,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\78.jpg",
+              "path": "blue_wall/textures/78.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -24360,7 +24360,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -24557,7 +24557,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\79.jpg",
+              "path": "blue_wall/textures/79.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -24583,7 +24583,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -24780,7 +24780,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\80.jpg",
+              "path": "blue_wall/textures/80.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -24806,7 +24806,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -25003,7 +25003,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\81.jpg",
+              "path": "blue_wall/textures/81.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -25029,7 +25029,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -25226,7 +25226,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\82.jpg",
+              "path": "blue_wall/textures/82.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -25252,7 +25252,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -25449,7 +25449,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\83.jpg",
+              "path": "blue_wall/textures/83.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -25475,7 +25475,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -25672,7 +25672,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\84.jpg",
+              "path": "blue_wall/textures/84.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -25698,7 +25698,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -25895,7 +25895,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\85.jpg",
+              "path": "blue_wall/textures/85.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -25921,7 +25921,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -26118,7 +26118,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\86.jpg",
+              "path": "blue_wall/textures/86.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -26144,7 +26144,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -26341,7 +26341,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\87.jpg",
+              "path": "blue_wall/textures/87.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -26367,7 +26367,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -26564,7 +26564,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\88.jpg",
+              "path": "blue_wall/textures/88.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -26590,7 +26590,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -26787,7 +26787,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\89.jpg",
+              "path": "blue_wall/textures/89.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -26813,7 +26813,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -27010,7 +27010,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\01.jpg",
+              "path": "blue_wall/textures/01.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -27036,7 +27036,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -27233,7 +27233,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\02.jpg",
+              "path": "blue_wall/textures/02.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -27259,7 +27259,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -27456,7 +27456,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\04.jpg",
+              "path": "blue_wall/textures/04.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -27482,7 +27482,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -27679,7 +27679,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\05.jpg",
+              "path": "blue_wall/textures/05.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -27705,7 +27705,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -27902,7 +27902,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\06.jpg",
+              "path": "blue_wall/textures/06.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -27928,7 +27928,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -28125,7 +28125,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\07.jpg",
+              "path": "blue_wall/textures/07.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -28151,7 +28151,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -28348,7 +28348,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\09.jpg",
+              "path": "blue_wall/textures/09.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -28374,7 +28374,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -28571,7 +28571,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\10.jpg",
+              "path": "blue_wall/textures/10.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -28597,7 +28597,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -28794,7 +28794,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\11.jpg",
+              "path": "blue_wall/textures/11.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -28820,7 +28820,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -29017,7 +29017,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\12.jpg",
+              "path": "blue_wall/textures/12.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -29043,7 +29043,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -29240,7 +29240,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\13.jpg",
+              "path": "blue_wall/textures/13.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -29266,7 +29266,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -29463,7 +29463,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\14.jpg",
+              "path": "blue_wall/textures/14.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -29489,7 +29489,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -29686,7 +29686,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\16.jpg",
+              "path": "blue_wall/textures/16.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -29712,7 +29712,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -29909,7 +29909,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\17.jpg",
+              "path": "blue_wall/textures/17.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -29935,7 +29935,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -30132,7 +30132,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\18.jpg",
+              "path": "blue_wall/textures/18.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -30158,7 +30158,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -30355,7 +30355,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\19.jpg",
+              "path": "blue_wall/textures/19.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -30381,7 +30381,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -30578,7 +30578,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\20.jpg",
+              "path": "blue_wall/textures/20.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -30604,7 +30604,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -30801,7 +30801,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\21.jpg",
+              "path": "blue_wall/textures/21.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -30827,7 +30827,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -31024,7 +31024,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\22.jpg",
+              "path": "blue_wall/textures/22.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -31050,7 +31050,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -31247,7 +31247,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\23.jpg",
+              "path": "blue_wall/textures/23.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -31273,7 +31273,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -31470,7 +31470,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\24.jpg",
+              "path": "blue_wall/textures/24.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -31496,7 +31496,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -31693,7 +31693,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\25.jpg",
+              "path": "blue_wall/textures/25.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -31719,7 +31719,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -31916,7 +31916,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\26.jpg",
+              "path": "blue_wall/textures/26.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -31942,7 +31942,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -32139,7 +32139,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\27.jpg",
+              "path": "blue_wall/textures/27.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -32165,7 +32165,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -32362,7 +32362,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\28.jpg",
+              "path": "blue_wall/textures/28.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -32388,7 +32388,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -32585,7 +32585,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\29.jpg",
+              "path": "blue_wall/textures/29.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -32611,7 +32611,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -32808,7 +32808,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\31.jpg",
+              "path": "blue_wall/textures/31.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -32834,7 +32834,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -33031,7 +33031,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\32.jpg",
+              "path": "blue_wall/textures/32.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -33057,7 +33057,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -33254,7 +33254,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\34.jpg",
+              "path": "blue_wall/textures/34.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -33280,7 +33280,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -33477,7 +33477,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\35.jpg",
+              "path": "blue_wall/textures/35.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -33503,7 +33503,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -33700,7 +33700,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\36.jpg",
+              "path": "blue_wall/textures/36.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -33726,7 +33726,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -33923,7 +33923,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\37.jpg",
+              "path": "blue_wall/textures/37.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -33949,7 +33949,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -34146,7 +34146,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\38.jpg",
+              "path": "blue_wall/textures/38.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -34172,7 +34172,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -34369,7 +34369,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\39.jpg",
+              "path": "blue_wall/textures/39.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -34395,7 +34395,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -34592,7 +34592,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\41.jpg",
+              "path": "blue_wall/textures/41.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -34618,7 +34618,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -34815,7 +34815,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\42.jpg",
+              "path": "blue_wall/textures/42.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -34841,7 +34841,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -35038,7 +35038,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\43.jpg",
+              "path": "blue_wall/textures/43.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -35064,7 +35064,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -35261,7 +35261,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\44.jpg",
+              "path": "blue_wall/textures/44.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -35287,7 +35287,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -35484,7 +35484,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\45.jpg",
+              "path": "blue_wall/textures/45.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -35510,7 +35510,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -35707,7 +35707,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\47.jpg",
+              "path": "blue_wall/textures/47.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -35733,7 +35733,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -35930,7 +35930,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\48.jpg",
+              "path": "blue_wall/textures/48.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -35956,7 +35956,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -36153,7 +36153,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\49.jpg",
+              "path": "blue_wall/textures/49.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -36179,7 +36179,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -36376,7 +36376,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\50.jpg",
+              "path": "blue_wall/textures/50.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -36402,7 +36402,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -36599,7 +36599,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\51.jpg",
+              "path": "blue_wall/textures/51.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -36625,7 +36625,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -36822,7 +36822,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\52.jpg",
+              "path": "blue_wall/textures/52.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -36848,7 +36848,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -37045,7 +37045,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\53.jpg",
+              "path": "blue_wall/textures/53.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -37071,7 +37071,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -37268,7 +37268,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\54.jpg",
+              "path": "blue_wall/textures/54.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -37294,7 +37294,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -37491,7 +37491,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\55.jpg",
+              "path": "blue_wall/textures/55.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -37517,7 +37517,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -37714,7 +37714,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\56.jpg",
+              "path": "blue_wall/textures/56.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -37740,7 +37740,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -37937,7 +37937,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\57.jpg",
+              "path": "blue_wall/textures/57.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -37963,7 +37963,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -38160,7 +38160,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\58.jpg",
+              "path": "blue_wall/textures/58.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -38186,7 +38186,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -38383,7 +38383,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\59.jpg",
+              "path": "blue_wall/textures/59.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -38409,7 +38409,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -38606,7 +38606,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\60.jpg",
+              "path": "blue_wall/textures/60.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -38632,7 +38632,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -38829,7 +38829,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\61.jpg",
+              "path": "blue_wall/textures/61.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -38855,7 +38855,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -39052,7 +39052,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\62.jpg",
+              "path": "blue_wall/textures/62.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -39078,7 +39078,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -39275,7 +39275,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\63.jpg",
+              "path": "blue_wall/textures/63.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -39301,7 +39301,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -39498,7 +39498,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\66.jpg",
+              "path": "blue_wall/textures/66.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -39524,7 +39524,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -39721,7 +39721,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\67.jpg",
+              "path": "blue_wall/textures/67.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -39747,7 +39747,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -39944,7 +39944,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\68.jpg",
+              "path": "blue_wall/textures/68.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -39970,7 +39970,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -40167,7 +40167,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\69.jpg",
+              "path": "blue_wall/textures/69.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -40193,7 +40193,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -40390,7 +40390,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\70.jpg",
+              "path": "blue_wall/textures/70.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -40416,7 +40416,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -40613,7 +40613,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\71.jpg",
+              "path": "blue_wall/textures/71.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -40639,7 +40639,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -40836,7 +40836,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\72.jpg",
+              "path": "blue_wall/textures/72.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -40862,7 +40862,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -41059,7 +41059,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\73.jpg",
+              "path": "blue_wall/textures/73.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -41085,7 +41085,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -41282,7 +41282,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\74.jpg",
+              "path": "blue_wall/textures/74.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -41308,7 +41308,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -41505,7 +41505,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\75.jpg",
+              "path": "blue_wall/textures/75.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -41531,7 +41531,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -41728,7 +41728,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\77.jpg",
+              "path": "blue_wall/textures/77.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -41754,7 +41754,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -41951,7 +41951,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\78.jpg",
+              "path": "blue_wall/textures/78.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -41977,7 +41977,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -42174,7 +42174,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\79.jpg",
+              "path": "blue_wall/textures/79.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -42200,7 +42200,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -42397,7 +42397,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\80.jpg",
+              "path": "blue_wall/textures/80.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -42423,7 +42423,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -42620,7 +42620,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\81.jpg",
+              "path": "blue_wall/textures/81.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -42646,7 +42646,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -42843,7 +42843,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\82.jpg",
+              "path": "blue_wall/textures/82.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -42869,7 +42869,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -43066,7 +43066,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\83.jpg",
+              "path": "blue_wall/textures/83.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -43092,7 +43092,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -43289,7 +43289,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\84.jpg",
+              "path": "blue_wall/textures/84.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -43315,7 +43315,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -43512,7 +43512,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\85.jpg",
+              "path": "blue_wall/textures/85.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -43538,7 +43538,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -43735,7 +43735,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\86.jpg",
+              "path": "blue_wall/textures/86.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -43761,7 +43761,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -43958,7 +43958,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\87.jpg",
+              "path": "blue_wall/textures/87.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -43984,7 +43984,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -44181,7 +44181,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\88.jpg",
+              "path": "blue_wall/textures/88.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -44207,7 +44207,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -44404,7 +44404,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\89.jpg",
+              "path": "blue_wall/textures/89.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -44430,7 +44430,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\paper edges.jpg",
+              "path": "blue_wall/textures/paper edges.jpg",
               "colorspace": "Linear Rec.709",
               "linked_sockets": [
                 "Base Color"
@@ -44627,7 +44627,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\43.jpg",
+              "path": "blue_wall/textures/43.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -44834,7 +44834,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\53.jpg",
+              "path": "blue_wall/textures/53.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -45041,7 +45041,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\21.jpg",
+              "path": "blue_wall/textures/21.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -45248,7 +45248,7 @@
           "texture_images": [
             {
               "node": "Image Texture",
-              "path": "textures\\89.jpg",
+              "path": "blue_wall/textures/89.jpg",
               "colorspace": "sRGB",
               "linked_sockets": [
                 "Base Color"
@@ -54301,7 +54301,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\white_plaster_02_nor_4k.jpg",
+                "path": "blue_wall/textures/white_plaster_02_nor_4k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -54327,7 +54327,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\WoodFloor007_4K_Color.jpg",
+                "path": "blue_wall/textures/WoodFloor007_4K_Color.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -54335,13 +54335,13 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\WoodFloor007_4K_Normal.jpg",
+                "path": "blue_wall/textures/WoodFloor007_4K_Normal.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": []
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\WoodFloor007_4K_Roughness.jpg",
+                "path": "blue_wall/textures/WoodFloor007_4K_Roughness.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -54367,7 +54367,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\concrete_floor_02_Nor_4k.jpg",
+                "path": "blue_wall/textures/concrete_floor_02_Nor_4k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -54648,7 +54648,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\concrete_floor_02_Nor_4k.jpg",
+                "path": "blue_wall/textures/concrete_floor_02_Nor_4k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -54797,7 +54797,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\concrete_floor_02_Nor_4k.jpg",
+                "path": "blue_wall/textures/concrete_floor_02_Nor_4k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -54946,7 +54946,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\concrete_floor_02_Nor_4k.jpg",
+                "path": "blue_wall/textures/concrete_floor_02_Nor_4k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -55095,7 +55095,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\concrete_floor_02_Nor_4k.jpg",
+                "path": "blue_wall/textures/concrete_floor_02_Nor_4k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -55244,7 +55244,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\Wood030_4K_Color.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Color.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -55252,7 +55252,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\Wood030_4K_Normal.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Normal.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Image"
@@ -55260,7 +55260,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\Wood030_4K_Roughness.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Roughness.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -55409,7 +55409,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\Wood030_4K_Color.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Color.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -55417,7 +55417,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\Wood030_4K_Normal.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Normal.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Image"
@@ -55425,7 +55425,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\Wood030_4K_Roughness.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Roughness.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -55574,7 +55574,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\Wood030_4K_Color.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Color.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -55582,7 +55582,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\Wood030_4K_Normal.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Normal.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Image"
@@ -55590,7 +55590,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\Wood030_4K_Roughness.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Roughness.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -55756,7 +55756,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\painting.jpg",
+                "path": "blue_wall/textures/painting.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -55939,7 +55939,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\GreenChair_01_diff_1k.jpg",
+                "path": "blue_wall/textures/GreenChair_01_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -55947,7 +55947,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\GreenChair_01_metallic_1k.jpg",
+                "path": "blue_wall/textures/GreenChair_01_metallic_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -55955,7 +55955,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\GreenChair_01_roughness_1k.jpg",
+                "path": "blue_wall/textures/GreenChair_01_roughness_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -55963,7 +55963,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\GreenChair_01_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/GreenChair_01_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -56112,7 +56112,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\concrete_floor_02_Nor_4k.jpg",
+                "path": "blue_wall/textures/concrete_floor_02_Nor_4k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -56418,7 +56418,7 @@
             "texture_images": [
               {
                 "node": "Image Texture.002",
-                "path": "textures\\side_table_tall_01_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/side_table_tall_01_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -56426,7 +56426,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\side_table_tall_01_rough_1k.jpg",
+                "path": "blue_wall/textures/side_table_tall_01_rough_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -56434,7 +56434,7 @@
               },
               {
                 "node": "Image Texture",
-                "path": "textures\\side_table_tall_01_metal_1k.jpg",
+                "path": "blue_wall/textures/side_table_tall_01_metal_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -56442,7 +56442,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\side_table_tall_01_diff_1k.jpg",
+                "path": "blue_wall/textures/side_table_tall_01_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -56591,7 +56591,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\concrete_floor_02_Nor_4k.jpg",
+                "path": "blue_wall/textures/concrete_floor_02_Nor_4k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -56740,7 +56740,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\WoodenTable_02_diff_1k.jpg",
+                "path": "blue_wall/textures/WoodenTable_02_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -56748,7 +56748,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\WoodenTable_02_metallic_1k.jpg",
+                "path": "blue_wall/textures/WoodenTable_02_metallic_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -56756,7 +56756,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\WoodenTable_02_roughness_1k.jpg",
+                "path": "blue_wall/textures/WoodenTable_02_roughness_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -56764,7 +56764,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\WoodenTable_02_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/WoodenTable_02_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -56913,7 +56913,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\Ukulele_01_diff_1k.jpg",
+                "path": "blue_wall/textures/Ukulele_01_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -56921,7 +56921,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\Ukulele_01_metallic_1k.jpg",
+                "path": "blue_wall/textures/Ukulele_01_metallic_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -56929,7 +56929,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\Ukulele_01_roughness_1k.jpg",
+                "path": "blue_wall/textures/Ukulele_01_roughness_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -56937,7 +56937,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\Ukulele_01_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/Ukulele_01_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -57086,7 +57086,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\04.jpg",
+                "path": "blue_wall/textures/04.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -57112,7 +57112,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\paper edges.jpg",
+                "path": "blue_wall/textures/paper edges.jpg",
                 "colorspace": "Linear Rec.709",
                 "linked_sockets": [
                   "Base Color"
@@ -57261,7 +57261,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\09.jpg",
+                "path": "blue_wall/textures/09.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -57287,7 +57287,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\paper edges.jpg",
+                "path": "blue_wall/textures/paper edges.jpg",
                 "colorspace": "Linear Rec.709",
                 "linked_sockets": [
                   "Base Color"
@@ -57436,7 +57436,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\56.jpg",
+                "path": "blue_wall/textures/56.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -57462,7 +57462,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\paper edges.jpg",
+                "path": "blue_wall/textures/paper edges.jpg",
                 "colorspace": "Linear Rec.709",
                 "linked_sockets": [
                   "Base Color"
@@ -57611,7 +57611,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\58.jpg",
+                "path": "blue_wall/textures/58.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -57637,7 +57637,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\paper edges.jpg",
+                "path": "blue_wall/textures/paper edges.jpg",
                 "colorspace": "Linear Rec.709",
                 "linked_sockets": [
                   "Base Color"
@@ -57943,7 +57943,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\10.jpg",
+                "path": "blue_wall/textures/10.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -57969,7 +57969,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\paper edges.jpg",
+                "path": "blue_wall/textures/paper edges.jpg",
                 "colorspace": "Linear Rec.709",
                 "linked_sockets": [
                   "Base Color"
@@ -58118,7 +58118,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\04.jpg",
+                "path": "blue_wall/textures/04.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -58144,7 +58144,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\paper edges.jpg",
+                "path": "blue_wall/textures/paper edges.jpg",
                 "colorspace": "Linear Rec.709",
                 "linked_sockets": [
                   "Base Color"
@@ -58293,7 +58293,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\84.jpg",
+                "path": "blue_wall/textures/84.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -58319,7 +58319,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\paper edges.jpg",
+                "path": "blue_wall/textures/paper edges.jpg",
                 "colorspace": "Linear Rec.709",
                 "linked_sockets": [
                   "Base Color"
@@ -58468,7 +58468,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\84.jpg",
+                "path": "blue_wall/textures/84.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -58494,7 +58494,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\paper edges.jpg",
+                "path": "blue_wall/textures/paper edges.jpg",
                 "colorspace": "Linear Rec.709",
                 "linked_sockets": [
                   "Base Color"
@@ -58643,7 +58643,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\09.jpg",
+                "path": "blue_wall/textures/09.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -58669,7 +58669,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\paper edges.jpg",
+                "path": "blue_wall/textures/paper edges.jpg",
                 "colorspace": "Linear Rec.709",
                 "linked_sockets": [
                   "Base Color"
@@ -58818,7 +58818,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\14.jpg",
+                "path": "blue_wall/textures/14.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -58844,7 +58844,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\paper edges.jpg",
+                "path": "blue_wall/textures/paper edges.jpg",
                 "colorspace": "Linear Rec.709",
                 "linked_sockets": [
                   "Base Color"
@@ -58993,7 +58993,7 @@
             "texture_images": [
               {
                 "node": "Image Texture.003",
-                "path": "textures\\potted_plant_04_diff_1k.jpg",
+                "path": "blue_wall/textures/potted_plant_04_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -59001,7 +59001,7 @@
               },
               {
                 "node": "Image Texture",
-                "path": "textures\\potted_plant_04_metal_1k.jpg",
+                "path": "blue_wall/textures/potted_plant_04_metal_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -59009,7 +59009,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\potted_plant_04_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/potted_plant_04_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -59017,7 +59017,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\potted_plant_04_rough_1k.jpg",
+                "path": "blue_wall/textures/potted_plant_04_rough_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -59323,7 +59323,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\55.jpg",
+                "path": "blue_wall/textures/55.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -59349,7 +59349,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\paper edges.jpg",
+                "path": "blue_wall/textures/paper edges.jpg",
                 "colorspace": "Linear Rec.709",
                 "linked_sockets": [
                   "Base Color"
@@ -59498,7 +59498,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\14.jpg",
+                "path": "blue_wall/textures/14.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -59524,7 +59524,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\paper edges.jpg",
+                "path": "blue_wall/textures/paper edges.jpg",
                 "colorspace": "Linear Rec.709",
                 "linked_sockets": [
                   "Base Color"
@@ -59675,7 +59675,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\Wood030_4K_Color.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Color.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -59683,7 +59683,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\Wood030_4K_Normal.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Normal.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Image"
@@ -59691,7 +59691,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\Wood030_4K_Roughness.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Roughness.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -59840,7 +59840,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\Wood030_4K_Color.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Color.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -59848,7 +59848,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\Wood030_4K_Normal.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Normal.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Image"
@@ -59856,7 +59856,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\Wood030_4K_Roughness.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Roughness.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -60005,7 +60005,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\Wood030_4K_Color.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Color.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -60013,7 +60013,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\Wood030_4K_Normal.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Normal.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Image"
@@ -60021,7 +60021,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\Wood030_4K_Roughness.jpg",
+                "path": "blue_wall/textures/Wood030_4K_Roughness.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -60187,7 +60187,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\painting.jpg",
+                "path": "blue_wall/textures/painting.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -60370,7 +60370,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\GreenChair_01_diff_1k.jpg",
+                "path": "blue_wall/textures/GreenChair_01_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -60378,7 +60378,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\GreenChair_01_metallic_1k.jpg",
+                "path": "blue_wall/textures/GreenChair_01_metallic_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -60386,7 +60386,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\GreenChair_01_roughness_1k.jpg",
+                "path": "blue_wall/textures/GreenChair_01_roughness_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -60394,7 +60394,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\GreenChair_01_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/GreenChair_01_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -60543,7 +60543,7 @@
             "texture_images": [
               {
                 "node": "Image Texture.002",
-                "path": "textures\\side_table_tall_01_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/side_table_tall_01_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -60551,7 +60551,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\side_table_tall_01_rough_1k.jpg",
+                "path": "blue_wall/textures/side_table_tall_01_rough_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -60559,7 +60559,7 @@
               },
               {
                 "node": "Image Texture",
-                "path": "textures\\side_table_tall_01_metal_1k.jpg",
+                "path": "blue_wall/textures/side_table_tall_01_metal_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -60567,7 +60567,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\side_table_tall_01_diff_1k.jpg",
+                "path": "blue_wall/textures/side_table_tall_01_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -60716,7 +60716,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\WoodenTable_02_diff_1k.jpg",
+                "path": "blue_wall/textures/WoodenTable_02_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -60724,7 +60724,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\WoodenTable_02_metallic_1k.jpg",
+                "path": "blue_wall/textures/WoodenTable_02_metallic_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -60732,7 +60732,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\WoodenTable_02_roughness_1k.jpg",
+                "path": "blue_wall/textures/WoodenTable_02_roughness_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -60740,7 +60740,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\WoodenTable_02_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/WoodenTable_02_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -60889,7 +60889,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\Ukulele_01_diff_1k.jpg",
+                "path": "blue_wall/textures/Ukulele_01_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -60897,7 +60897,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\Ukulele_01_metallic_1k.jpg",
+                "path": "blue_wall/textures/Ukulele_01_metallic_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -60905,7 +60905,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\Ukulele_01_roughness_1k.jpg",
+                "path": "blue_wall/textures/Ukulele_01_roughness_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -60913,7 +60913,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\Ukulele_01_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/Ukulele_01_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -61062,7 +61062,7 @@
             "texture_images": [
               {
                 "node": "Image Texture.003",
-                "path": "textures\\potted_plant_04_diff_1k.jpg",
+                "path": "blue_wall/textures/potted_plant_04_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -61070,7 +61070,7 @@
               },
               {
                 "node": "Image Texture",
-                "path": "textures\\potted_plant_04_metal_1k.jpg",
+                "path": "blue_wall/textures/potted_plant_04_metal_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -61078,7 +61078,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\potted_plant_04_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/potted_plant_04_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -61086,7 +61086,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\potted_plant_04_rough_1k.jpg",
+                "path": "blue_wall/textures/potted_plant_04_rough_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -61235,7 +61235,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\mantel_clock_01_diff_1k.jpg",
+                "path": "blue_wall/textures/mantel_clock_01_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -61243,7 +61243,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\mantel_clock_01_metal_1k.jpg",
+                "path": "blue_wall/textures/mantel_clock_01_metal_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -61251,7 +61251,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\mantel_clock_01_rough_1k.jpg",
+                "path": "blue_wall/textures/mantel_clock_01_rough_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -61259,7 +61259,7 @@
               },
               {
                 "node": "Image Texture.005",
-                "path": "textures\\mantel_clock_01_anisotropy_angle_1k.jpg",
+                "path": "blue_wall/textures/mantel_clock_01_anisotropy_angle_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Anisotropic Rotation"
@@ -61267,7 +61267,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\mantel_clock_01_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/mantel_clock_01_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -61275,7 +61275,7 @@
               },
               {
                 "node": "Image Texture.004",
-                "path": "textures\\mantel_clock_01_anisotropy_level_1k.jpg",
+                "path": "blue_wall/textures/mantel_clock_01_anisotropy_level_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Anisotropic"
@@ -61424,7 +61424,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\Lantern_01_brass_diff_1k.jpg",
+                "path": "blue_wall/textures/Lantern_01_brass_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -61432,7 +61432,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\Lantern_01_brass_metallic_1k.jpg",
+                "path": "blue_wall/textures/Lantern_01_brass_metallic_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -61440,7 +61440,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\Lantern_01_brass_roughness_1k.jpg",
+                "path": "blue_wall/textures/Lantern_01_brass_roughness_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -61448,7 +61448,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\Lantern_01_brass_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/Lantern_01_brass_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -61597,7 +61597,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\horse_statue_01_diff_1k.jpg",
+                "path": "blue_wall/textures/horse_statue_01_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "A",
@@ -61606,7 +61606,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\horse_statue_01_rough_1k.jpg",
+                "path": "blue_wall/textures/horse_statue_01_rough_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -61614,7 +61614,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\horse_statue_01_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/horse_statue_01_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -61640,7 +61640,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\horse_statue_01_diff_1k.jpg",
+                "path": "blue_wall/textures/horse_statue_01_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -61648,7 +61648,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\horse_statue_01_rough_1k.jpg",
+                "path": "blue_wall/textures/horse_statue_01_rough_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -61656,7 +61656,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\horse_statue_01_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/horse_statue_01_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -61805,7 +61805,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\Camera_01_strap_diff_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_strap_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -61813,7 +61813,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\Camera_01_strap_metallic_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_strap_metallic_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -61821,7 +61821,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\Camera_01_strap_roughness_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_strap_roughness_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -61829,7 +61829,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\Camera_01_strap_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_strap_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -61978,7 +61978,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\CheeseBox_01_diff_1k.jpg",
+                "path": "blue_wall/textures/CheeseBox_01_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -61986,7 +61986,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\CheeseBox_01_metallic_1k.jpg",
+                "path": "blue_wall/textures/CheeseBox_01_metallic_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -61994,7 +61994,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\CheeseBox_01_roughness_1k.jpg",
+                "path": "blue_wall/textures/CheeseBox_01_roughness_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -62002,7 +62002,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\CheeseBox_01_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/CheeseBox_01_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -62151,7 +62151,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\CheeseBox_01_diff_1k.jpg",
+                "path": "blue_wall/textures/CheeseBox_01_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -62159,7 +62159,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\CheeseBox_01_metallic_1k.jpg",
+                "path": "blue_wall/textures/CheeseBox_01_metallic_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -62167,7 +62167,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\CheeseBox_01_roughness_1k.jpg",
+                "path": "blue_wall/textures/CheeseBox_01_roughness_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -62175,7 +62175,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\CheeseBox_01_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/CheeseBox_01_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -62324,7 +62324,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\Camera_01_lens_body_diff_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_lens_body_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -62332,7 +62332,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\Camera_01_lens_body_metallic_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_lens_body_metallic_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -62340,7 +62340,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\Camera_01_lens_body_roughness_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_lens_body_roughness_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -62348,7 +62348,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\Camera_01_lens_body_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_lens_body_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -62391,7 +62391,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\Camera_01_body_diff_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_body_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -62399,7 +62399,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\Camera_01_body_metallic_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_body_metallic_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -62407,7 +62407,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\Camera_01_body_roughness_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_body_roughness_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -62415,7 +62415,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\Camera_01_body_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_body_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -62441,7 +62441,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\Camera_01_strap_diff_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_strap_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -62449,7 +62449,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\Camera_01_strap_metallic_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_strap_metallic_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -62457,7 +62457,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\Camera_01_strap_roughness_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_strap_roughness_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -62465,7 +62465,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\Camera_01_strap_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/Camera_01_strap_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -62614,7 +62614,7 @@
             "texture_images": [
               {
                 "node": "Image Texture",
-                "path": "textures\\mantel_clock_01_diff_1k.jpg",
+                "path": "blue_wall/textures/mantel_clock_01_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": [
                   "Base Color"
@@ -62622,7 +62622,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\mantel_clock_01_rough_1k.jpg",
+                "path": "blue_wall/textures/mantel_clock_01_rough_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -62630,7 +62630,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\mantel_clock_01_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/mantel_clock_01_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -62779,7 +62779,7 @@
             "texture_images": [
               {
                 "node": "Opacity",
-                "path": "textures\\Lantern_01_brass_opacity_1k.jpg",
+                "path": "blue_wall/textures/Lantern_01_brass_opacity_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Alpha"
@@ -62787,7 +62787,7 @@
               },
               {
                 "node": "Image Texture.003",
-                "path": "textures\\Lantern_01_brass_nor_gl_1k.jpg",
+                "path": "blue_wall/textures/Lantern_01_brass_nor_gl_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Color"
@@ -62795,7 +62795,7 @@
               },
               {
                 "node": "Image Texture.002",
-                "path": "textures\\Lantern_01_brass_roughness_1k.jpg",
+                "path": "blue_wall/textures/Lantern_01_brass_roughness_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Roughness"
@@ -62803,7 +62803,7 @@
               },
               {
                 "node": "Image Texture.001",
-                "path": "textures\\Lantern_01_brass_metallic_1k.jpg",
+                "path": "blue_wall/textures/Lantern_01_brass_metallic_1k.jpg",
                 "colorspace": "Non-Color",
                 "linked_sockets": [
                   "Metallic"
@@ -62811,7 +62811,7 @@
               },
               {
                 "node": "Image Texture",
-                "path": "textures\\Lantern_01_brass_diff_1k.jpg",
+                "path": "blue_wall/textures/Lantern_01_brass_diff_1k.jpg",
                 "colorspace": "sRGB",
                 "linked_sockets": []
               }

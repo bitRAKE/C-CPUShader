@@ -1,39 +1,49 @@
 #include <windows.h>
 #include "resource.h"
 
-IDD_STATUS_DIALOG DIALOGEX 0, 0, 372, 262
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_CLIPCHILDREN
+IDD_STATUS_DIALOG DIALOGEX 0, 0, 372, 320
+STYLE DS_SHELLFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_CLIPCHILDREN
 CAPTION "Renderer Status"
-FONT 8, "Segoe UI"
+FONT 9, "Segoe UI"
 BEGIN
+    // Left Column: Listbox
     LTEXT           "Shaders:",       -1, 10, 8, 48, 10
-    LISTBOX         IDC_SHADER_LIST,  10, 20, 118, 180, LBS_NOTIFY | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_SHADER_LIST,  10, 20, 118, 170, LBS_NOTIFY | WS_VSCROLL | WS_TABSTOP
 
+    // Right Column: Details & Expectations
     LTEXT           "Expectations:",  -1, 140, 10, 70, 10
     LTEXT           "Select a shader.", IDC_STATUS_EXPECT, 140, 22, 220, 16
     CONTROL         "Select a shader to inspect its details.", IDC_STATUS_BLURB, "SysLink",
                                       WS_CHILD | WS_VISIBLE | WS_TABSTOP, 140, 44, 220, 52
 
-    LTEXT           "Active:",        -1, 140, 102, 40, 10
-    LTEXT           "Performance:",   -1, 140, 116, 56, 10
-    LTEXT           "Time:",          -1, 140, 130, 56, 10
-    LTEXT           "Workers:",       -1, 140, 144, 56, 10
-    LTEXT           "Render:",        -1, 140, 158, 56, 10
-    LTEXT           "Display:",       -1, 140, 172, 56, 10
+    // Right Column: Statistics Grid
+    LTEXT           "Active:",        -1, 140, 100, 56, 10
+    LTEXT           "Performance:",   -1, 140, 114, 56, 10
+    LTEXT           "Time:",          -1, 140, 128, 56, 10
+    LTEXT           "Workers:",       -1, 140, 142, 56, 10
+    LTEXT           "Render:",        -1, 140, 156, 56, 10
+    LTEXT           "Display:",       -1, 140, 170, 56, 10
 
-    LTEXT           "idle",           IDC_STATUS_SHADER,  188, 102, 172, 10
-    LTEXT           "0.0 fps, 0.00 ms avg/0", IDC_STATUS_PERF, 206, 116, 154, 10
-    LTEXT           "0.00 s",         IDC_STATUS_TIME,    206, 130, 154, 10
-    LTEXT           "0 render + gui", IDC_STATUS_WORKERS, 206, 144, 154, 10
-    LTEXT           "not running",    IDC_STATUS_RENDER,  206, 158, 154, 10
-    LTEXT           "not running",    IDC_STATUS_DISPLAY, 206, 172, 154, 22
+    // Right Column: Statistic Values (Aligned strictly to X=200)
+    LTEXT           "idle",           IDC_STATUS_SHADER,  200, 100, 162, 10
+    LTEXT           "0.0 fps, 0.00 ms avg/0", IDC_STATUS_PERF, 200, 114, 162, 10
+    LTEXT           "0.00 s",         IDC_STATUS_TIME,    200, 128, 162, 10
+    LTEXT           "0 render + gui", IDC_STATUS_WORKERS, 200, 142, 162, 10
+    LTEXT           "not running",    IDC_STATUS_RENDER,  200, 156, 162, 10
+    LTEXT           "not running",    IDC_STATUS_DISPLAY, 200, 170, 162, 10
 
-    PUSHBUTTON      "Execute", IDC_BUTTON_EXECUTE, 10, 200, 56, 14, WS_TABSTOP
-    PUSHBUTTON      "Reset", IDC_BUTTON_RESET, 72, 200, 56, 14, WS_TABSTOP
-    AUTOCHECKBOX    "VSync", IDC_CHECK_VSYNC, 140, 200, 54, 12, WS_TABSTOP
+    // Action Row (Aligned to a single horizontal baseline at Y=194)
+    PUSHBUTTON      "Execute",        IDC_BUTTON_EXECUTE, 10,  194, 56, 14, WS_TABSTOP
+    PUSHBUTTON      "Reset",          IDC_BUTTON_RESET,   72,  194, 56, 14, WS_TABSTOP
+    AUTOCHECKBOX    "VSync",          IDC_CHECK_VSYNC,    140, 195, 54, 12, WS_TABSTOP
+    PUSHBUTTON      "Capture",        IDC_BUTTON_CAPTURE, 200, 194, 56, 14, WS_TABSTOP
+    EDITTEXT                          IDC_EDIT_CAPTURE_COUNT, 260, 194, 28, 14, ES_AUTOHSCROLL | ES_NUMBER | WS_TABSTOP
 
-    LTEXT           "Select a shader, inspect its description, then execute.\r\nExecute switches to Stop while a shader is running.\r\nV toggles vsync, R resets the active shader, Esc exits.\r\nRight mouse drag moves the display window.",
-                                      -1, 10, 220, 350, 36
+    // Diagnostics Log (Expanded to bottom margin)
+    CONTROL         "", IDC_STATUS_DIAGNOSTICS, "RICHEDIT50W",
+                                      WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_VSCROLL | 
+                                      ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | ES_NOHIDESEL,
+                                      10, 214, 352, 96
 END
 
 CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "app.manifest"

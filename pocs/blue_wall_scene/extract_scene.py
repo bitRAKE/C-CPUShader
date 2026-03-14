@@ -4,6 +4,7 @@ import argparse
 import os
 import subprocess
 import sys
+from shutil import which
 from pathlib import Path
 
 from scene_extract_post import postprocess
@@ -13,7 +14,16 @@ def default_blender_path() -> Path:
     env_value = os.environ.get("BLENDER_EXE")
     if env_value:
         return Path(env_value)
-    return Path(r"blender.exe")
+
+    path_value = which("blender")
+    if path_value:
+        return Path(path_value)
+
+    path_value = which("blender.exe")
+    if path_value:
+        return Path(path_value)
+
+    return Path("blender.exe")
 
 
 def main() -> int:

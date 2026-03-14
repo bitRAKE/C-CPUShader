@@ -6,7 +6,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
-TOOL = Path(r"msdf-atlas-gen.exe")
+TOOL = Path(r"C:\third_party\msdf-atlas-gen\msdf-atlas-gen.exe")
 FONT = ROOT / "pocs" / "mtsdf" / "NotoSans[wdth,wght].ttf"
 ATLAS_PNG = HERE / "ascii_sdf_grid.png"
 

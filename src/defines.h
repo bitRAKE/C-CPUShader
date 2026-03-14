@@ -21,6 +21,12 @@ enum {
     SHADER_FEATURE_TEMPORAL_ACCUMULATION = 1u << 4
 };
 
+typedef enum {
+    SHADER_COLOR_SPACE_SDR_DISPLAY = 0,
+    SHADER_COLOR_SPACE_SCENE_LINEAR,
+    SHADER_COLOR_SPACE_HDR10_ST2084
+} shader_color_space_t;
+
 typedef struct {
     uint words[8];
 } shader_keys_t;

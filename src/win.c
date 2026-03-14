@@ -25,11 +25,42 @@ static bool                    g_is_closing = false;
 static double                  g_last_status_update = 0.0;
 static bool                    g_stats_positioned = false;
 static shader_host_callbacks_t g_shader_host = {0};
+static uint                    g_last_backend_notice_version = 0;
+static uint                    g_last_runtime_notice_version = 0;
+static int                     g_display_multiplier = 1;
+static int                     g_startup_capture_count = 0;
+
+static COLORREF diagnostic_color_for_text(const char *text)
+{
+    if (text != NULL) {
+        if (strstr(text, "failed") != NULL || strstr(text, "Failed") != NULL || strstr(text, "error") != NULL || strstr(text, "Error") != NULL) {
+            return RGB(156, 58, 58);
+        }
+
+        if (strstr(text, "Falling back to GDI") != NULL || strstr(text, "GDI fallback") != NULL) {
+            return RGB(156, 58, 58);
+        }
+
+        if (strstr(text, "HDR is not present to the surface") != NULL || strstr(text, " SDR") != NULL || strstr(text, "SDR ") != NULL) {
+            return RGB(146, 110, 28);
+        }
+    }
+
+    return RGB(78, 106, 156);
+}
 
 static void update_status_window(double frame_end_seconds, bool force);
 static bool shared_on_keydown(HWND hwnd, WPARAM key, void *user_data);
 static void shared_on_close(HWND hwnd, void *user_data);
 static void compute_display_layout(int render_width, int render_height, display_layout_t *layout_out);
+static void stats_on_capture(int capture_count, void *user_data);
+
+static void push_runtime_diagnostic(const char *text)
+{
+    if (text != NULL && text[0] != '\0') {
+        stats_prepend_message(text, diagnostic_color_for_text(text));
+    }
+}
 
 static const shader_desc_t *selected_shader(void)
 {
@@ -111,6 +142,22 @@ static void format_feature_list(uint feature_flags, char *buffer, size_t buffer_
     }
 }
 
+static const char *shader_color_space_name(shader_color_space_t color_space)
+{
+    switch (color_space) {
+        case SHADER_COLOR_SPACE_SDR_DISPLAY:
+            return "SDR display";
+
+        case SHADER_COLOR_SPACE_SCENE_LINEAR:
+            return "scene linear";
+
+        case SHADER_COLOR_SPACE_HDR10_ST2084:
+            return "HDR10 (ST.2084)";
+    }
+
+    return "unknown";
+}
+
 static void format_expectations_text(const shader_desc_t *shader, char *buffer, size_t buffer_size)
 {
     char features[96];
@@ -121,7 +168,7 @@ static void format_expectations_text(const shader_desc_t *shader, char *buffer, 
     }
 
     format_feature_list(shader->feature_flags, features, sizeof(features));
-    snprintf(buffer, buffer_size, "features: %s", features);
+    snprintf(buffer, buffer_size, "color: %s | features: %s", shader_color_space_name(shader->generated_color_space), features);
 }
 
 static void fit_popup_size(int render_width, int render_height, int avail_width, int avail_height, int *popup_width_out, int *popup_height_out)
@@ -146,21 +193,16 @@ static void fit_popup_size(int render_width, int render_height, int avail_width,
         avail_height = render_height;
     }
 
-    if (render_width <= avail_width && render_height <= avail_height) {
-        int scale_x = avail_width / render_width;
-        int scale_y = avail_height / render_height;
-        int scale = min(scale_x, scale_y);
+    popup_width = max(1, render_width * max(1, g_display_multiplier));
+    popup_height = max(1, render_height * max(1, g_display_multiplier));
 
-        if (scale < 1) {
-            scale = 1;
-        }
-
-        *popup_width_out = render_width * scale;
-        *popup_height_out = render_height * scale;
+    if (popup_width <= avail_width && popup_height <= avail_height) {
+        *popup_width_out = popup_width;
+        *popup_height_out = popup_height;
         return;
     }
 
-    if ((LONGLONG)avail_width * (LONGLONG)render_height <= (LONGLONG)avail_height * (LONGLONG)render_width) {
+    if ((LONGLONG)avail_width * (LONGLONG)popup_height <= (LONGLONG)avail_height * (LONGLONG)popup_width) {
         popup_width = max(1, avail_width);
         popup_height = max(1, (int)(((LONGLONG)popup_width * (LONGLONG)render_height) / (LONGLONG)render_width));
     } else {
@@ -306,6 +348,15 @@ static void update_status_window(double frame_end_seconds, bool force)
         return;
     }
 
+    stats_set_backend_name(runtime_session_get_backend_name());
+    if (runtime_session_get_backend_notice_version() != g_last_backend_notice_version) {
+        g_last_backend_notice_version = runtime_session_get_backend_notice_version();
+        push_runtime_diagnostic(runtime_session_get_backend_notice());
+    }
+    if (runtime_session_get_notice_version() != g_last_runtime_notice_version) {
+        g_last_runtime_notice_version = runtime_session_get_notice_version();
+        push_runtime_diagnostic(runtime_session_get_notice());
+    }
     runtime_session_get_frame_stats(&average_frame_seconds, &frame_sample_count);
     runtime_session_get_worker_counts(&total_workers, &background_workers);
     format_expectations_text(selected, expectations, sizeof(expectations));
@@ -323,8 +374,10 @@ static void update_status_window(double frame_end_seconds, bool force)
     state.background_workers = background_workers;
     state.vsync_enabled = runtime_session_get_vsync();
     state.can_execute = (selected != NULL || active != NULL);
+    state.can_capture = (active != NULL || selected != NULL);
     state.can_reset = (active != NULL);
     state.shader_running = (active != NULL);
+    state.display_multiplier = g_display_multiplier;
 
     runtime_session_get_render_size(&render_width, &render_height);
     runtime_session_get_popup_size(&popup_width, &popup_height);
@@ -352,6 +405,51 @@ static void set_vsync_enabled(bool enabled)
     update_status_window(runtime_session_now_seconds(), true);
 }
 
+static void adjust_display_multiplier(int delta)
+{
+    const shader_desc_t *shader = active_shader();
+    runtime_display_params_t display_params;
+    display_callbacks_t display_callbacks;
+    display_layout_t layout = {0};
+    int old_multiplier = g_display_multiplier;
+    int new_multiplier = max(1, g_display_multiplier + delta);
+    int render_width = 0;
+    int render_height = 0;
+
+    if (new_multiplier == g_display_multiplier) {
+        return;
+    }
+
+    g_display_multiplier = new_multiplier;
+    if (shader == NULL) {
+        update_status_window(runtime_session_now_seconds(), true);
+        return;
+    }
+
+    runtime_session_target_dimensions(shader, &render_width, &render_height);
+    compute_display_layout(render_width, render_height, &layout);
+
+    ZeroMemory(&display_callbacks, sizeof(display_callbacks));
+    display_callbacks.on_close = shared_on_close;
+
+    ZeroMemory(&display_params, sizeof(display_params));
+    display_params.instance = GetModuleHandleA(NULL);
+    display_params.title = g_title;
+    display_params.owner = stats_window();
+    display_params.x = layout.x;
+    display_params.y = layout.y;
+    display_params.width = layout.width;
+    display_params.height = layout.height;
+    display_params.callbacks = &display_callbacks;
+
+    if (!runtime_session_resize_display(shader, &display_params)) {
+        g_display_multiplier = old_multiplier;
+        push_runtime_diagnostic(runtime_session_error());
+    }
+
+    update_status_window(runtime_session_now_seconds(), true);
+}
+
 static bool handle_keydown(HWND hwnd, WPARAM key)
 {
     (void)hwnd;
@@ -373,6 +471,16 @@ static bool handle_keydown(HWND hwnd, WPARAM key)
             runtime_session_reset_for_shader(shader);
             update_status_window(runtime_session_now_seconds(), true);
         }
+        return true;
+    }
+
+    if (key == VK_PRIOR) {
+        adjust_display_multiplier(+1);
+        return true;
+    }
+
+    if (key == VK_NEXT) {
+        adjust_display_multiplier(-1);
         return true;
     }
 
@@ -399,6 +507,7 @@ static void stats_on_select_shader(int index, void *user_data)
 static void stop_active_shader(void)
 {
     runtime_session_stop_shader();
+    g_startup_capture_count = 0;
 
     if (g_shader_host.stop_active_shader != NULL) {
         g_shader_host.stop_active_shader();
@@ -424,17 +533,20 @@ static void stats_on_execute_shader(void *user_data)
     }
 
     if (shader == NULL) {
+        push_runtime_diagnostic("No shader selected.");
         MessageBoxA(status_parent_window(), "No shader selected.", g_title, MB_OK | MB_ICONERROR);
         return;
     }
 
     if (!runtime_session_prepare_shader_buffers(shader)) {
+        push_runtime_diagnostic(runtime_session_error());
         MessageBoxA(status_parent_window(), runtime_session_error(), g_title, MB_OK | MB_ICONERROR);
         return;
     }
 
     if (g_shader_host.execute_selected_shader == NULL || !g_shader_host.execute_selected_shader()) {
         runtime_session_stop_shader();
+        push_runtime_diagnostic("Failed to activate selected shader.");
         MessageBoxA(status_parent_window(), "Failed to activate selected shader.", g_title, MB_OK | MB_ICONERROR);
         return;
     }
@@ -457,12 +569,30 @@ static void stats_on_execute_shader(void *user_data)
 
     if (!runtime_session_ensure_for_shader(shader, &display_params)) {
         runtime_session_stop_shader();
+        g_startup_capture_count = 0;
         if (g_shader_host.stop_active_shader != NULL) {
             g_shader_host.stop_active_shader();
         }
+        push_runtime_diagnostic(runtime_session_error());
         MessageBoxA(status_parent_window(), runtime_session_error(), g_title, MB_OK | MB_ICONERROR);
         update_status_window(runtime_session_now_seconds(), true);
         return;
+    }
+
+    if (g_startup_capture_count > 0) {
+        if (!runtime_session_request_capture(shader->id, g_startup_capture_count)) {
+            push_runtime_diagnostic(runtime_session_get_notice());
+        } else {
+            char message[128];
+            snprintf(
+                message,
+                sizeof(message),
+                "Startup capture armed: saving %d sequential PNG frame%s from frame 0.",
+                g_startup_capture_count,
+                (g_startup_capture_count == 1) ? "" : "s");
+            push_runtime_diagnostic(message);
+        }
+        g_startup_capture_count = 0;
     }
 
     position_windows();
@@ -481,6 +611,49 @@ static void stats_on_reset(void *user_data)
     }
 }
 
+static void stats_on_capture(int capture_count, void *user_data)
+{
+    const shader_desc_t *selected = selected_shader();
+    const shader_desc_t *shader = active_shader();
+    char message[128];
+
+    (void)user_data;
+
+    if (capture_count <= 0) {
+        push_runtime_diagnostic("Capture count must be at least 1.");
+        return;
+    }
+
+    if (shader != NULL) {
+        if (!runtime_session_request_capture(shader->id, capture_count)) {
+            push_runtime_diagnostic(runtime_session_get_notice());
+        } else {
+            snprintf(
+                message,
+                sizeof(message),
+                "Capture armed: saving %d sequential PNG frame%s for the active shader.",
+                capture_count,
+                (capture_count == 1) ? "" : "s");
+            push_runtime_diagnostic(message);
+        }
+        return;
+    }
+
+    if (selected == NULL) {
+        push_runtime_diagnostic("Select a shader before arming capture.");
+        return;
+    }
+
+    g_startup_capture_count = capture_count;
+    snprintf(
+        message,
+        sizeof(message),
+        "Capture armed for next execute: %d sequential PNG frame%s starting at frame 0.",
+        capture_count,
+        (capture_count == 1) ? "" : "s");
+    push_runtime_diagnostic(message);
+}
+
 static void stats_on_set_vsync(bool enabled, void *user_data)
 {
     (void)user_data;
@@ -494,7 +667,7 @@ static void shared_on_close(HWND hwnd, void *user_data)
     close_application();
 }
 
-bool window_create(const char *title, int width, int height)
+bool window_create(const char *title, int width, int height, present_backend_kind_t backend_kind)
 {
     HINSTANCE instance = GetModuleHandleA(NULL);
     stats_callbacks_t stats_callbacks;
@@ -502,12 +675,14 @@ bool window_create(const char *title, int width, int height)
     g_title = title;
     g_is_closing = false;
     g_stats_positioned = false;
-    runtime_session_init(title, width, height);
+    g_last_backend_notice_version = 0;
+    runtime_session_init(title, width, height, backend_kind);
 
     ZeroMemory(&stats_callbacks, sizeof(stats_callbacks));
     stats_callbacks.on_keydown = shared_on_keydown;
     stats_callbacks.on_select_shader = stats_on_select_shader;
     stats_callbacks.on_execute_shader = stats_on_execute_shader;
+    stats_callbacks.on_capture = stats_on_capture;
     stats_callbacks.on_reset = stats_on_reset;
     stats_callbacks.on_set_vsync = stats_on_set_vsync;
     stats_callbacks.on_close = shared_on_close;
@@ -517,6 +692,8 @@ bool window_create(const char *title, int width, int height)
         return false;
     }
 
+    stats_clear_diagnostics();
+    stats_set_backend_name(runtime_session_get_backend_name());
     stats_show();
     position_windows();
     g_is_open = 1;
@@ -547,6 +724,7 @@ void window_set_shader_host(const shader_host_callbacks_t *callbacks)
 void window_run(int num_threads)
 {
     if (!runtime_session_start_workers(num_threads)) {
+        push_runtime_diagnostic(runtime_session_error());
         MessageBoxA(status_parent_window(), runtime_session_error(), g_title, MB_OK | MB_ICONERROR);
         goto cleanup;
     }
@@ -590,6 +768,7 @@ void window_run(int num_threads)
         }
 
         if (!runtime_session_render_frame(active_shader())) {
+            push_runtime_diagnostic(runtime_session_error());
             MessageBoxA(status_parent_window(), runtime_session_error(), g_title, MB_OK | MB_ICONERROR);
             close_application();
             break;

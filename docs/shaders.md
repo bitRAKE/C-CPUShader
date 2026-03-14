@@ -22,8 +22,11 @@ The renderer calls that function once per pixel, in parallel, across multiple th
 
 Color-space note:
 
-- Most shaders here return scene-linear color.
-- `master_class` intentionally includes its own display transform to keep highlight rolloff inside the shader example.
+- Each shader now declares its generated color space in its header macro.
+- `SHADER_COLOR_SPACE_SCENE_LINEAR` means the shader returns scene-linear light values and expects the presentation backend to map that to the selected surface.
+- `SHADER_COLOR_SPACE_SDR_DISPLAY` means the shader is already display-referred and should stay on an SDR-style presentation path.
+- `SHADER_COLOR_SPACE_HDR10_ST2084` means the shader returns authored HDR10 / PQ / BT.2020-style display values and should prefer an HDR10 surface.
+- `master_class` intentionally includes its own display transform, so it is tagged as `SHADER_COLOR_SPACE_SDR_DISPLAY`.
 
 Important display convention:
 
@@ -109,6 +112,65 @@ Accumulation fit:
 
 - Disabled. The animation is meant to read cleanly per-frame, not smear across history.
 
+### `orbit_stars`
+
+Files:
+
+- `pocs/capture_animation/orbit_stars.c`
+- `pocs/capture_animation/orbit_stars.h`
+- `pocs/capture_animation/README.md`
+
+What it is:
+
+- A deliberately small animated star-orbit test shader authored for timing and frame-capture work.
+- Five stars loop around a flattened orbit at `128 x 64`, with a restrained directional trail instead of a broad glow wash.
+- Motion is driven by `uniforms->frame`, and the whole animation is engineered as an exact `30-frame` loop.
+
+What it demonstrates:
+
+- a compact non-accumulating animation target for backend/capture validation
+- how low-resolution shaders can still produce readable motion and silhouette cues
+- a lighter “motion smear” trick built from a back-facing trail aligned with the instantaneous orbit velocity
+- a deterministic finite loop that is easy to capture, merge, and compare across runs
+
+Why it is useful as a template:
+
+- It is the cleanest current test case for capture timing, animated backend behavior, and low-cost motion.
+- It provides a simple visual target where upside-down presentation, pacing errors, or bad frame capture should be obvious quickly.
+
+Accumulation fit:
+
+- Disabled. This is meant to stay live and responsive frame to frame.
+
+### `animated_sprite`
+
+Files:
+
+- `pocs/capture_animation/animated_sprite.c`
+- `pocs/capture_animation/animated_sprite.h`
+- `pocs/capture_animation/README.md`
+
+What it is:
+
+- A transparent, frame-driven sprite-animation study built specifically for sequence capture work.
+- It renders a small ship-like sprite with animated exhaust and shadow at `128 x 64`.
+- The whole animation is engineered as an exact `48-frame` loop.
+
+What it demonstrates:
+
+- a deterministic animation target driven entirely by `uniforms->frame`
+- meaningful alpha output for sprite, shadow, and exhaust layers
+- a clean host workflow for sequential PNG capture and later merge into a standalone animation
+
+Why it is useful as a template:
+
+- It is the clearest current example of a shader meant to become an external animation asset instead of only a live viewport image.
+- It gives the repo a simple bridge between shader rendering, capture, and offline sequence assembly.
+
+Accumulation fit:
+
+- Disabled. This is a direct frame-to-frame animation target.
+
 ### `hsv_picker`
 
 Files:
@@ -136,6 +198,87 @@ Why it is useful as a template:
 Accumulation fit:
 
 - Disabled. The picker is interactive and should respond immediately.
+
+### `colorspace_sdr_ui`
+
+Files:
+
+- `src/shaders/colorspace_sdr_ui.c`
+- `src/shaders/colorspace_sdr_ui.h`
+
+What it is:
+
+- A display-referred SDR probe built to look like a small polished UI composition.
+- It uses dark ramps, dark-value swatches, and vivid accent colors that should feel balanced on a normal SDR path.
+
+What it demonstrates:
+
+- why display-referred content should not be treated as scene-linear
+- how lifted midtones and washed-out neutrals reveal a color-space mismatch quickly
+- a compact visual target for backend regression checks
+
+Why it is useful as a template:
+
+- It is the clearest reference for shaders that are already authored for direct display rather than radiometric transport.
+- It gives the host an obvious “this looks wrong” image when an SDR shader is routed through the wrong output transform.
+
+Accumulation fit:
+
+- Disabled. This is a deterministic single-frame probe.
+
+### `colorspace_hdr_linear`
+
+Files:
+
+- `src/shaders/colorspace_hdr_linear.c`
+- `src/shaders/colorspace_hdr_linear.h`
+
+What it is:
+
+- A scene-linear HDR probe built around highlight ladders, overbright grayscale patches, and intense chroma blocks.
+- It is designed so that values above `1.0` should remain meaningfully separated on an HDR path.
+
+What it demonstrates:
+
+- the difference between “scene-linear float data exists” and “HDR is actually present to the surface”
+- how highlight ladders collapse when a scene-linear shader falls back to SDR clipping
+- a practical test image for DXGI and Vulkan HDR validation
+
+Why it is useful as a template:
+
+- It is the simplest reference for shaders that should stay in scene-linear space all the way to presentation.
+- It gives the repo a repeatable HDR validation target without needing a full path-traced scene.
+
+Accumulation fit:
+
+- Disabled. This is a deterministic single-frame probe.
+
+### `colorspace_hdr10_pq`
+
+Files:
+
+- `src/shaders/colorspace_hdr10_pq.c`
+- `src/shaders/colorspace_hdr10_pq.h`
+
+What it is:
+
+- An HDR10-authored probe built directly in PQ space.
+- It encodes nit-stepped grayscale patches, bright BT.2020-style color blocks, and a strong highlight ramp straight into ST.2084 values.
+
+What it demonstrates:
+
+- whether the backend can honor authored HDR10 content without treating it as linear math data
+- how HDR10 fallback behaves when the presenter has to decode PQ back into scRGB or SDR
+- a third validation target next to the SDR-display and scene-linear probes
+
+Why it is useful as a template:
+
+- It is the reference for shaders that intentionally author display-referred HDR output rather than scene-linear radiance.
+- It makes it much easier to compare “scene-linear HDR” versus “already-authored HDR10” behavior inside the same host.
+
+Accumulation fit:
+
+- Disabled. This is a deterministic single-frame probe.
 
 ### `glass_lenses`
 
@@ -254,6 +397,64 @@ Why it is useful as a template:
 Accumulation fit:
 
 - Enabled. The static camera and sampled transport are designed for accumulation.
+
+### `master_class_scrgb`
+
+Files:
+
+- `src/shaders/master_class_scrgb.c`
+- `src/shaders/master_class_scrgb.h`
+- `src/shaders/master_class_hdr_common.h`
+
+What it is:
+
+- A scene-linear HDR companion to `master_class`.
+- It keeps the same room and hero objects, but swaps in a hotter multi-light rig with visible accent emitters.
+- It returns scene-linear color directly so scRGB / CCCS surfaces can preserve the added highlight headroom.
+
+What it demonstrates:
+
+- how the same core scene reads once the backend is trusted with linear HDR presentation
+- why visible accent lights and stronger specular reflections make HDR feel different from a simple exposure boost
+- a path-traced still where accumulation remains valid because the shader stays in linear space
+
+Why it is useful as a template:
+
+- It is the reference for “hero image, but authored for backend-managed HDR” in this repo.
+- It shows the cleanest path for scenes that want HDR without baking a display transform into the shader itself.
+
+Accumulation fit:
+
+- Enabled. This variant stays in scene-linear space, so the existing accumulation model still makes sense.
+
+### `master_class_hdr10`
+
+Files:
+
+- `src/shaders/master_class_hdr10.c`
+- `src/shaders/master_class_hdr10.h`
+- `src/shaders/master_class_hdr_common.h`
+
+What it is:
+
+- An HDR10-authored companion to `master_class_scrgb`.
+- It uses the same HDR light rig and scene layout, but the final image is encoded in-shader to BT.2020 / ST.2084.
+- It renders a small fixed sample batch per frame instead of relying on the host’s external accumulation pass.
+
+What it demonstrates:
+
+- the difference between scene-linear HDR content and already-authored HDR10 output
+- a practical way to test HDR10 surfaces with a real scene instead of only synthetic probe ramps
+- why non-linear output spaces need different thinking around accumulation
+
+Why it is useful as a template:
+
+- It is the reference for shaders that want to own their HDR10 encoding rather than leave everything to the backend.
+- It gives the host a cinematic HDR10 target that shares most of its scene logic with the scRGB variant.
+
+Accumulation fit:
+
+- Disabled. This shader encodes PQ in-shader, so it uses fixed internal multi-sampling instead of averaging non-linear output across frames.
 
 The original Blue Wall attempt under `src/shaders/blue_wall_*` has been retired. The active Blue Wall work now lives entirely in `pocs/blue_wall_scene`, where the Blender-driven retargeting, stage reset, and texture-support work can evolve without leaving parallel tech debt behind.
 
@@ -466,6 +667,7 @@ vec4_t your_shader_main(vec2_t fragCoord, const shader_uniforms_t *uniforms);
 #define YOUR_SHADER(X) X( \
     your_shader, "Your Shader", your_shader_main, \
     NULL, \
+    SHADER_COLOR_SPACE_SDR_DISPLAY, \
     SHADER_FEATURE_TEMPORAL_ACCUMULATION | \
     SHADER_FEATURE_FRAME, \
     1024, 1024, \

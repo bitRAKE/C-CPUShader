@@ -3,12 +3,24 @@
 #include "resource.h"
 
 #include <commctrl.h>
+#include <richedit.h>
 #include <shellapi.h>
 #include <string.h>
+
+#define STATS_DIAGNOSTIC_LIMIT 48
+#define STATS_INFO_COLOR RGB(78, 106, 156)
+
+typedef struct {
+    char     text[512];
+    COLORREF color;
+} stats_message_t;
 
 static HWND              g_stats_hwnd = NULL;
 static stats_callbacks_t g_callbacks = {0};
 static void             *g_user_data = NULL;
+static char              g_title_base[128];
+static char              g_backend_name[32];
+static HMODULE           g_msftedit_module = NULL;
 
 static char              g_shader_cache[128];
 static char              g_expect_cache[256];
@@ -22,6 +34,104 @@ static char              g_execute_cache[32];
 static bool              g_vsync_cache_valid = false;
 static bool              g_vsync_cache = false;
 static int               g_catalog_count = 0;
+static stats_message_t    g_diagnostic_messages[STATS_DIAGNOSTIC_LIMIT];
+static int               g_diagnostic_count = 0;
+static const char       *g_default_help_lines[] = {
+    "Select a shader, inspect its description, then execute.",
+    "Execute switches to Stop while a shader is running.",
+    "Capture writes sequential PNG frames to the captures directory.",
+    "Set the small count field beside Capture to choose sequential frames.",
+    "Capture while idle arms the next Execute to start from frame 0.",
+    "PgUp and PgDn change the display multiplier level.",
+    "V toggles vsync, R resets the active shader, Esc exits.",
+    "Right mouse drag moves the display window.",
+};
+
+static bool stats_append_wide_text(HWND diagnostics, const WCHAR *text, COLORREF color)
+{
+    CHARFORMAT2W format;
+
+    if (diagnostics == NULL || text == NULL) {
+        return false;
+    }
+
+    ZeroMemory(&format, sizeof(format));
+    format.cbSize = sizeof(format);
+    format.dwMask = CFM_COLOR;
+    format.crTextColor = color;
+
+    SendMessageW(diagnostics, EM_SETSEL, (WPARAM)-1, (LPARAM)-1);
+    SendMessageW(diagnostics, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&format);
+    SendMessageW(diagnostics, EM_REPLACESEL, FALSE, (LPARAM)text);
+    return true;
+}
+
+static bool stats_append_text(HWND diagnostics, const char *text, COLORREF color)
+{
+    WCHAR wide_text[1024];
+
+    if (diagnostics == NULL || text == NULL) {
+        return false;
+    }
+
+    if (MultiByteToWideChar(CP_ACP, 0, text, -1, wide_text, (int)(sizeof(wide_text) / sizeof(wide_text[0]))) <= 0) {
+        return false;
+    }
+
+    return stats_append_wide_text(diagnostics, wide_text, color);
+}
+
+static void stats_refresh_caption(void)
+{
+    char caption[256];
+
+    if (g_stats_hwnd == NULL) {
+        return;
+    }
+
+    if (g_backend_name[0] != '\0') {
+        snprintf(caption, sizeof(caption), "%s Status [Presentation via %s]", g_title_base, g_backend_name);
+    } else {
+        snprintf(caption, sizeof(caption), "%s Status", g_title_base);
+    }
+
+    SetWindowTextA(g_stats_hwnd, caption);
+}
+
+static void stats_refresh_diagnostics(void)
+{
+    HWND diagnostics;
+    static const WCHAR kBlankLine[] = L"\r\n";
+
+    if (g_stats_hwnd == NULL) {
+        return;
+    }
+
+    diagnostics = GetDlgItem(g_stats_hwnd, IDC_STATUS_DIAGNOSTICS);
+    if (diagnostics == NULL) {
+        return;
+    }
+
+    SendMessageW(diagnostics, EM_SETBKGNDCOLOR, 0, GetSysColor(COLOR_3DFACE));
+    SetWindowTextW(diagnostics, L"");
+
+    for (int index = 0; index < g_diagnostic_count; index++) {
+        stats_append_text(diagnostics, g_diagnostic_messages[index].text, g_diagnostic_messages[index].color);
+        stats_append_wide_text(diagnostics, L"\r\n", g_diagnostic_messages[index].color);
+    }
+
+    if (g_diagnostic_count > 0) {
+        stats_append_wide_text(diagnostics, kBlankLine, STATS_INFO_COLOR);
+    }
+
+    for (int index = 0; index < (int)(sizeof(g_default_help_lines) / sizeof(g_default_help_lines[0])); index++) {
+        stats_append_text(diagnostics, g_default_help_lines[index], STATS_INFO_COLOR);
+        stats_append_wide_text(diagnostics, L"\r\n", STATS_INFO_COLOR);
+    }
+
+    SendMessageW(diagnostics, EM_SETSEL, 0, 0);
+    SendMessageW(diagnostics, EM_SCROLLCARET, 0, 0);
+}
 
 static void stats_reset_cache(void)
 {
@@ -34,6 +144,7 @@ static void stats_reset_cache(void)
     g_workers_cache[0] = '\0';
     g_display_cache[0] = '\0';
     g_execute_cache[0] = '\0';
+    g_diagnostic_count = 0;
     g_vsync_cache_valid = false;
     g_vsync_cache = false;
 }
@@ -56,7 +167,19 @@ static INT_PTR CALLBACK StatsDlgProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
     switch (msg) {
         case WM_INITDIALOG:
             g_stats_hwnd = hwnd;
+            SendMessageW(GetDlgItem(hwnd, IDC_STATUS_DIAGNOSTICS), EM_SETBKGNDCOLOR, 0, GetSysColor(COLOR_3DFACE));
+            SetDlgItemTextA(hwnd, IDC_EDIT_CAPTURE_COUNT, "1");
             return TRUE;
+
+        case WM_CTLCOLOREDIT:
+        case WM_CTLCOLORSTATIC:
+            if ((HWND)lp == GetDlgItem(hwnd, IDC_STATUS_DIAGNOSTICS)) {
+                HDC dc = (HDC)wp;
+                SetBkColor(dc, GetSysColor(COLOR_3DFACE));
+                SetTextColor(dc, GetSysColor(COLOR_WINDOWTEXT));
+                return (INT_PTR)GetSysColorBrush(COLOR_3DFACE);
+            }
+            break;
 
         case WM_COMMAND:
             switch (LOWORD(wp)) {
@@ -72,6 +195,15 @@ static INT_PTR CALLBACK StatsDlgProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
                 case IDC_BUTTON_EXECUTE:
                     if (g_callbacks.on_execute_shader != NULL) {
                         g_callbacks.on_execute_shader(g_user_data);
+                    }
+                    return TRUE;
+
+                case IDC_BUTTON_CAPTURE:
+                    if (g_callbacks.on_capture != NULL) {
+                        BOOL translated = FALSE;
+                        UINT value = GetDlgItemInt(hwnd, IDC_EDIT_CAPTURE_COUNT, &translated, FALSE);
+                        int capture_count = translated ? (int)value : 0;
+                        g_callbacks.on_capture(capture_count, g_user_data);
                     }
                     return TRUE;
 
@@ -134,11 +266,17 @@ static INT_PTR CALLBACK StatsDlgProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 bool stats_create(HINSTANCE instance, const char *title, const stats_callbacks_t *callbacks, void *user_data)
 {
     INITCOMMONCONTROLSEX common_controls = {0};
-    char caption[256];
 
     common_controls.dwSize = sizeof(common_controls);
     common_controls.dwICC = ICC_STANDARD_CLASSES | ICC_LINK_CLASS;
     InitCommonControlsEx(&common_controls);
+
+    if (g_msftedit_module == NULL) {
+        g_msftedit_module = LoadLibraryA("Msftedit.dll");
+        if (g_msftedit_module == NULL) {
+            return false;
+        }
+    }
 
     if (callbacks != NULL) {
         g_callbacks = *callbacks;
@@ -147,14 +285,16 @@ bool stats_create(HINSTANCE instance, const char *title, const stats_callbacks_t
     }
     g_user_data = user_data;
     stats_reset_cache();
+    snprintf(g_title_base, sizeof(g_title_base), "%s", title != NULL ? title : "Renderer");
+    g_backend_name[0] = '\0';
 
     g_stats_hwnd = CreateDialogParamA(instance, MAKEINTRESOURCEA(IDD_STATUS_DIALOG), NULL, StatsDlgProc, 0);
     if (g_stats_hwnd == NULL) {
         return false;
     }
 
-    snprintf(caption, sizeof(caption), "%s Status", title);
-    SetWindowTextA(g_stats_hwnd, caption);
+    stats_refresh_caption();
+    stats_refresh_diagnostics();
     return true;
 }
 
@@ -173,6 +313,52 @@ void stats_show(void)
         ShowWindow(g_stats_hwnd, SW_SHOW);
         UpdateWindow(g_stats_hwnd);
     }
+}
+
+void stats_set_backend_name(const char *backend_name)
+{
+    snprintf(g_backend_name, sizeof(g_backend_name), "%s", backend_name != NULL ? backend_name : "");
+    stats_refresh_caption();
+}
+
+void stats_prepend_message(const char *text, COLORREF color)
+{
+    char combined[4096];
+    SYSTEMTIME local_time;
+    int index;
+
+    if (text == NULL || text[0] == '\0') {
+        return;
+    }
+
+    GetLocalTime(&local_time);
+    snprintf(
+        combined,
+        sizeof(combined),
+        "[%02u:%02u:%02u] %s",
+        (unsigned)local_time.wHour,
+        (unsigned)local_time.wMinute,
+        (unsigned)local_time.wSecond,
+        text);
+
+    if (g_diagnostic_count == STATS_DIAGNOSTIC_LIMIT) {
+        g_diagnostic_count--;
+    }
+
+    for (index = g_diagnostic_count; index > 0; index--) {
+        g_diagnostic_messages[index] = g_diagnostic_messages[index - 1];
+    }
+
+    snprintf(g_diagnostic_messages[0].text, sizeof(g_diagnostic_messages[0].text), "%s", combined);
+    g_diagnostic_messages[0].color = color;
+    g_diagnostic_count++;
+    stats_refresh_diagnostics();
+}
+
+void stats_clear_diagnostics(void)
+{
+    g_diagnostic_count = 0;
+    stats_refresh_diagnostics();
 }
 
 void stats_set_shader_catalog(const shader_desc_t *catalog, int count)
@@ -254,13 +440,31 @@ void stats_update(const stats_state_t *state)
 
     if (state->render_width > 0 && state->render_height > 0 && state->popup_width > 0 && state->popup_height > 0) {
         popup_scale = (float)state->popup_width / (float)state->render_width;
-        snprintf(
-            display_text,
-            sizeof(display_text),
-            (fabsf(popup_scale - 1.0f) > 0.001f) ? "%d x %d | x%.2f | right-drag to move" : "%d x %d | right-drag to move",
-            state->popup_width,
-            state->popup_height,
-            popup_scale);
+        if (state->display_multiplier > 1 && fabsf(popup_scale - (float)state->display_multiplier) > 0.001f) {
+            snprintf(
+                display_text,
+                sizeof(display_text),
+                "%d x %d | x%.2f (req x%d) | right-drag to move",
+                state->popup_width,
+                state->popup_height,
+                popup_scale,
+                state->display_multiplier);
+        } else if (fabsf(popup_scale - 1.0f) > 0.001f) {
+            snprintf(
+                display_text,
+                sizeof(display_text),
+                "%d x %d | x%.2f | right-drag to move",
+                state->popup_width,
+                state->popup_height,
+                popup_scale);
+        } else {
+            snprintf(
+                display_text,
+                sizeof(display_text),
+                "%d x %d | right-drag to move",
+                state->popup_width,
+                state->popup_height);
+        }
     } else {
         snprintf(display_text, sizeof(display_text), "not running");
     }
@@ -280,6 +484,8 @@ void stats_update(const stats_state_t *state)
     }
 
     EnableWindow(GetDlgItem(g_stats_hwnd, IDC_BUTTON_EXECUTE), state->can_execute ? TRUE : FALSE);
+    EnableWindow(GetDlgItem(g_stats_hwnd, IDC_BUTTON_CAPTURE), state->can_capture ? TRUE : FALSE);
+    EnableWindow(GetDlgItem(g_stats_hwnd, IDC_EDIT_CAPTURE_COUNT), TRUE);
     EnableWindow(GetDlgItem(g_stats_hwnd, IDC_BUTTON_RESET), state->can_reset ? TRUE : FALSE);
 
     if (!g_vsync_cache_valid || g_vsync_cache != state->vsync_enabled) {

@@ -128,6 +128,46 @@ def first_texture_name(materials: list[dict]) -> str:
     return ""
 
 
+def normalize_path_string(path_value: str, root: Path) -> str:
+    if not path_value:
+        return ""
+
+    value = str(path_value).replace("\\", "/")
+    candidate = Path(value)
+
+    if candidate.is_absolute():
+        try:
+            return candidate.resolve().relative_to(root.resolve()).as_posix()
+        except ValueError:
+            return candidate.resolve().as_posix()
+
+    return Path(value).as_posix()
+
+
+def normalize_image_list(values: list[str], root: Path) -> list[str]:
+    return [normalize_path_string(value, root) for value in values]
+
+
+def normalize_materials(materials: list[dict], root: Path) -> None:
+    for material in materials:
+        for image in material.get("texture_images", []):
+            image["path"] = normalize_path_string(image.get("path", ""), root)
+
+
+def normalize_raw_paths(raw: dict, root: Path) -> None:
+    world = raw.get("world", {})
+    world["images"] = normalize_image_list(world.get("images", []), root)
+
+    for entry in raw.get("objects", []):
+        normalize_materials(entry.get("materials", []), root)
+
+    for entry in raw.get("hero_meshes", []):
+        normalize_materials(entry.get("materials", []), root)
+
+    for entry in raw.get("named_assets", []):
+        normalize_materials(entry.get("materials", []), root)
+
+
 def first_proxy_color(materials: list[dict]) -> list[float]:
     for material in materials:
         proxy = material.get("proxy_color")
@@ -580,7 +620,7 @@ def build_processed_data(raw: dict, recipe: dict, recipe_path: Path) -> dict:
         "camera": raw.get("camera"),
         "world": raw.get("world", {}),
         "recipe": {
-            "path": str(recipe_path),
+            "path": recipe_path.name,
             "group_count": len(recipe_groups),
         },
         "lights": [entry for entry in enriched_objects if entry["type"] == "LIGHT"],
@@ -979,6 +1019,7 @@ def postprocess(
     recipe_path: Path,
 ) -> None:
     raw = json.loads(raw_json_path.read_text(encoding="utf-8"))
+    normalize_raw_paths(raw, recipe_path.parent)
     recipe = load_recipe(recipe_path)
     processed = build_processed_data(raw, recipe, recipe_path)
     write_json(processed_json_path, processed)

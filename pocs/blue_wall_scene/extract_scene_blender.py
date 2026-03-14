@@ -2,6 +2,7 @@ import argparse
 import hashlib
 import json
 import sys
+from pathlib import Path
 
 import bpy
 from bpy_extras.object_utils import world_to_camera_view
@@ -168,7 +169,12 @@ def camera_space_bounds(camera_obj, corners):
 
 def resolve_image_path(image):
     try:
-        return str(bpy.path.abspath(image.filepath))
+        resolved = Path(bpy.path.abspath(image.filepath)).resolve()
+        root = Path(__file__).resolve().parent
+        try:
+            return resolved.relative_to(root).as_posix()
+        except ValueError:
+            return resolved.as_posix()
     except Exception:
         return image.filepath
 

@@ -1,9 +1,3 @@
-> [!CAUTION]
-> **Experimental HDR DX12 Branch**  
-> This branch uses DX12 to present the image data without texture processing.
-
----
-
 <details>
 <summary>Open Shader Gallery</summary>
 
@@ -27,7 +21,7 @@ Each shader is a plain C function:
 vec4_t shader_main(vec2_t fragCoord, const shader_uniforms_t *uniforms);
 ```
 
-The host runs that function across CPU worker threads, writes the resulting `vec4_t` image directly into a mapped DX12 upload buffer, and presents it through a separate popup window.
+The host runs that function across CPU worker threads, writes the resulting `vec4_t` image into a CPU-owned float32 frame surface, and presents that surface through a backend layer and separate popup window.
 
 ## What This Repo Is
 
@@ -48,12 +42,30 @@ The app now has a clear split:
   - worker pool, frame timing, shader buffers, runtime/backend lifetime, frame execution
 - `src/display.c`
   - borderless popup display surface and mouse mapping
-- `src/dxx12.c`
-  - DX12 presentation backend
+- `src/present/*.c`
+  - backend-neutral presentation surface and dispatch layer
+- `src/dxgi/*.c`
+  - shared DXGI support: factory, adapter, output, color-space, and HDR capability helpers
+- `src/dx12/*.c`
+  - DirectX 12 presentation backend built on the shared DXGI support layer
+- `src/ogl/*.c`
+  - OpenGL-requested presentation mode currently routed through the shared DXGI/DirectX 12 presenter
+- `src/vk/*.c`
+  - Vulkan presentation backend
+- `src/gdi/*.c`
+  - simple BGRA8 down-convert fallback presenter
 - `src/stats.c`
   - dialog UI and controls
 
 The host comes up dialog-first. You inspect a shader, click `Execute`, and the popup/runtime are created lazily. `Stop` returns the host to idle.
+
+The current presentation policy is:
+
+- default to DirectX 12
+- allow `--backend=dx12|ogl|vk|gdi`
+- route `--backend=ogl` through the shared DXGI/DirectX 12 presentation path for now
+- fall back to GDI if the requested backend cannot be created
+- show the active backend in the dialog title
 
 ## Shader Model
 
@@ -94,6 +106,7 @@ The build expects local Windows tooling, including:
 - `clang`
 - `llvm-rc`
 - the Windows SDK / link environment
+- Vulkan SDK exposed through `%VULKAN_SDK%`
 
 ## Run
 
@@ -102,6 +115,16 @@ Launch:
 ```powershell
 .\bin.exe
 ```
+
+Backend selection examples:
+
+```powershell
+.\bin.exe --backend=dx12
+.\bin.exe --backend=gdi
+.\bin.exe --backend=ogl
+```
+
+At the moment, `dx12`, `ogl`, `vk`, and `gdi` are the public backend choices. `dx12` is the default presenter. `dxgi` is still accepted as a compatibility alias for the same DirectX 12 path, but DXGI is now treated as shared support infrastructure rather than a backend in its own right. The DirectX 12 backend uses shader color-space metadata plus DXGI output probing to choose an SDR surface for display-referred shaders and to prefer HDR scRGB or HDR10 surfaces when the active output exposes them. The current `ogl` mode intentionally reuses that same DXGI/DirectX 12 presentation path instead of trying to prove HDR through a standalone WGL window surface. Vulkan likewise prefers an scRGB HDR swapchain when the surface exposes it; otherwise it stays on Vulkan and reports that HDR is not present to the surface.
 
 Basic flow:
 
@@ -132,12 +155,18 @@ Useful runtime behavior:
 
 Start here:
 
+- [Actual_HDR.md](Actual_HDR.md)
+  - what this repo should mean by "actual HDR", and which backends currently qualify
 - [docs/SHADERS.md](docs/SHADERS.md)
   - shader contract, feature flags, and shader index
 - [design.md](design.md)
   - current architecture and module boundaries
 - [plan.md](plan.md)
   - current host-consolidation plan
+- [hdr_backend.md](hdr_backend.md)
+  - backend-by-backend engineering plan and current HDR capability shape
+- [audit.md](audit.md)
+  - backend-first audit of presentation truth, timing, and performance sensitivity
 
 Deep dives:
 
@@ -149,6 +178,8 @@ Deep dives:
   - MTSDF text rendering POC
 - [pocs/sdf_fixed/README.md](pocs/sdf_fixed/README.md)
   - low-tech fixed-grid SDF text POC
+- [pocs/capture_animation/README.md](pocs/capture_animation/README.md)
+  - deterministic capture-to-APNG animation POC
 - [pocs/hsv_picker_tool.md](pocs/hsv_picker_tool.md)
   - shader logic reused as a standalone tool window
 
@@ -164,6 +195,8 @@ Deep dives:
   - high-quality text atlas POC using shader-owned texture buffers
 - `sdf_fixed_hello_world`
   - simpler fixed-grid SDF text path for low-code workflows
+- `animated_sprite`
+  - transparent sprite-animation POC intended for sequential capture and APNG assembly
 
 ## Current Direction
 

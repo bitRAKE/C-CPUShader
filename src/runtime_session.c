@@ -1,8 +1,11 @@
 //Own runtime/session state: workers, buffers, timing, backend, and frame execution
 
-#include "runtime_session.h"
+#define COBJMACROS
 
-#include "dxx12.h"
+#include "runtime_session.h"
+#include "capture_wic.h"
+
+#include "present/present_backend.h"
 
 #include <string.h>
 
@@ -35,6 +38,8 @@ static vec4_t                  *g_frame_pixels = NULL;
 static vec4_t                  *g_history_pixels = NULL;
 static shader_buffers_t         g_shader_buffers = {0};
 static ShaderBuffersCleanupFunc g_shader_buffers_cleanup = NULL;
+static present_backend_kind_t   g_present_backend_kind = PRESENT_BACKEND_DX12;
+static shader_color_space_t     g_active_shader_color_space = SHADER_COLOR_SPACE_SDR_DISPLAY;
 
 static DWORD_PTR                g_affinity_masks[64];
 static DWORD                    g_affinity_processors[64];
@@ -58,10 +63,17 @@ static shader_keys_t            g_key_state = {{0}};
 static uint                     g_key_generation = 1;
 static uint                     g_last_key_generation = 0;
 static uint                     g_last_mouse_generation = 0;
+static int                      g_capture_frames_remaining = 0;
+static int                      g_capture_frames_total = 0;
+static char                     g_capture_shader_id[64] = "";
+static uint                     g_capture_sequence = 0;
+static char                     g_runtime_notice[512] = "";
+static volatile LONG            g_runtime_notice_version = 0;
 
 static void runtime_release_shader_buffers(void);
 static void runtime_set_error_text(const char *text);
 static void runtime_set_error_hr(const char *what);
+static void runtime_set_notice_text(const char *text);
 static void timing_init(void);
 static void frame_timing_reset(void);
 static void frame_timing_push(double frame_seconds);
@@ -76,8 +88,219 @@ static void worker_render(const Worker *worker);
 static void pool_clear_handles(void);
 static bool pool_create(int num_threads);
 static void pool_destroy(void);
+static bool ensure_frame_buffer(void);
 static bool ensure_history_buffer(void);
-static bool create_display_backend(const runtime_display_params_t *display_params, int render_width, int render_height);
+static bool create_display_backend(const runtime_display_params_t *display_params, const shader_desc_t *shader, int render_width, int render_height);
+static void process_capture_request(void);
+
+typedef struct {
+    char                 path[MAX_PATH];
+    int                  width;
+    int                  height;
+    int                  capture_index;
+    int                  capture_total;
+    vec4_t              *pixels;
+    shader_color_space_t shader_color_space;
+    bool                 use_16bpc;
+} capture_job_t;
+
+static void capture_sanitize_label(char *buffer, size_t buffer_size, const char *text)
+{
+    size_t length = 0;
+
+    if (buffer == NULL || buffer_size == 0) {
+        return;
+    }
+
+    if (text == NULL || text[0] == '\0') {
+        snprintf(buffer, buffer_size, "shader");
+        return;
+    }
+
+    while (*text != '\0' && length + 1 < buffer_size) {
+        char ch = *text++;
+        if ((ch >= 'a' && ch <= 'z') ||
+            (ch >= 'A' && ch <= 'Z') ||
+            (ch >= '0' && ch <= '9') ||
+            ch == '_' ||
+            ch == '-')
+        {
+            buffer[length++] = ch;
+        } else {
+            buffer[length++] = '_';
+        }
+    }
+
+    if (length == 0) {
+        snprintf(buffer, buffer_size, "shader");
+        return;
+    }
+
+    buffer[length] = '\0';
+}
+
+static bool capture_make_path(char *buffer, size_t buffer_size, const char *shader_id, uint sequence, const char *extension)
+{
+    char module_path[MAX_PATH];
+    char capture_dir[MAX_PATH];
+    char safe_label[64];
+    char *slash;
+    SYSTEMTIME local_time;
+    DWORD path_length;
+
+    if (buffer == NULL || buffer_size == 0) {
+        return false;
+    }
+
+    path_length = GetModuleFileNameA(NULL, module_path, (DWORD)sizeof(module_path));
+    if (path_length == 0 || path_length >= sizeof(module_path)) {
+        return false;
+    }
+
+    slash = strrchr(module_path, '\\');
+    if (slash == NULL) {
+        return false;
+    }
+    *slash = '\0';
+
+    snprintf(capture_dir, sizeof(capture_dir), "%s\\captures", module_path);
+    if (!CreateDirectoryA(capture_dir, NULL)) {
+        DWORD error = GetLastError();
+        if (error != ERROR_ALREADY_EXISTS) {
+            return false;
+        }
+    }
+
+    capture_sanitize_label(safe_label, sizeof(safe_label), shader_id);
+    GetLocalTime(&local_time);
+    snprintf(
+        buffer,
+        buffer_size,
+        "%s\\%04u%02u%02u_%02u%02u%02u_%03u_%s_%04u.%s",
+        capture_dir,
+        (unsigned)local_time.wYear,
+        (unsigned)local_time.wMonth,
+        (unsigned)local_time.wDay,
+        (unsigned)local_time.wHour,
+        (unsigned)local_time.wMinute,
+        (unsigned)local_time.wSecond,
+        (unsigned)local_time.wMilliseconds,
+        safe_label,
+        (unsigned)sequence,
+        (extension != NULL && extension[0] != '\0') ? extension : "png");
+    return true;
+}
+
+static DWORD WINAPI capture_thread(LPVOID arg)
+{
+    capture_job_t *job = (capture_job_t *)arg;
+    char error_text[512] = "";
+    char notice_text[768];
+
+    if (job != NULL) {
+        if (!capture_wic_write_png(
+                job->path,
+                (uint32_t)job->width,
+                (uint32_t)job->height,
+                job->pixels,
+                job->shader_color_space,
+                job->use_16bpc,
+                error_text,
+                sizeof(error_text)))
+        {
+            char debug_text[1024];
+            snprintf(
+                notice_text,
+                sizeof(notice_text),
+                "Capture failed: %s",
+                (error_text[0] != '\0') ? error_text : job->path);
+            runtime_set_notice_text(notice_text);
+            snprintf(debug_text, sizeof(debug_text), "%s\n", notice_text);
+            OutputDebugStringA(debug_text);
+        } else {
+            snprintf(
+                notice_text,
+                sizeof(notice_text),
+                "Captured frame %d/%d to %s%s",
+                job->capture_index,
+                job->capture_total,
+                job->path,
+                job->use_16bpc ? " (16-bit RGBA PNG)" : " (8-bit BGRA PNG)");
+            runtime_set_notice_text(notice_text);
+        }
+
+        free(job->pixels);
+        free(job);
+    }
+
+    return 0;
+}
+
+static void process_capture_request(void)
+{
+    capture_job_t *job;
+    HANDLE thread;
+    size_t pixel_count;
+
+    if (g_capture_frames_remaining <= 0 || g_frame_pixels == NULL || g_width <= 0 || g_height <= 0) {
+        return;
+    }
+
+    pixel_count = (size_t)g_width * (size_t)g_height;
+    job = (capture_job_t *)malloc(sizeof(*job));
+    if (job == NULL) {
+        runtime_set_notice_text("Capture failed: unable to allocate capture job.");
+        g_capture_frames_remaining = 0;
+        g_capture_frames_total = 0;
+        return;
+    }
+
+    ZeroMemory(job, sizeof(*job));
+    job->pixels = (vec4_t *)malloc(pixel_count * sizeof(vec4_t));
+    if (job->pixels == NULL) {
+        free(job);
+        runtime_set_notice_text("Capture failed: unable to allocate capture pixels.");
+        g_capture_frames_remaining = 0;
+        g_capture_frames_total = 0;
+        return;
+    }
+
+    memcpy(job->pixels, g_frame_pixels, pixel_count * sizeof(vec4_t));
+    job->width = g_width;
+    job->height = g_height;
+    job->capture_total = max(1, g_capture_frames_total);
+    job->capture_index = job->capture_total - g_capture_frames_remaining + 1;
+    job->shader_color_space = g_active_shader_color_space;
+    job->use_16bpc = (g_active_shader_color_space != SHADER_COLOR_SPACE_SDR_DISPLAY);
+    if (!capture_make_path(job->path, sizeof(job->path), g_capture_shader_id, ++g_capture_sequence, "png")) {
+        free(job->pixels);
+        free(job);
+        runtime_set_notice_text("Capture failed: unable to build output path.");
+        g_capture_frames_remaining = 0;
+        g_capture_frames_total = 0;
+        return;
+    }
+
+    g_capture_frames_remaining--;
+    if (g_capture_frames_remaining == 0) {
+        g_capture_frames_total = 0;
+    }
+
+    thread = CreateThread(NULL, 0, capture_thread, job, 0, NULL);
+    if (thread == NULL) {
+        runtime_set_notice_text("Capture failed: unable to create PNG writer thread.");
+        free(job->pixels);
+        free(job);
+        g_capture_frames_remaining = 0;
+        g_capture_frames_total = 0;
+        return;
+    }
+
+    CloseHandle(thread);
+    if (g_capture_frames_remaining > 0) {
+        runtime_session_request_frame();
+    }
+}
 
 static void runtime_release_shader_buffers(void)
 {
@@ -99,6 +322,12 @@ static void runtime_set_error_hr(const char *what)
 {
     DWORD error = GetLastError();
     snprintf(g_runtime_error, sizeof(g_runtime_error), "%s failed (error=%lu).", what, (unsigned long)error);
+}
+
+static void runtime_set_notice_text(const char *text)
+{
+    snprintf(g_runtime_notice, sizeof(g_runtime_notice), "%s", text != NULL ? text : "");
+    InterlockedIncrement(&g_runtime_notice_version);
 }
 
 const char *runtime_session_error(void)
@@ -130,6 +359,36 @@ static void frame_timing_reset(void)
 void runtime_session_request_frame(void)
 {
     g_force_frame = true;
+}
+
+bool runtime_session_request_capture(const char *shader_id, int frame_count)
+{
+    if (frame_count <= 0) {
+        runtime_set_notice_text("Capture count must be at least 1.");
+        return false;
+    }
+
+    if (!present_backend_is_ready() || g_frame_pixels == NULL || g_width <= 0 || g_height <= 0) {
+        runtime_set_notice_text("Capture requested with no active presentation surface.");
+        return false;
+    }
+
+    if (g_capture_frames_remaining > 0) {
+        runtime_set_notice_text("A capture sequence is already in progress.");
+        return false;
+    }
+
+    if (shader_id != NULL) {
+        snprintf(g_capture_shader_id, sizeof(g_capture_shader_id), "%s", shader_id);
+    } else {
+        g_capture_shader_id[0] = '\0';
+    }
+
+    g_capture_frames_remaining = frame_count;
+    g_capture_frames_total = frame_count;
+
+    runtime_session_request_frame();
+    return true;
 }
 
 static void frame_timing_push(double frame_seconds)
@@ -230,11 +489,12 @@ void runtime_session_reset_key_state(void)
     g_last_key_generation = 0;
 }
 
-void runtime_session_init(const char *title, int default_width, int default_height)
+void runtime_session_init(const char *title, int default_width, int default_height, present_backend_kind_t backend_kind)
 {
     g_title = title;
     g_default_width = default_width;
     g_default_height = default_height;
+    g_present_backend_kind = backend_kind;
     g_vsync_enabled = true;
     g_runtime_error[0] = '\0';
     shader_buffers_reset(&g_shader_buffers);
@@ -247,11 +507,12 @@ void runtime_session_init(const char *title, int default_width, int default_heig
 
 static void destroy_runtime_backend(void)
 {
-    dxx12_destroy();
+    present_backend_destroy();
     display_destroy();
+    free(g_frame_pixels);
+    g_frame_pixels = NULL;
     free(g_history_pixels);
     g_history_pixels = NULL;
-    g_frame_pixels = NULL;
     g_width = 0;
     g_height = 0;
     g_popup_width = 0;
@@ -266,6 +527,10 @@ void runtime_session_stop_shader(void)
     g_force_frame = false;
     g_frame_counter = 0;
     g_runtime_error[0] = '\0';
+    g_capture_frames_remaining = 0;
+    g_capture_frames_total = 0;
+    g_capture_shader_id[0] = '\0';
+    g_active_shader_color_space = SHADER_COLOR_SPACE_SDR_DISPLAY;
     frame_timing_reset();
     refresh_shader_quality(NULL);
 }
@@ -492,6 +757,29 @@ static bool ensure_history_buffer(void)
     return true;
 }
 
+static bool ensure_frame_buffer(void)
+{
+    size_t pixel_count;
+
+    if (g_width <= 0 || g_height <= 0) {
+        return false;
+    }
+
+    if (g_frame_pixels != NULL) {
+        return true;
+    }
+
+    pixel_count = (size_t)g_width * (size_t)g_height;
+    g_frame_pixels = (vec4_t *)malloc(pixel_count * sizeof(vec4_t));
+    if (g_frame_pixels == NULL) {
+        runtime_set_error_text("Failed to allocate CPU presentation buffer.");
+        return false;
+    }
+
+    memset(g_frame_pixels, 0, pixel_count * sizeof(vec4_t));
+    return true;
+}
+
 bool runtime_session_prepare_shader_buffers(const shader_desc_t *shader)
 {
     shader_buffers_t next_buffers;
@@ -524,9 +812,10 @@ bool runtime_session_prepare_shader_buffers(const shader_desc_t *shader)
     return true;
 }
 
-static bool create_display_backend(const runtime_display_params_t *display_params, int render_width, int render_height)
+static bool create_display_backend(const runtime_display_params_t *display_params, const shader_desc_t *shader, int render_width, int render_height)
 {
     display_callbacks_t empty_callbacks;
+    present_backend_desc_t backend_desc;
     HINSTANCE instance;
     const char *title;
     HWND owner;
@@ -559,13 +848,21 @@ static bool create_display_backend(const runtime_display_params_t *display_param
         return false;
     }
 
-    if (!dxx12_create(display_window(), render_width, render_height)) {
-        runtime_set_error_text(dxx12_error());
+    ZeroMemory(&backend_desc, sizeof(backend_desc));
+    backend_desc.hwnd = display_window();
+    backend_desc.render_width = render_width;
+    backend_desc.render_height = render_height;
+    backend_desc.popup_width = width;
+    backend_desc.popup_height = height;
+    backend_desc.shader_color_space = (shader != NULL) ? shader->generated_color_space : SHADER_COLOR_SPACE_SDR_DISPLAY;
+    backend_desc.vsync_enabled = g_vsync_enabled;
+
+    if (!present_backend_create(g_present_backend_kind, &backend_desc)) {
+        runtime_set_error_text(present_backend_error());
         display_destroy();
         return false;
     }
 
-    dxx12_set_vsync(g_vsync_enabled);
     display_show();
     return true;
 }
@@ -574,6 +871,7 @@ bool runtime_session_ensure_for_shader(const shader_desc_t *shader, const runtim
 {
     int width;
     int height;
+    bool needs_history;
 
     if (shader == NULL) {
         runtime_set_error_text("No shader selected.");
@@ -581,6 +879,7 @@ bool runtime_session_ensure_for_shader(const shader_desc_t *shader, const runtim
     }
 
     runtime_session_target_dimensions(shader, &width, &height);
+    needs_history = runtime_session_shader_uses_feature(shader, SHADER_FEATURE_TEMPORAL_ACCUMULATION);
     if (width <= 0 || height <= 0) {
         runtime_set_error_text("Shader dimensions are invalid.");
         return false;
@@ -591,18 +890,27 @@ bool runtime_session_ensure_for_shader(const shader_desc_t *shader, const runtim
         return false;
     }
 
-    if (g_width != width || g_height != height || g_popup_width != display_params->width || g_popup_height != display_params->height || !dxx12_is_ready() || display_window() == NULL) {
+    if (g_width != width || g_height != height || g_popup_width != display_params->width || g_popup_height != display_params->height || !present_backend_is_ready() || display_window() == NULL) {
         destroy_runtime_backend();
         g_width = width;
         g_height = height;
         g_popup_width = display_params->width;
         g_popup_height = display_params->height;
 
-        if (!ensure_history_buffer()) {
+        if (!ensure_frame_buffer()) {
             return false;
         }
 
-        if (!create_display_backend(display_params, width, height)) {
+        if (needs_history && !ensure_history_buffer()) {
+            return false;
+        }
+        if (!needs_history) {
+            free(g_history_pixels);
+            g_history_pixels = NULL;
+            g_has_history = false;
+        }
+
+        if (!create_display_backend(display_params, shader, width, height)) {
             destroy_runtime_backend();
             return false;
         }
@@ -610,17 +918,115 @@ bool runtime_session_ensure_for_shader(const shader_desc_t *shader, const runtim
         for (int i = 0; i < g_background_threads; i++) {
             setup_worker(&g_workers[i], i, g_total_workers);
         }
-    } else if (!ensure_history_buffer()) {
-        return false;
+    } else {
+        if (!ensure_frame_buffer()) {
+            return false;
+        }
+        if (needs_history) {
+            if (!ensure_history_buffer()) {
+                return false;
+            }
+        } else {
+            free(g_history_pixels);
+            g_history_pixels = NULL;
+            g_has_history = false;
+        }
     }
 
     runtime_session_reset_for_shader(shader);
     return true;
 }
 
+bool runtime_session_resize_display(const shader_desc_t *shader, const runtime_display_params_t *display_params)
+{
+    present_backend_desc_t backend_desc;
+    RECT old_rect = {0};
+    int old_popup_width;
+    int old_popup_height;
+    bool had_rect;
+    char saved_error[512];
+
+    if (shader == NULL) {
+        runtime_set_error_text("No active shader selected for display resize.");
+        return false;
+    }
+
+    if (display_window() == NULL || !present_backend_is_ready()) {
+        runtime_set_error_text("Display resize requested with no active presenter.");
+        return false;
+    }
+
+    if (display_params == NULL || display_params->width <= 0 || display_params->height <= 0) {
+        runtime_set_error_text("Display resize parameters are invalid.");
+        return false;
+    }
+
+    had_rect = display_get_window_rect(&old_rect);
+    old_popup_width = g_popup_width;
+    old_popup_height = g_popup_height;
+
+    if (!SetWindowPos(
+            display_window(),
+            NULL,
+            display_params->x,
+            display_params->y,
+            display_params->width,
+            display_params->height,
+            SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOACTIVATE))
+    {
+        runtime_set_error_hr("SetWindowPos(display)");
+        return false;
+    }
+
+    present_backend_destroy();
+    g_popup_width = display_params->width;
+    g_popup_height = display_params->height;
+
+    ZeroMemory(&backend_desc, sizeof(backend_desc));
+    backend_desc.hwnd = display_window();
+    backend_desc.render_width = g_width;
+    backend_desc.render_height = g_height;
+    backend_desc.popup_width = g_popup_width;
+    backend_desc.popup_height = g_popup_height;
+    backend_desc.shader_color_space = shader->generated_color_space;
+    backend_desc.vsync_enabled = g_vsync_enabled;
+
+    if (present_backend_create(g_present_backend_kind, &backend_desc)) {
+        runtime_session_request_frame();
+        return true;
+    }
+
+    snprintf(saved_error, sizeof(saved_error), "%s", present_backend_error());
+
+    if (had_rect) {
+        SetWindowPos(
+            display_window(),
+            NULL,
+            old_rect.left,
+            old_rect.top,
+            old_popup_width,
+            old_popup_height,
+            SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOACTIVATE);
+    }
+
+    g_popup_width = old_popup_width;
+    g_popup_height = old_popup_height;
+    backend_desc.popup_width = g_popup_width;
+    backend_desc.popup_height = g_popup_height;
+
+    if (!present_backend_create(g_present_backend_kind, &backend_desc)) {
+        runtime_set_error_text(saved_error);
+        return false;
+    }
+
+    runtime_set_error_text(saved_error);
+    return false;
+}
+
 void runtime_session_reset_for_shader(const shader_desc_t *shader)
 {
     refresh_shader_quality(shader);
+    g_active_shader_color_space = (shader != NULL) ? shader->generated_color_space : SHADER_COLOR_SPACE_SDR_DISPLAY;
     timing_init();
     frame_timing_reset();
     g_frame_counter = 0;
@@ -648,8 +1054,8 @@ void runtime_session_set_vsync(bool enabled)
 {
     g_vsync_enabled = enabled;
 
-    if (dxx12_is_ready()) {
-        dxx12_set_vsync(enabled);
+    if (present_backend_is_ready()) {
+        present_backend_set_vsync(enabled);
     }
 
     frame_timing_reset();
@@ -665,7 +1071,7 @@ bool runtime_session_should_render_frame(const shader_desc_t *shader)
 {
     uint mouse_generation;
 
-    if (shader == NULL || !dxx12_is_ready()) {
+    if (shader == NULL || !present_backend_is_ready()) {
         return false;
     }
 
@@ -695,6 +1101,7 @@ bool runtime_session_should_render_frame(const shader_desc_t *shader)
 
 bool runtime_session_render_frame(const shader_desc_t *shader)
 {
+    f32x4_surface_t surface;
     shader_uniforms_t uniforms;
     double frame_start_seconds;
     double frame_end_seconds;
@@ -705,9 +1112,8 @@ bool runtime_session_render_frame(const shader_desc_t *shader)
     }
 
     frame_start_seconds = runtime_session_now_seconds();
-
-    if (!dxx12_begin_frame(&g_frame_pixels)) {
-        runtime_set_error_text(dxx12_error());
+    if (g_frame_pixels == NULL) {
+        runtime_set_error_text("CPU presentation buffer is not available.");
         return false;
     }
 
@@ -752,8 +1158,13 @@ bool runtime_session_render_frame(const shader_desc_t *shader)
         g_has_history = true;
     }
 
-    if (!dxx12_end_frame()) {
-        runtime_set_error_text(dxx12_error());
+    surface.width = g_width;
+    surface.height = g_height;
+    surface.stride_bytes = (int)((size_t)g_width * sizeof(vec4_t));
+    surface.pixels = g_frame_pixels;
+
+    if (!present_backend_present(&surface)) {
+        runtime_set_error_text(present_backend_error());
         return false;
     }
 
@@ -761,6 +1172,7 @@ bool runtime_session_render_frame(const shader_desc_t *shader)
     g_last_mouse_generation = display_input_generation();
     g_last_key_generation = g_key_generation;
     g_frame_counter++;
+    process_capture_request();
 
     frame_end_seconds = runtime_session_now_seconds();
     frame_timing_push(frame_end_seconds - frame_start_seconds);
@@ -805,6 +1217,35 @@ void runtime_session_get_popup_size(int *width_out, int *height_out)
     if (height_out != NULL) {
         *height_out = g_popup_height;
     }
+}
+
+const char *runtime_session_get_backend_name(void)
+{
+    if (present_backend_is_ready()) {
+        return present_backend_display_name(present_backend_kind());
+    }
+
+    return present_backend_display_name(g_present_backend_kind);
+}
+
+const char *runtime_session_get_backend_notice(void)
+{
+    return present_backend_notice();
+}
+
+uint runtime_session_get_backend_notice_version(void)
+{
+    return present_backend_notice_version();
+}
+
+const char *runtime_session_get_notice(void)
+{
+    return g_runtime_notice;
+}
+
+uint runtime_session_get_notice_version(void)
+{
+    return (uint)g_runtime_notice_version;
 }
 
 void runtime_session_shutdown(void)

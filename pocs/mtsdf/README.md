@@ -25,6 +25,8 @@ The first shader target is:
   - `pocs/mtsdf/NotoSans[wdth,wght].ttf`
 - Source:
   - <https://github.com/Chlumsky/msdfgen>
+- Local generator used here:
+  - `C:\third_party\msdf-atlas-gen\msdf-atlas-gen.exe`
 
 ## Generated Outputs
 

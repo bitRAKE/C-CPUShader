@@ -1,13 +1,21 @@
 #include "defines.h"
 #include "win.h"
+#include "host/host_options.h"
 
 #include "shader_catalog.h"
 #include "shaders/sphere_tracing.h"
 #include "shaders/kinetic_orbs.h"
+#include "../pocs/capture_animation/animated_sprite.h"
+#include "../pocs/capture_animation/orbit_stars.h"
 #include "shaders/glass_lenses.h"
 #include "shaders/glass_disks.h"
 #include "shaders/crystal_hall.h"
 #include "shaders/master_class.h"
+#include "shaders/master_class_scrgb.h"
+#include "shaders/master_class_hdr10.h"
+#include "shaders/colorspace_sdr_ui.h"
+#include "shaders/colorspace_hdr_linear.h"
+#include "shaders/colorspace_hdr10_pq.h"
 #include "../pocs/sdf_fixed/sdf_fixed_hello_world.h"
 #include "../pocs/mtsdf/mtsdf_hello_world.h"
 #include "shaders/hsv_picker.h"
@@ -17,16 +25,23 @@
 #include "../pocs/blue_wall_scene/blue_wall_v2_D.h"
 #include "../pocs/blue_wall_scene/blue_wall_v2_E.h"
 
-#define SHADER_ENTRY(id, display_name, entry, buffers_init, features, width, height, blurb) \
-    {#id, display_name, blurb, entry, buffers_init, features, width, height},
+#define SHADER_ENTRY(id, display_name, entry, buffers_init, color_space, features, width, height, blurb) \
+    {#id, display_name, blurb, entry, buffers_init, color_space, features, width, height},
 
 static const shader_desc_t g_shader_catalog[] = {
     SPHERE_TRACING_SHADER(SHADER_ENTRY)
     KINETIC_ORBS_SHADER(SHADER_ENTRY)
+    ORBIT_STARS_SHADER(SHADER_ENTRY)
+    ANIMATED_SPRITE_SHADER(SHADER_ENTRY)
     GLASS_LENSES_SHADER(SHADER_ENTRY)
     GLASS_DISKS_SHADER(SHADER_ENTRY)
     CRYSTAL_HALL_SHADER(SHADER_ENTRY)
     MASTER_CLASS_SHADER(SHADER_ENTRY)
+    MASTER_CLASS_SCRGB_SHADER(SHADER_ENTRY)
+    MASTER_CLASS_HDR10_SHADER(SHADER_ENTRY)
+    COLORSPACE_SDR_UI_SHADER(SHADER_ENTRY)
+    COLORSPACE_HDR_LINEAR_SHADER(SHADER_ENTRY)
+    COLORSPACE_HDR10_PQ_SHADER(SHADER_ENTRY)
     SDF_FIXED_HELLO_WORLD_SHADER(SHADER_ENTRY)
     MTSDF_HELLO_WORLD_SHADER(SHADER_ENTRY)
     HSV_PICKER_SHADER(SHADER_ENTRY)
@@ -116,17 +131,24 @@ static void shader_stop_active(void)
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
     shader_host_callbacks_t shader_host = {0};
+    host_options_t options = {0};
+    char option_error[256];
     int default_shader_index;
 
     (void)hInstance;
     (void)hPrevInstance;
-    (void)lpCmdLine;
     (void)nShowCmd;
+    (void)lpCmdLine;
+
+    if (!host_options_parse(&options, option_error, sizeof(option_error))) {
+        MessageBoxA(NULL, option_error, "Renderer", MB_OK | MB_ICONERROR);
+        return 1;
+    }
 
     default_shader_index = shader_find_index_by_id("sdf_fixed_hello_world");
     g_selected_shader_index = (default_shader_index >= 0) ? default_shader_index : 0;
 
-    if (!window_create("Renderer", 1024, 1024)) {
+    if (!window_create("Renderer", 1024, 1024, options.backend_kind)) {
         return 1;
     }
 

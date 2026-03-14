@@ -11,6 +11,7 @@ typedef struct {
     const char *blurb;
     RenderFunc  render;
     ShaderBuffersInitFunc buffers_init;
+    shader_color_space_t generated_color_space;
     uint        feature_flags;
     int         preferred_width;
     int         preferred_height;

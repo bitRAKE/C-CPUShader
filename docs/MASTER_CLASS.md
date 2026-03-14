@@ -9,6 +9,19 @@ The code lives in:
 - `src/shaders/master_class.c`
 - `src/shaders/master_class.h`
 
+The newer HDR companions live in:
+
+- `src/shaders/master_class_scrgb.c`
+- `src/shaders/master_class_scrgb.h`
+- `src/shaders/master_class_hdr10.c`
+- `src/shaders/master_class_hdr10.h`
+
+Those sibling shaders keep the overall room/object composition idea, but change the output contract:
+
+- `master_class` stays SDR-display authored and tone-maps in-shader
+- `master_class_scrgb` stays scene-linear and lets the backend present HDR
+- `master_class_hdr10` encodes BT.2020 / ST.2084 in-shader and therefore avoids host-side temporal accumulation
+
 ## What This Shader Is
 
 `master_class` is a compact CPU path tracer designed to be a stronger "final image" example than the earlier studies.

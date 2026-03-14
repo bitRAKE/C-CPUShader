@@ -71,6 +71,17 @@ Run the extractor from the repo root with:
 python pocs\blue_wall_scene\extract_scene.py
 ```
 
+Blender discovery is now:
+
+- `%BLENDER_EXE%` if set
+- otherwise `blender` / `blender.exe` from `PATH`
+
+You can also override it explicitly:
+
+```powershell
+python pocs\blue_wall_scene\extract_scene.py --blender "C:\path\to\blender.exe"
+```
+
 That now runs in two phases:
 
 - `pocs/blue_wall_scene/extract_scene_blender.py` inside Blender for the raw dump
