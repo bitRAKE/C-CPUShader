@@ -7,6 +7,8 @@
 #include <shellapi.h>
 #include <string.h>
 
+#define MAX_TREE_ITEMS 256
+
 #define STATS_DIAGNOSTIC_LIMIT 48
 #define STATS_INFO_COLOR RGB(78, 106, 156)
 
@@ -34,6 +36,8 @@ static char              g_execute_cache[32];
 static bool              g_vsync_cache_valid = false;
 static bool              g_vsync_cache = false;
 static int               g_catalog_count = 0;
+static HTREEITEM         g_tree_items[MAX_TREE_ITEMS];
+static int               g_tree_item_count = 0;
 static stats_message_t    g_diagnostic_messages[STATS_DIAGNOSTIC_LIMIT];
 static int               g_diagnostic_count = 0;
 static const char       *g_default_help_lines[] = {
@@ -183,15 +187,6 @@ static INT_PTR CALLBACK StatsDlgProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
 
         case WM_COMMAND:
             switch (LOWORD(wp)) {
-                case IDC_SHADER_LIST:
-                    if (HIWORD(wp) == LBN_SELCHANGE && g_callbacks.on_select_shader != NULL) {
-                        int index = (int)SendDlgItemMessageA(hwnd, IDC_SHADER_LIST, LB_GETCURSEL, 0, 0);
-                        if (index >= 0) {
-                            g_callbacks.on_select_shader(index, g_user_data);
-                        }
-                    }
-                    return TRUE;
-
                 case IDC_BUTTON_EXECUTE:
                     if (g_callbacks.on_execute_shader != NULL) {
                         g_callbacks.on_execute_shader(g_user_data);
@@ -238,6 +233,17 @@ static INT_PTR CALLBACK StatsDlgProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
                 ShellExecuteW(hwnd, L"open", link->item.szUrl, NULL, NULL, SW_SHOWNORMAL);
                 return TRUE;
             }
+
+            if (notify != NULL &&
+                notify->idFrom == IDC_SHADER_TREE &&
+                (notify->code == TVN_SELCHANGEDA || notify->code == TVN_SELCHANGEDW))
+            {
+                const NMTREEVIEWA *tv = (const NMTREEVIEWA *)lp;
+                if (tv->itemNew.lParam >= 0 && g_callbacks.on_select_shader != NULL) {
+                    g_callbacks.on_select_shader((int)tv->itemNew.lParam, g_user_data);
+                }
+                return TRUE;
+            }
             break;
         }
 
@@ -268,7 +274,7 @@ bool stats_create(HINSTANCE instance, const char *title, const stats_callbacks_t
     INITCOMMONCONTROLSEX common_controls = {0};
 
     common_controls.dwSize = sizeof(common_controls);
-    common_controls.dwICC = ICC_STANDARD_CLASSES | ICC_LINK_CLASS;
+    common_controls.dwICC = ICC_STANDARD_CLASSES | ICC_LINK_CLASS | ICC_TREEVIEW_CLASSES;
     InitCommonControlsEx(&common_controls);
 
     if (g_msftedit_module == NULL) {
@@ -363,50 +369,133 @@ void stats_clear_diagnostics(void)
 
 void stats_set_shader_catalog(const shader_desc_t *catalog, int count)
 {
-    HWND list_box;
+    /* Legacy flat population -- puts all shaders under a single "Shaders" root. */
+    HWND tree;
+    TVINSERTSTRUCTA insert;
+    HTREEITEM branch;
 
     if (g_stats_hwnd == NULL) {
         return;
     }
 
-    list_box = GetDlgItem(g_stats_hwnd, IDC_SHADER_LIST);
-    if (list_box == NULL) {
+    tree = GetDlgItem(g_stats_hwnd, IDC_SHADER_TREE);
+    if (tree == NULL) {
         return;
     }
 
-    SendMessageA(list_box, LB_RESETCONTENT, 0, 0);
+    TreeView_DeleteAllItems(tree);
     g_catalog_count = 0;
+    g_tree_item_count = 0;
 
     if (catalog == NULL || count <= 0) {
         return;
     }
 
-    for (int i = 0; i < count; i++) {
+    /* Insert a single root branch. */
+    ZeroMemory(&insert, sizeof(insert));
+    insert.hParent = TVI_ROOT;
+    insert.hInsertAfter = TVI_LAST;
+    insert.item.mask = TVIF_TEXT | TVIF_PARAM;
+    insert.item.pszText = (LPSTR)"Shaders";
+    insert.item.lParam = (LPARAM)-1;
+    branch = (HTREEITEM)SendMessageA(tree, TVM_INSERTITEMA, 0, (LPARAM)&insert);
+
+    for (int i = 0; i < count && g_tree_item_count < MAX_TREE_ITEMS; i++) {
         const char *label = catalog[i].display_name != NULL ? catalog[i].display_name : catalog[i].id;
-        SendMessageA(list_box, LB_ADDSTRING, 0, (LPARAM)label);
+        ZeroMemory(&insert, sizeof(insert));
+        insert.hParent = branch;
+        insert.hInsertAfter = TVI_LAST;
+        insert.item.mask = TVIF_TEXT | TVIF_PARAM;
+        insert.item.pszText = (LPSTR)label;
+        insert.item.lParam = (LPARAM)i;
+        g_tree_items[g_tree_item_count] = (HTREEITEM)SendMessageA(tree, TVM_INSERTITEMA, 0, (LPARAM)&insert);
+        g_tree_item_count++;
         g_catalog_count++;
     }
+
+    TreeView_Expand(tree, branch, TVE_EXPAND);
 }
 
-void stats_set_selected_shader(int index)
+void stats_set_shader_catalog_grouped(
+    const shader_desc_t *shaders, int shader_count,
+    const shader_collection_t *collections, int collection_count,
+    int (*get_collection)(int shader_index))
 {
-    HWND list_box;
+    HWND tree;
+    TVINSERTSTRUCTA insert;
+    HTREEITEM branches[64];  /* max collection branches */
 
     if (g_stats_hwnd == NULL) {
         return;
     }
 
-    list_box = GetDlgItem(g_stats_hwnd, IDC_SHADER_LIST);
-    if (list_box == NULL) {
+    tree = GetDlgItem(g_stats_hwnd, IDC_SHADER_TREE);
+    if (tree == NULL) {
         return;
     }
 
-    if (index < 0 || index >= g_catalog_count) {
-        SendMessageA(list_box, LB_SETCURSEL, (WPARAM)-1, 0);
+    TreeView_DeleteAllItems(tree);
+    g_catalog_count = 0;
+    g_tree_item_count = 0;
+
+    if (shaders == NULL || shader_count <= 0) {
         return;
     }
 
-    SendMessageA(list_box, LB_SETCURSEL, (WPARAM)index, 0);
+    /* Insert collection branches. */
+    for (int c = 0; c < collection_count && c < 64; c++) {
+        const char *name = collections[c].name != NULL ? collections[c].name : "Unknown";
+        ZeroMemory(&insert, sizeof(insert));
+        insert.hParent = TVI_ROOT;
+        insert.hInsertAfter = TVI_LAST;
+        insert.item.mask = TVIF_TEXT | TVIF_PARAM;
+        insert.item.pszText = (LPSTR)name;
+        insert.item.lParam = (LPARAM)-1;
+        branches[c] = (HTREEITEM)SendMessageA(tree, TVM_INSERTITEMA, 0, (LPARAM)&insert);
+    }
+
+    /* Insert shader leaves under their collection branches. */
+    for (int i = 0; i < shader_count && g_tree_item_count < MAX_TREE_ITEMS; i++) {
+        int col = get_collection(i);
+        HTREEITEM parent = (col >= 0 && col < collection_count) ? branches[col] : TVI_ROOT;
+        const char *label = shaders[i].display_name != NULL ? shaders[i].display_name : shaders[i].id;
+
+        ZeroMemory(&insert, sizeof(insert));
+        insert.hParent = parent;
+        insert.hInsertAfter = TVI_LAST;
+        insert.item.mask = TVIF_TEXT | TVIF_PARAM;
+        insert.item.pszText = (LPSTR)label;
+        insert.item.lParam = (LPARAM)i;
+        g_tree_items[g_tree_item_count] = (HTREEITEM)SendMessageA(tree, TVM_INSERTITEMA, 0, (LPARAM)&insert);
+        g_tree_item_count++;
+        g_catalog_count++;
+    }
+
+    /* Expand all collection branches so shaders are visible. */
+    for (int c = 0; c < collection_count && c < 64; c++) {
+        TreeView_Expand(tree, branches[c], TVE_EXPAND);
+    }
+}
+
+void stats_set_selected_shader(int index)
+{
+    HWND tree;
+
+    if (g_stats_hwnd == NULL) {
+        return;
+    }
+
+    tree = GetDlgItem(g_stats_hwnd, IDC_SHADER_TREE);
+    if (tree == NULL) {
+        return;
+    }
+
+    if (index < 0 || index >= g_tree_item_count) {
+        TreeView_SelectItem(tree, NULL);
+        return;
+    }
+
+    TreeView_SelectItem(tree, g_tree_items[index]);
 }
 
 void stats_update(const stats_state_t *state)

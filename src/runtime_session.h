@@ -12,18 +12,30 @@ typedef struct {
     int                      y;
     int                      width;
     int                      height;
+    bool                     show_window;
+    bool                     transparent_display;
     const display_callbacks_t *callbacks;
     void                    *user_data;
 } runtime_display_params_t;
 
-void  runtime_session_init(const char *title, int default_width, int default_height, present_backend_kind_t backend_kind);
+void  runtime_session_init(
+    const char *title,
+    int default_width,
+    int default_height,
+    present_backend_kind_t backend_kind,
+    bool transparent_display,
+    bool headless_mode,
+    const shader_variable_override_t *variable_overrides,
+    int variable_override_count);
 void  runtime_session_shutdown(void);
 bool  runtime_session_start_workers(int num_threads);
 void  runtime_session_request_frame(void);
 bool  runtime_session_request_capture(const char *shader_id, int frame_count);
+bool  runtime_session_capture_requested(void);
+bool  runtime_session_capture_in_progress(void);
 void  runtime_session_reset_key_state(void);
 void  runtime_session_note_key_message(const MSG *msg);
-bool  runtime_session_prepare_shader_buffers(const shader_desc_t *shader);
+bool  runtime_session_prepare_shader_contract(const shader_desc_t *shader);
 void  runtime_session_stop_shader(void);
 bool  runtime_session_ensure_for_shader(const shader_desc_t *shader, const runtime_display_params_t *display_params);
 void  runtime_session_reset_for_shader(const shader_desc_t *shader);

@@ -2,7 +2,7 @@
 
 #define IDD_STATUS_DIALOG      101
 
-#define IDC_SHADER_LIST        1000
+#define IDC_SHADER_TREE        1000
 #define IDC_STATUS_SHADER      1001
 #define IDC_STATUS_RENDER      1002
 #define IDC_STATUS_PERF        1003

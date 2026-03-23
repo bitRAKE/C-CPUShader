@@ -66,50 +66,6 @@ static const mcx_rect_light_t MCX_LIGHTS[] = {
 
 static const int MCX_LIGHT_COUNT = (int)(sizeof(MCX_LIGHTS) / sizeof(MCX_LIGHTS[0]));
 
-static float mcx_ray_sphere(vec3_t ro, vec3_t rd, vec3_t center, float radius)
-{
-    vec3_t offset = v3_sub(ro, center);
-    float b = 2.0f * v3_dot(rd, offset);
-    float c = v3_dot(offset, offset) - radius * radius;
-    float h = b * b - 4.0f * c;
-
-    if (h < 0.0f) {
-        return -1.0f;
-    }
-
-    h = sqrtf(h);
-
-    {
-        float near_hit = (-b - h) * 0.5f;
-        if (near_hit > 0.001f) {
-            return near_hit;
-        }
-    }
-
-    {
-        float far_hit = (-b + h) * 0.5f;
-        if (far_hit > 0.001f) {
-            return far_hit;
-        }
-    }
-
-    return -1.0f;
-}
-
-static float mcx_ray_plane(vec3_t ro, vec3_t rd, vec3_t plane_point, vec3_t plane_normal)
-{
-    float denom = v3_dot(rd, plane_normal);
-
-    if (fabsf(denom) < 0.0001f) {
-        return -1.0f;
-    }
-
-    {
-        float t = v3_dot(v3_sub(plane_point, ro), plane_normal) / denom;
-        return (t > 0.001f) ? t : -1.0f;
-    }
-}
-
 static uint mcx_next_rand(uint* state)
 {
     *state = *state * 747796405u + 2891336453u;
@@ -168,13 +124,6 @@ static vec3_t mcx_sample_glossy_lobe(vec3_t reflected, vec3_t normal, float roug
     return direction;
 }
 
-static float mcx_schlick(float cosine, float eta_i, float eta_t)
-{
-    float r0 = (eta_i - eta_t) / (eta_i + eta_t);
-    r0 *= r0;
-    return r0 + (1.0f - r0) * powf(1.0f - cosine, 5.0f);
-}
-
 static vec3_t mcx_beer_lambert(vec3_t absorption, float distance)
 {
     return vec3(
@@ -227,7 +176,7 @@ static void mcx_set_hit_rect_light(mcx_hit_t* hit, vec3_t ro, vec3_t rd, int lig
         return;
     }
 
-    distance = mcx_ray_plane(ro, rd, light->center, light->normal);
+    distance = shader_ray_plane(ro, rd, light->center, light->normal);
     if (distance <= 0.0f || distance >= hit->distance) {
         return;
     }
@@ -265,7 +214,7 @@ static void mcx_set_hit_plane(
     float ior,
     vec3_t absorption)
 {
-    float distance = mcx_ray_plane(ro, rd, plane_point, plane_normal);
+    float distance = shader_ray_plane(ro, rd, plane_point, plane_normal);
 
     if (distance <= 0.0f || distance >= hit->distance) {
         return;
@@ -285,7 +234,7 @@ static void mcx_set_hit_plane(
 
 static void mcx_set_hit_floor(mcx_hit_t* hit, vec3_t ro, vec3_t rd)
 {
-    float distance = mcx_ray_plane(ro, rd, vec3(0.0f, -1.18f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    float distance = shader_ray_plane(ro, rd, vec3(0.0f, -1.18f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
     if (distance <= 0.0f || distance >= hit->distance) {
         return;
@@ -316,7 +265,7 @@ static void mcx_set_hit_sphere(
     float ior,
     vec3_t absorption)
 {
-    float distance = mcx_ray_sphere(ro, rd, center, radius);
+    float distance = shader_ray_sphere(ro, rd, center, radius);
     vec3_t point;
     vec3_t outward_normal;
 
@@ -474,7 +423,7 @@ static vec3_t mcx_trace(vec3_t ro, vec3_t rd, uint* state)
             vec3_t reflected = v3_reflect(rd, hit.normal);
             vec3_t refracted = v3_refract(rd, hit.normal, eta_i / eta_t);
             bool can_refract = v3_length_sq(refracted) > 0.0f;
-            float reflectance = can_refract ? mcx_schlick(cosine, eta_i, eta_t) : 1.0f;
+            float reflectance = can_refract ? shader_schlick(cosine, eta_i, eta_t) : 1.0f;
 
             if (!hit.is_front_face) {
                 throughput = v3_mul(throughput, mcx_beer_lambert(hit.absorption, hit.distance));

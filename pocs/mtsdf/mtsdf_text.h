@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../src/defines.h"
-#include "../../src/u_texture.h"
+#include "shader_defines.h"
+#include "u_texture.h"
 #include "ascii_mtsdf_font.h"
 
 typedef mtsdf_ascii_glyph_t mtsdf_glyph_t;

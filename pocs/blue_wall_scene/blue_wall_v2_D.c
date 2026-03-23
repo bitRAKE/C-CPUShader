@@ -1,7 +1,7 @@
 #include "blue_wall_v2_D.h"
 
 #include "blue_wall_v2_common.h"
-#include "../../src/u_texture.h"
+#include "u_texture.h"
 
 static void blue_wall_v2_D_commit_candidate(bw2_hit_t *hit, bw2_hit_t candidate)
 {

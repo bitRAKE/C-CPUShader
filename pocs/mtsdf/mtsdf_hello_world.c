@@ -2,25 +2,11 @@
 
 #include "mtsdf_text.h"
 
-static vec3_t mtsdf_hsv_to_rgb(float hue, float saturation, float value)
-{
-    float h = hue - floorf(hue);
-    float x = h * 6.0f;
-    float sector = floorf(x);
-    float fraction = x - sector;
-    float p = value * (1.0f - saturation);
-    float q = value * (1.0f - saturation * fraction);
-    float t = value * (1.0f - saturation * (1.0f - fraction));
-
-    switch ((int)sector % 6) {
-        case 0: return vec3(value, t, p);
-        case 1: return vec3(q, value, p);
-        case 2: return vec3(p, value, t);
-        case 3: return vec3(p, q, value);
-        case 4: return vec3(t, p, value);
-        default: return vec3(value, p, q);
-    }
-}
+#ifdef SHADER_PLUGIN_BUILD
+#include "shader_host_services.h"
+HMODULE plugin_get_module(void);
+#define MTSDF_TEXTURE_RESOURCE "ASCII_MTSDF_PNG"
+#endif
 
 static vec3_t mtsdf_blend_over(vec3_t base, vec3_t layer, float alpha)
 {
@@ -110,7 +96,7 @@ static void mtsdf_draw_bubble_run(
                 float core_highlight = fill * smoothstepf(1.0f, 0.0f, sample.glyph_uv.y * 0.92f + sample.glyph_uv.x * 0.30f) * 0.18f;
                 float hue = style->hue_offset + (float)index * 0.095f + sample.glyph_uv.x * style->hue_scale_x + sample.glyph_uv.y * style->hue_scale_y;
                 hue = hue - floorf(hue);
-                vec3_t fill_color = mtsdf_hsv_to_rgb(hue, style->saturation, style->value);
+                vec3_t fill_color = shader_hsv_to_rgb(hue, style->saturation, style->value);
                 vec3_t shell_color = v3_lerp(vec3(1.0f, 1.0f, 1.0f), fill_color, 0.18f);
                 vec3_t rim_color = v3_lerp(shell_color, vec3(1.0f, 1.0f, 1.0f), 0.55f);
 
@@ -207,8 +193,24 @@ static void mtsdf_draw_giant_showcase(vec3_t *color, vec2_t fragCoord, const sha
     }
 }
 
-ShaderBuffersCleanupFunc mtsdf_hello_world_buffers_init(shader_buffers_t *buffers, char *error, size_t error_size)
+ShaderBuffersCleanupFunc mtsdf_hello_world_buffers_init(shader_buffers_t *buffers, const shader_host_services_t *services, char *error, size_t error_size)
 {
+#ifdef SHADER_PLUGIN_BUILD
+    HMODULE module = plugin_get_module();
+    if (services->load_texture_resource(
+            buffers,
+            "ascii_mtsdf",
+            module,
+            MTSDF_TEXTURE_RESOURCE,
+            SHADER_TEXEL_FORMAT_RGBA8_UNORM,
+            error,
+            error_size) == NULL)
+    {
+        return NULL;
+    }
+    return services->default_cleanup;
+#else
+    (void)services;
     if (shader_buffers_load_texture_module_relative(
             buffers,
             "ascii_mtsdf",
@@ -219,8 +221,8 @@ ShaderBuffersCleanupFunc mtsdf_hello_world_buffers_init(shader_buffers_t *buffer
     {
         return NULL;
     }
-
     return shader_buffers_default_cleanup;
+#endif
 }
 
 vec4_t mtsdf_hello_world_main(vec2_t fragCoord, const shader_uniforms_t *uniforms)

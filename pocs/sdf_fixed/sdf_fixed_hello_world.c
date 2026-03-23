@@ -1,8 +1,14 @@
 #include "sdf_fixed_hello_world.h"
 
-#include "../../src/u_texture.h"
+#include "u_texture.h"
+
+#ifdef SHADER_PLUGIN_BUILD
+#include "shader_host_services.h"
+HMODULE plugin_get_module(void);
+#endif
 
 #define SDF_GRID_TEXTURE_LABEL "ascii_sdf_grid"
+#define SDF_GRID_TEXTURE_RESOURCE "ASCII_SDF_GRID_PNG"
 #define SDF_GRID_TEXTURE_PATH "pocs/sdf_fixed/ascii_sdf_grid.png"
 
 #define SDF_GRID_ATLAS_WIDTH 1024.0f
@@ -34,26 +40,6 @@ static vec3_t sdf_fixed_background(vec2_t fragCoord, vec2_t resolution)
     color = v3_add(color, v3_mul1(glow, vignette * 0.22f));
     color = v3_mul1(color, vignette);
     return color;
-}
-
-static vec3_t sdf_fixed_hsv_to_rgb(float hue, float saturation, float value)
-{
-    float h = hue - floorf(hue);
-    float x = h * 6.0f;
-    float sector = floorf(x);
-    float fraction = x - sector;
-    float p = value * (1.0f - saturation);
-    float q = value * (1.0f - saturation * fraction);
-    float t = value * (1.0f - saturation * (1.0f - fraction));
-
-    switch ((int)sector % 6) {
-        case 0: return vec3(value, t, p);
-        case 1: return vec3(q, value, p);
-        case 2: return vec3(p, value, t);
-        case 3: return vec3(p, q, value);
-        case 4: return vec3(t, p, value);
-        default: return vec3(value, p, q);
-    }
 }
 
 static vec3_t sdf_fixed_blend_over(vec3_t base, vec3_t layer, float alpha)
@@ -224,7 +210,7 @@ static void sdf_fixed_draw_text(
             vec3_t outline_color;
 
             hue = hue - floorf(hue);
-            fill_color = sdf_fixed_hsv_to_rgb(hue, 0.74f, 1.0f);
+            fill_color = shader_hsv_to_rgb(hue, 0.74f, 1.0f);
             outline_color = v3_lerp(vec3(1.0f, 1.0f, 1.0f), fill_color, 0.15f);
 
             *color = sdf_fixed_blend_over(*color, outline_color, outline * outline_alpha);
@@ -236,8 +222,24 @@ static void sdf_fixed_draw_text(
     }
 }
 
-ShaderBuffersCleanupFunc sdf_fixed_hello_world_buffers_init(shader_buffers_t *buffers, char *error, size_t error_size)
+ShaderBuffersCleanupFunc sdf_fixed_hello_world_buffers_init(shader_buffers_t *buffers, const shader_host_services_t *services, char *error, size_t error_size)
 {
+#ifdef SHADER_PLUGIN_BUILD
+    HMODULE module = plugin_get_module();
+    if (services->load_texture_resource(
+            buffers,
+            SDF_GRID_TEXTURE_LABEL,
+            module,
+            SDF_GRID_TEXTURE_RESOURCE,
+            SHADER_TEXEL_FORMAT_R8_UNORM,
+            error,
+            error_size) == NULL)
+    {
+        return NULL;
+    }
+    return services->default_cleanup;
+#else
+    (void)services;
     if (shader_buffers_load_texture_module_relative(
             buffers,
             SDF_GRID_TEXTURE_LABEL,
@@ -248,8 +250,8 @@ ShaderBuffersCleanupFunc sdf_fixed_hello_world_buffers_init(shader_buffers_t *bu
     {
         return NULL;
     }
-
     return shader_buffers_default_cleanup;
+#endif
 }
 
 vec4_t sdf_fixed_hello_world_main(vec2_t fragCoord, const shader_uniforms_t *uniforms)

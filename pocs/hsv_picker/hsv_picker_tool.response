@@ -1,0 +1,26 @@
+-std=c17
+-Wall
+-Wextra
+-Werror
+-pedantic
+-target x86_64-pc-windows-msvc
+-DUNICODE
+-D_UNICODE
+-DWIN32_LEAN_AND_MEAN
+-D_WIN32_WINNT=0x0A00
+-march=native
+-O3
+-ffunction-sections
+-fdata-sections
+-fno-stack-protector
+-ffreestanding
+-fno-builtin
+-luser32
+-lgdi32
+-flto
+-fuse-ld=lld
+-Xlinker "-subsystem:windows,10.0"
+-o hsv_picker_tool.exe
+hsv_picker_tool.c
+hsv_picker.c
+../../src/defines.c

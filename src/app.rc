@@ -6,9 +6,11 @@ STYLE DS_SHELLFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_MIN
 CAPTION "Renderer Status"
 FONT 9, "Segoe UI"
 BEGIN
-    // Left Column: Listbox
+    // Left Column: Shader Treeview
     LTEXT           "Shaders:",       -1, 10, 8, 48, 10
-    LISTBOX         IDC_SHADER_LIST,  10, 20, 118, 170, LBS_NOTIFY | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "", IDC_SHADER_TREE, "SysTreeView32",
+                    0x50210037,
+                    10, 20, 118, 170
 
     // Right Column: Details & Expectations
     LTEXT           "Expectations:",  -1, 140, 10, 70, 10

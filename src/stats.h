@@ -1,6 +1,7 @@
 #pragma once
 
 #include "shader_catalog.h"
+#include "shader_catalog_runtime.h"
 
 typedef struct {
     const char *shader_name;
@@ -41,6 +42,10 @@ void stats_set_backend_name(const char *backend_name);
 void stats_prepend_message(const char *text, COLORREF color);
 void stats_clear_diagnostics(void);
 void stats_set_shader_catalog(const shader_desc_t *catalog, int count);
+void stats_set_shader_catalog_grouped(
+    const shader_desc_t *shaders, int shader_count,
+    const shader_collection_t *collections, int collection_count,
+    int (*get_collection)(int shader_index));
 void stats_set_selected_shader(int index);
 void stats_update(const stats_state_t *state);
 bool stats_is_dialog_message(MSG *msg);

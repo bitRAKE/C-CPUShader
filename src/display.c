@@ -8,6 +8,7 @@
 static HWND                g_display_hwnd = NULL;
 static display_callbacks_t g_callbacks = {0};
 static void               *g_user_data = NULL;
+static bool                g_display_transparent = false;
 static bool                g_drag_active = false;
 static bool                g_left_button_down = false;
 static bool                g_has_mouse_position = false;
@@ -151,6 +152,9 @@ static LRESULT CALLBACK DisplayWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp
             return 0;
 
         case WM_LBUTTONDOWN:
+            if (g_display_transparent) {
+                return 0;
+            }
             update_mouse_from_lparam(lp);
             g_mouse_anchor = g_mouse_current;
             g_left_button_down = true;
@@ -158,13 +162,18 @@ static LRESULT CALLBACK DisplayWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp
             return 0;
 
         case WM_LBUTTONUP:
+            if (g_display_transparent) {
+                return 0;
+            }
             update_mouse_from_lparam(lp);
             g_left_button_down = false;
             sync_capture(hwnd);
             return 0;
 
         case WM_MOUSEMOVE:
-            update_mouse_from_lparam(lp);
+            if (!g_display_transparent) {
+                update_mouse_from_lparam(lp);
+            }
             continue_drag(hwnd);
             return 0;
 
@@ -202,6 +211,7 @@ static LRESULT CALLBACK DisplayWndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp
             clear_drag();
             g_left_button_down = false;
             g_has_mouse_position = false;
+            g_display_transparent = false;
             g_input_generation++;
             return 0;
     }
@@ -233,9 +243,12 @@ bool display_create(
     int y,
     int width,
     int height,
+    bool transparent_display,
     const display_callbacks_t *callbacks,
     void *user_data)
 {
+    DWORD ex_style = DISPLAY_WINDOW_EX_STYLE;
+
     if (!register_display_class(instance)) {
         return false;
     }
@@ -246,9 +259,14 @@ bool display_create(
         ZeroMemory(&g_callbacks, sizeof(g_callbacks));
     }
     g_user_data = user_data;
+    g_display_transparent = transparent_display;
+
+    if (transparent_display) {
+        ex_style |= WS_EX_LAYERED;
+    }
 
     g_display_hwnd = CreateWindowExA(
-        DISPLAY_WINDOW_EX_STYLE,
+        ex_style,
         DISPLAY_WINDOW_CLASS,
         title,
         DISPLAY_WINDOW_STYLE,

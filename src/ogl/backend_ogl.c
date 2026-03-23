@@ -18,7 +18,7 @@ static void ogl_update_hdr_status(void)
     snprintf(
         g_ogl.hdr_status,
         sizeof(g_ogl.hdr_status),
-        "OpenGL mode is using the shared DXGI/DirectX 12 presentation path because the host does not treat WGL window presentation as the canonical Windows HDR path. %s",
+        "OpenGL DXGI mode is using the shared DXGI/DirectX 12 presentation path because the host does not treat WGL window presentation as the canonical Windows HDR path. %s",
         dx12_status != NULL ? dx12_status : "DXGI HDR status is not available.");
 }
 
@@ -30,7 +30,7 @@ bool backend_ogl_create(const present_backend_desc_t *desc)
         snprintf(
             g_ogl.error,
             sizeof(g_ogl.error),
-            "OpenGL requested DXGI presentation, but the shared DirectX 12 presenter failed (%s).",
+            "OpenGL DXGI requested the shared DirectX 12 presenter, but it failed (%s).",
             backend_dx12_error());
         return false;
     }
@@ -56,7 +56,7 @@ bool backend_ogl_present(const f32x4_surface_t *surface)
         snprintf(
             g_ogl.error,
             sizeof(g_ogl.error),
-            "OpenGL requested DXGI presentation, but the shared DirectX 12 presenter failed (%s).",
+            "OpenGL DXGI requested the shared DirectX 12 presenter, but it failed (%s).",
             backend_dx12_error());
         return false;
     }

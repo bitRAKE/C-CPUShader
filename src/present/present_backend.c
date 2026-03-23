@@ -45,7 +45,7 @@ static const char *present_backend_hdr_notice_text(present_backend_kind_t kind)
         case PRESENT_BACKEND_DX12:
             return backend_dx12_hdr_status();
 
-        case PRESENT_BACKEND_OGL:
+        case PRESENT_BACKEND_OGLDX:
             return backend_ogl_hdr_status();
 
         case PRESENT_BACKEND_GDI:
@@ -70,7 +70,7 @@ present_conversion_mode_t present_backend_conversion_mode(void)
         case PRESENT_BACKEND_DX12:
             return PRESENT_CONVERSION_DEVICE_SHADER;
 
-        case PRESENT_BACKEND_OGL:
+        case PRESENT_BACKEND_OGLDX:
             return backend_ogl_conversion_mode();
 
         case PRESENT_BACKEND_VK:
@@ -135,7 +135,7 @@ static bool present_backend_fallback_to_gdi(const char *reason)
             backend_dx12_destroy();
             break;
 
-        case PRESENT_BACKEND_OGL:
+        case PRESENT_BACKEND_OGLDX:
             backend_ogl_destroy();
             break;
 
@@ -146,6 +146,7 @@ static bool present_backend_fallback_to_gdi(const char *reason)
         case PRESENT_BACKEND_VK:
             backend_vk_destroy();
             break;
+
     }
 
     if (!backend_gdi_create(&g_present_backend_desc)) {
@@ -173,7 +174,7 @@ const char *present_backend_name(present_backend_kind_t kind)
 {
     switch (kind) {
         case PRESENT_BACKEND_DX12: return "dx12";
-        case PRESENT_BACKEND_OGL: return "ogl";
+        case PRESENT_BACKEND_OGLDX: return "ogldx";
         case PRESENT_BACKEND_VK: return "vk";
         case PRESENT_BACKEND_GDI: return "gdi";
     }
@@ -185,7 +186,7 @@ const char *present_backend_display_name(present_backend_kind_t kind)
 {
     switch (kind) {
         case PRESENT_BACKEND_DX12: return "DirectX 12";
-        case PRESENT_BACKEND_OGL: return "OpenGL";
+        case PRESENT_BACKEND_OGLDX: return "OpenGL DXGI";
         case PRESENT_BACKEND_VK: return "Vulkan";
         case PRESENT_BACKEND_GDI: return "GDI Blit";
     }
@@ -216,10 +217,10 @@ bool present_backend_create(present_backend_kind_t kind, const present_backend_d
             present_backend_note_backend_status();
             return true;
 
-        case PRESENT_BACKEND_OGL:
+        case PRESENT_BACKEND_OGLDX:
             if (!backend_ogl_create(desc)) {
                 char reason[512];
-                snprintf(reason, sizeof(reason), "OpenGL backend failed (%s).", backend_ogl_error());
+                snprintf(reason, sizeof(reason), "OpenGL DXGI backend failed (%s).", backend_ogl_error());
                 return present_backend_fallback_to_gdi(reason);
             }
             present_backend_note_backend_status();
@@ -258,7 +259,7 @@ void present_backend_destroy(void)
             backend_gdi_destroy();
             break;
 
-        case PRESENT_BACKEND_OGL:
+        case PRESENT_BACKEND_OGLDX:
             backend_ogl_destroy();
             break;
 
@@ -274,7 +275,7 @@ bool present_backend_is_ready(void)
         case PRESENT_BACKEND_DX12:
             return backend_dx12_is_ready();
 
-        case PRESENT_BACKEND_OGL:
+        case PRESENT_BACKEND_OGLDX:
             return backend_ogl_is_ready();
 
         case PRESENT_BACKEND_GDI:
@@ -282,6 +283,7 @@ bool present_backend_is_ready(void)
 
         case PRESENT_BACKEND_VK:
             return backend_vk_is_ready();
+
     }
 
     return false;
@@ -306,10 +308,10 @@ bool present_backend_present(const f32x4_surface_t *surface)
             }
             return true;
 
-        case PRESENT_BACKEND_OGL:
+        case PRESENT_BACKEND_OGLDX:
             if (!backend_ogl_present(surface)) {
                 char reason[512];
-                snprintf(reason, sizeof(reason), "OpenGL present failed (%s).", backend_ogl_error());
+                snprintf(reason, sizeof(reason), "OpenGL DXGI present failed (%s).", backend_ogl_error());
                 if (!present_backend_fallback_to_gdi(reason)) {
                     present_backend_set_error_text(reason);
                     return false;
@@ -344,6 +346,7 @@ bool present_backend_present(const f32x4_surface_t *surface)
                 return true;
             }
             return true;
+
     }
 
     present_backend_set_error_text("No active backend.");
@@ -357,7 +360,7 @@ void present_backend_set_vsync(bool enabled)
             backend_dx12_set_vsync(enabled);
             break;
 
-        case PRESENT_BACKEND_OGL:
+        case PRESENT_BACKEND_OGLDX:
             backend_ogl_set_vsync(enabled);
             break;
 
@@ -368,6 +371,7 @@ void present_backend_set_vsync(bool enabled)
         case PRESENT_BACKEND_VK:
             backend_vk_set_vsync(enabled);
             break;
+
     }
 }
 
@@ -377,7 +381,7 @@ bool present_backend_get_vsync(void)
         case PRESENT_BACKEND_DX12:
             return backend_dx12_get_vsync();
 
-        case PRESENT_BACKEND_OGL:
+        case PRESENT_BACKEND_OGLDX:
             return backend_ogl_get_vsync();
 
         case PRESENT_BACKEND_GDI:
@@ -385,6 +389,7 @@ bool present_backend_get_vsync(void)
 
         case PRESENT_BACKEND_VK:
             return backend_vk_get_vsync();
+
     }
 
     return false;
@@ -399,7 +404,7 @@ const char *present_backend_error(void)
             }
             break;
 
-        case PRESENT_BACKEND_OGL:
+        case PRESENT_BACKEND_OGLDX:
             if (backend_ogl_error()[0] != '\0') {
                 return backend_ogl_error();
             }
@@ -416,6 +421,7 @@ const char *present_backend_error(void)
                 return backend_vk_error();
             }
             break;
+
     }
 
     return g_present_backend_error;
@@ -432,7 +438,7 @@ bool present_backend_is_hdr_presenting(void)
         case PRESENT_BACKEND_DX12:
             return backend_dx12_is_hdr_presenting();
 
-        case PRESENT_BACKEND_OGL:
+        case PRESENT_BACKEND_OGLDX:
             return backend_ogl_is_hdr_presenting();
 
         case PRESENT_BACKEND_GDI:
@@ -440,6 +446,7 @@ bool present_backend_is_hdr_presenting(void)
 
         case PRESENT_BACKEND_VK:
             return backend_vk_is_hdr_presenting();
+
     }
 
     return false;

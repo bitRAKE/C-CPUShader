@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../src/defines.h"
+#include "shader_defines.h"
 
 #define ORBIT_STARS_LOOP_FRAMES 30u
 
@@ -8,7 +8,8 @@ vec4_t orbit_stars_main(vec2_t fragCoord, const shader_uniforms_t *uniforms);
 
 #define ORBIT_STARS_SHADER(X) X( \
     orbit_stars, "Orbit Stars", orbit_stars_main, \
-    NULL, \
+    SHADER_BUFFER_NONE, \
+    SHADER_VARIABLE_NONE, \
     SHADER_COLOR_SPACE_SDR_DISPLAY, \
     SHADER_FEATURE_FRAME, \
     128, 64, \

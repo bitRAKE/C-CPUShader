@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-#include "../../src/defines.h"
+#include "shader_defines.h"
 #include "scene_extract.h"
 #include "scene_extract_generated.h"
 
@@ -961,29 +961,6 @@ static vec3_t bw2_estimate_direct_light(vec3_t point, vec3_t normal, vec3_t albe
     return color;
 }
 
-static vec3_t bw2_aces_tonemap(vec3_t color)
-{
-    const float a = 2.51f;
-    const float b = 0.03f;
-    const float c = 2.43f;
-    const float d = 0.59f;
-    const float e = 0.14f;
-
-    color = v3_mul1(color, 1.08f);
-    return vec3(
-        saturate((color.x * (a * color.x + b)) / (color.x * (c * color.x + d) + e)),
-        saturate((color.y * (a * color.y + b)) / (color.y * (c * color.y + d) + e)),
-        saturate((color.z * (a * color.z + b)) / (color.z * (c * color.z + d) + e)));
-}
-
-static vec3_t bw2_gamma_encode(vec3_t color)
-{
-    return vec3(
-        powf(saturate(color.x), 1.0f / 2.2f),
-        powf(saturate(color.y), 1.0f / 2.2f),
-        powf(saturate(color.z), 1.0f / 2.2f));
-}
-
 static void bw2_make_camera_ray(vec2_t fragCoord, const shader_uniforms_t *uniforms, uint *state, vec3_t *ray_origin, vec3_t *ray_dir)
 {
     vec2_t resolution = uniforms->resolution;
@@ -1058,8 +1035,8 @@ static vec4_t bw2_render_shader(vec2_t fragCoord, const shader_uniforms_t *unifo
 
     bw2_make_camera_ray(fragCoord, uniforms, &state, &ray_origin, &ray_dir);
     color = bw2_trace(ray_origin, ray_dir, &state, uniforms, intersect_fn);
-    color = bw2_aces_tonemap(color);
-    color = bw2_gamma_encode(color);
+    color = shader_aces_tonemap(color);
+    color = shader_gamma_encode(color);
     return vec4(color.x, color.y, color.z, 1.0f);
 }
 

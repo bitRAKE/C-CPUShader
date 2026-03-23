@@ -1,12 +1,5 @@
 #include "orbit_stars.h"
 
-static vec2_t rotate2(vec2_t p, float angle)
-{
-    float c = cosf(angle);
-    float s = sinf(angle);
-    return vec2(c * p.x - s * p.y, s * p.x + c * p.y);
-}
-
 static float sd_star(vec2_t p, float radius, float pointiness)
 {
     const vec2_t k1 = { 0.809016994375f, -0.587785252292f };
@@ -51,7 +44,7 @@ vec4_t orbit_stars_main(vec2_t fragCoord, const shader_uniforms_t *uniforms)
         vec2_t side_dir = vec2(-velocity_dir.y, velocity_dir.x);
         float depth_scale = smoothstepf(-0.15f, 0.15f, orbit_center.y) * 0.45f + 0.72f;
         float star_angle = -angle * 1.4f + phase * 0.35f;
-        vec2_t local = rotate2(v2_div1(v2_sub(uv, orbit_center), depth_scale), star_angle);
+        vec2_t local = v2_rotate(v2_div1(v2_sub(uv, orbit_center), depth_scale), star_angle);
         float d = sd_star(local, 0.072f, 0.42f);
         float fill = smoothstepf(0.010f, 0.0f, d);
         float rim = smoothstepf(0.050f, 0.0f, fabsf(d));

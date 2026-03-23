@@ -31,70 +31,10 @@ static const vec3_t LIGHT_CENTER = { 0.0f, 1.58f, 1.95f };
 static const vec3_t LIGHT_NORMAL = { 0.0f, -1.0f, 0.0f };
 static const vec3_t LIGHT_EMISSION = { 16.0f, 13.0f, 10.0f };
 
-static float ray_sphere(vec3_t ro, vec3_t rd, vec3_t center, float radius)
-{
-    vec3_t offset = v3_sub(ro, center);
-    float b = 2.0f * v3_dot(rd, offset);
-    float c = v3_dot(offset, offset) - radius * radius;
-    float h = b * b - 4.0f * c;
-
-    if (h < 0.0f) {
-        return -1.0f;
-    }
-
-    h = sqrtf(h);
-
-    {
-        float near_hit = (-b - h) * 0.5f;
-        if (near_hit > 0.001f) {
-            return near_hit;
-        }
-    }
-
-    {
-        float far_hit = (-b + h) * 0.5f;
-        if (far_hit > 0.001f) {
-            return far_hit;
-        }
-    }
-
-    return -1.0f;
-}
-
-static float ray_plane(vec3_t ro, vec3_t rd, vec3_t plane_point, vec3_t plane_normal)
-{
-    float denom = v3_dot(rd, plane_normal);
-
-    if (fabsf(denom) < 0.0001f) {
-        return -1.0f;
-    }
-
-    {
-        float t = v3_dot(v3_sub(plane_point, ro), plane_normal) / denom;
-        return (t > 0.001f) ? t : -1.0f;
-    }
-}
-
-static uint next_rand(uint* state)
-{
-    *state = *state * 747796405u + 2891336453u;
-
-    {
-        uint result = ((*state >> ((*state >> 28) + 4)) ^ *state) * 277803737u;
-        result = (result >> 22) ^ result;
-        return result;
-    }
-}
-
-static float rand_1(uint* state)
-{
-    return next_rand(state) / 4294967295.0f;
-}
-
 static vec3_t rand_dir(uint* state)
 {
-    float z = rand_1(state) * 2.0f - 1.0f;
-    float phi = 2.0f * PI * rand_1(state);
+    float z = shader_rand_1(state) * 2.0f - 1.0f;
+    float phi = 2.0f * PI * shader_rand_1(state);
     float radius = sqrtf(fmaxf(0.0f, 1.0f - z * z));
     return vec3(cosf(phi) * radius, sinf(phi) * radius, z);
 }
@@ -110,8 +50,8 @@ static vec3_t sample_cosine_hemisphere(vec3_t normal, uint* state)
 {
     vec3_t tangent;
     vec3_t bitangent;
-    float r1 = rand_1(state);
-    float r2 = rand_1(state);
+    float r1 = shader_rand_1(state);
+    float r2 = shader_rand_1(state);
     float phi = 2.0f * PI * r1;
     float radius = sqrtf(r2);
     float x = cosf(phi) * radius;
@@ -131,13 +71,6 @@ static vec3_t sample_glossy_lobe(vec3_t reflected, vec3_t normal, float roughnes
     }
 
     return direction;
-}
-
-static float schlick(float cosine, float eta_i, float eta_t)
-{
-    float r0 = (eta_i - eta_t) / (eta_i + eta_t);
-    r0 *= r0;
-    return r0 + (1.0f - r0) * powf(1.0f - cosine, 5.0f);
 }
 
 static vec3_t beer_lambert(vec3_t absorption, float distance)
@@ -187,7 +120,7 @@ static void set_hit_rect_light(HitData* hit, vec3_t ro, vec3_t rd)
         return;
     }
 
-    distance = ray_plane(ro, rd, LIGHT_CENTER, LIGHT_NORMAL);
+    distance = shader_ray_plane(ro, rd, LIGHT_CENTER, LIGHT_NORMAL);
     if (distance <= 0.0f || distance >= hit->distance) {
         return;
     }
@@ -221,7 +154,7 @@ static void set_hit_plane(
     float ior,
     vec3_t absorption)
 {
-    float distance = ray_plane(ro, rd, plane_point, plane_normal);
+    float distance = shader_ray_plane(ro, rd, plane_point, plane_normal);
 
     if (distance <= 0.0f || distance >= hit->distance) {
         return;
@@ -240,7 +173,7 @@ static void set_hit_plane(
 
 static void set_hit_floor(HitData* hit, vec3_t ro, vec3_t rd)
 {
-    float distance = ray_plane(ro, rd, vec3(0.0f, -1.18f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    float distance = shader_ray_plane(ro, rd, vec3(0.0f, -1.18f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
     if (distance <= 0.0f || distance >= hit->distance) {
         return;
@@ -270,7 +203,7 @@ static void set_hit_sphere(
     float ior,
     vec3_t absorption)
 {
-    float distance = ray_sphere(ro, rd, center, radius);
+    float distance = shader_ray_sphere(ro, rd, center, radius);
     vec3_t point;
     vec3_t outward_normal;
 
@@ -316,8 +249,8 @@ static HitData intersect_scene(vec3_t ro, vec3_t rd)
 
 static vec3_t sample_light_point(uint* state)
 {
-    float sx = lerpf(-LIGHT_HALF_WIDTH, LIGHT_HALF_WIDTH, rand_1(state));
-    float sz = lerpf(-LIGHT_HALF_DEPTH, LIGHT_HALF_DEPTH, rand_1(state));
+    float sx = lerpf(-LIGHT_HALF_WIDTH, LIGHT_HALF_WIDTH, shader_rand_1(state));
+    float sz = lerpf(-LIGHT_HALF_DEPTH, LIGHT_HALF_DEPTH, shader_rand_1(state));
     return vec3(LIGHT_CENTER.x + sx, LIGHT_CENTER.y, LIGHT_CENTER.z + sz);
 }
 
@@ -355,29 +288,6 @@ static vec3_t estimate_direct_light(vec3_t point, vec3_t normal, vec3_t albedo, 
     light_area = (LIGHT_HALF_WIDTH * 2.0f) * (LIGHT_HALF_DEPTH * 2.0f);
     weight = (cos_surface * cos_light * light_area) / (distance_sq * PI);
     return v3_mul1(v3_mul(albedo, LIGHT_EMISSION), weight);
-}
-
-static vec3_t aces_tonemap(vec3_t color)
-{
-    const float a = 2.51f;
-    const float b = 0.03f;
-    const float c = 2.43f;
-    const float d = 0.59f;
-    const float e = 0.14f;
-
-    color = v3_mul1(color, 1.15f);
-    return vec3(
-        saturate((color.x * (a * color.x + b)) / (color.x * (c * color.x + d) + e)),
-        saturate((color.y * (a * color.y + b)) / (color.y * (c * color.y + d) + e)),
-        saturate((color.z * (a * color.z + b)) / (color.z * (c * color.z + d) + e)));
-}
-
-static vec3_t gamma_encode(vec3_t color)
-{
-    return vec3(
-        powf(saturate(color.x), 1.0f / 2.2f),
-        powf(saturate(color.y), 1.0f / 2.2f),
-        powf(saturate(color.z), 1.0f / 2.2f));
 }
 
 static float max_component(vec3_t value)
@@ -429,13 +339,13 @@ static vec3_t trace(vec3_t ro, vec3_t rd, uint* state)
             vec3_t reflected = v3_reflect(rd, hit.normal);
             vec3_t refracted = v3_refract(rd, hit.normal, eta_i / eta_t);
             bool can_refract = v3_length_sq(refracted) > 0.0f;
-            float reflectance = can_refract ? schlick(cosine, eta_i, eta_t) : 1.0f;
+            float reflectance = can_refract ? shader_schlick(cosine, eta_i, eta_t) : 1.0f;
 
             if (!hit.is_front_face) {
                 throughput = v3_mul(throughput, beer_lambert(hit.absorption, hit.distance));
             }
 
-            if (rand_1(state) < reflectance) {
+            if (shader_rand_1(state) < reflectance) {
                 rd = reflected;
                 ro = v3_add(point, v3_mul1(hit.normal, eps));
             } else {
@@ -449,7 +359,7 @@ static vec3_t trace(vec3_t ro, vec3_t rd, uint* state)
 
         if (bounce >= 3) {
             float survive = clampf(max_component(throughput), 0.10f, 0.95f);
-            if (rand_1(state) > survive) {
+            if (shader_rand_1(state) > survive) {
                 break;
             }
 
@@ -477,7 +387,7 @@ vec4_t master_class_main(vec2_t fragCoord, const shader_uniforms_t *uniforms)
     vec3_t color;
 
     state = (uint)(fragCoord.x) + (uint)(fragCoord.y * resolution.x) + frame * 78423u;
-    jitter = vec2(rand_1(&state) - 0.5f, rand_1(&state) - 0.5f);
+    jitter = vec2(shader_rand_1(&state) - 0.5f, shader_rand_1(&state) - 0.5f);
     pixel = vec2(fragCoord.x + jitter.x, fragCoord.y + jitter.y);
     uv = vec2(pixel.x - resolution.x * 0.5f, pixel.y - resolution.y * 0.5f);
     uv = vec2(uv.x / resolution.y, uv.y / resolution.y);
@@ -490,7 +400,7 @@ vec4_t master_class_main(vec2_t fragCoord, const shader_uniforms_t *uniforms)
     ray_dir = v3_normalize(v3_add(forward, v3_add(v3_mul1(right, uv.x * 1.28f), v3_mul1(up, uv.y * 1.28f))));
 
     color = trace(ray_origin, ray_dir, &state);
-    color = aces_tonemap(color);
-    color = gamma_encode(color);
+    color = shader_aces_tonemap(color);
+    color = shader_gamma_encode(color);
     return vec4(color.x, color.y, color.z, 1.0f);
 }

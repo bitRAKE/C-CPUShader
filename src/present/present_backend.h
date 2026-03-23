@@ -5,7 +5,7 @@
 
 typedef enum {
     PRESENT_BACKEND_DX12 = 0,
-    PRESENT_BACKEND_OGL,
+    PRESENT_BACKEND_OGLDX,
     PRESENT_BACKEND_VK,
     PRESENT_BACKEND_GDI
 } present_backend_kind_t;
@@ -21,6 +21,7 @@ typedef struct {
     int  render_height;
     int  popup_width;
     int  popup_height;
+    bool transparent_display;
     shader_color_space_t shader_color_space;
     bool vsync_enabled;
 } present_backend_desc_t;

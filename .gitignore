@@ -1,4 +1,8 @@
 *.exe
 *.res
+*.dll
+*.lib
+build/*
 src/RC*
 .vs/*
+captures/*

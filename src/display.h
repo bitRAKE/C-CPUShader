@@ -14,6 +14,7 @@ bool display_create(
     int y,
     int width,
     int height,
+    bool transparent_display,
     const display_callbacks_t *callbacks,
     void *user_data);
 void display_destroy(void);

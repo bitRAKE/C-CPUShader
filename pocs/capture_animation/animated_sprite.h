@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../src/defines.h"
+#include "shader_defines.h"
 
 #define ANIMATED_SPRITE_LOOP_FRAMES 48u
 
@@ -8,7 +8,8 @@ vec4_t animated_sprite_main(vec2_t fragCoord, const shader_uniforms_t *uniforms)
 
 #define ANIMATED_SPRITE_SHADER(X) X( \
     animated_sprite, "Animated Sprite", animated_sprite_main, \
-    NULL, \
+    SHADER_BUFFER_NONE, \
+    SHADER_VARIABLE_NONE, \
     SHADER_COLOR_SPACE_SDR_DISPLAY, \
     SHADER_FEATURE_FRAME, \
     128, 64, \

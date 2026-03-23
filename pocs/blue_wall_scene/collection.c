@@ -1,0 +1,56 @@
+#include "shader_plugin.h"
+
+#include "blue_wall_v2_A.h"
+#include "blue_wall_v2_B.h"
+#include "blue_wall_v2_C.h"
+#include "blue_wall_v2_D.h"
+#include "blue_wall_v2_E.h"
+
+#define ENTRY(...) ENTRY_IMPL(__VA_ARGS__)
+#define ENTRY_IMPL(id, display_name, entry, buffers_init, vars, var_count, var_size, \
+                   color_space, features, width, height, blurb) \
+    {#id, display_name, blurb, entry, buffers_init, vars, var_count, var_size, \
+     color_space, features, width, height},
+
+static const shader_desc_t g_shaders[] = {
+    BLUE_WALL_V2_A_SHADER(ENTRY)
+    BLUE_WALL_V2_B_SHADER(ENTRY)
+    BLUE_WALL_V2_C_SHADER(ENTRY)
+    BLUE_WALL_V2_D_SHADER(ENTRY)
+    BLUE_WALL_V2_E_SHADER(ENTRY)
+};
+
+#undef ENTRY
+#undef ENTRY_IMPL
+
+static const int g_shader_count = (int)(sizeof(g_shaders) / sizeof(g_shaders[0]));
+
+static shader_collection_info_t g_info = {0};
+
+HMODULE plugin_get_module(void)
+{
+    return g_info.module_handle;
+}
+
+__declspec(dllexport)
+const shader_collection_info_t *shader_collection_query(void)
+{
+    g_info.collection_name    = "Blue Wall Scene";
+    g_info.collection_version = "1.0";
+    g_info.collection_blurb   = "Progressive ray-traced interior scene reconstruction from Blender extraction.";
+    g_info.abi_version        = SHADER_PLUGIN_ABI_VERSION;
+    GetModuleHandleExA(
+        GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+        (LPCSTR)shader_collection_query,
+        &g_info.module_handle);
+    return &g_info;
+}
+
+__declspec(dllexport)
+const shader_desc_t *shader_collection_load(int *count_out)
+{
+    if (count_out != NULL) {
+        *count_out = g_shader_count;
+    }
+    return g_shaders;
+}
