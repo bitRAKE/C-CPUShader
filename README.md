@@ -1,3 +1,5 @@
+[![header_image](captures/header.png)](plugins/core_studies/dice.c)
+
 <details>
 <summary>Open Shader Gallery</summary>
 
