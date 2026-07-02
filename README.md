@@ -7,7 +7,7 @@
 [![crystal_hall](docs/img/crystal_hall.png)](docs/shaders.md#crystal_hall)
 [![sphere_tracing](docs/img/sphere_tracing.png)](docs/shaders.md#sphere_tracing)
 [![blue_wall](docs/img/blue_wall.png)](pocs/blue_wall_scene/README.md)
-[![hsv_picker](docs/img/hsv_picker.png)](pocs/hsv_picker_tool.md)
+[![hsv_picker](docs/img/hsv_picker.png)](pocs/hsv_picker/README.md)
 
 </details>
 
@@ -157,18 +157,16 @@ Useful runtime behavior:
 
 Start here:
 
-- [Actual_HDR.md](Actual_HDR.md)
+- [docs/Actual_HDR.md](docs/Actual_HDR.md)
   - what this repo should mean by "actual HDR", and which backends currently qualify
-- [docs/SHADERS.md](docs/SHADERS.md)
+- [docs/shaders.md](docs/shaders.md)
   - shader contract, feature flags, and shader index
-- [design.md](design.md)
-  - current architecture and module boundaries
-- [plan.md](plan.md)
-  - current host-consolidation plan
-- [hdr_backend.md](hdr_backend.md)
-  - backend-by-backend engineering plan and current HDR capability shape
-- [audit.md](audit.md)
-  - backend-first audit of presentation truth, timing, and performance sensitivity
+- [sdk/SDK.md](sdk/SDK.md)
+  - plugin and shader SDK overview for extending the host
+- [plugins/monitor_diagnostic/monitor_diagnostic.md](plugins/monitor_diagnostic/monitor_diagnostic.md)
+  - monitor diagnostic plugin notes and test-pattern rationale
+- [pocs/shader_variables/readme.md](pocs/shader_variables/readme.md)
+  - shader-variable control POC notes for runtime-editable parameters
 
 Deep dives:
 
@@ -182,7 +180,7 @@ Deep dives:
   - low-tech fixed-grid SDF text POC
 - [pocs/capture_animation/README.md](pocs/capture_animation/README.md)
   - deterministic capture-to-APNG animation POC
-- [pocs/hsv_picker_tool.md](pocs/hsv_picker_tool.md)
+- [pocs/hsv_picker/README.md](pocs/hsv_picker/README.md)
   - shader logic reused as a standalone tool window
 
 ## Notable Shaders And POCs
