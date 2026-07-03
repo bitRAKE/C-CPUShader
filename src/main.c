@@ -73,7 +73,7 @@ static void print_help_text(void)
         "Runtime:\r\n"
         "  --help                     Show this help text.\r\n"
         "  --list-shaders             Print shader ids for scripting.\r\n"
-        "  --backend=dx12|ogldx|vk|gdi\r\n"
+        "  --backend=dx12|ogl|ogldx|vk|gdi\r\n"
         "  --scale=<n>                Set the popup display multiplier.\r\n"
         "  --transparent              Use the layered alpha-respecting popup path.\r\n"
         "  --opaque                   Use the normal opaque popup path.\r\n"

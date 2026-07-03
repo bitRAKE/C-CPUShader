@@ -4,6 +4,7 @@
 #include <shellapi.h>
 #include <stdlib.h>
 #include <string.h>
+#include <wchar.h>
 
 static bool parse_backend_name(const wchar_t *name, present_backend_kind_t *kind_out)
 {
@@ -337,7 +338,7 @@ bool host_options_parse(host_options_t *options_out, char *error_text, size_t er
         if (_wcsnicmp(arg, L"--backend=", 10) == 0) {
             if (!parse_backend_name(arg + 10, &options_out->backend_kind)) {
                 if (error_text != NULL && error_text_size > 0) {
-                    snprintf(error_text, error_text_size, "Unknown backend '%S'. Use dx12, ogldx, vk, or gdi.", arg + 10);
+                    snprintf(error_text, error_text_size, "Unknown backend '%S'. Use dx12/dxgi, ogl/ogldx, vk, or gdi.", arg + 10);
                 }
                 host_options_cleanup(options_out);
                 LocalFree(argv);
@@ -347,7 +348,7 @@ bool host_options_parse(host_options_t *options_out, char *error_text, size_t er
         } else if (_wcsicmp(arg, L"--backend") == 0) {
             if (index + 1 >= argc || !parse_backend_name(argv[index + 1], &options_out->backend_kind)) {
                 if (error_text != NULL && error_text_size > 0) {
-                    snprintf(error_text, error_text_size, "Expected backend name after --backend. Use dx12, ogldx, vk, or gdi.");
+                    snprintf(error_text, error_text_size, "Expected backend name after --backend. Use dx12/dxgi, ogl/ogldx, vk, or gdi.");
                 }
                 host_options_cleanup(options_out);
                 LocalFree(argv);
