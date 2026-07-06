@@ -2,6 +2,8 @@
 *.res
 *.dll
 *.lib
+*.pyc
+__pycache__/
 build/*
 src/RC*
 .vs/*
