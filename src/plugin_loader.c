@@ -2,8 +2,9 @@
 #include "plugin_loader.h"
 #include "shader_catalog_runtime.h"
 
-#include <string.h>
+#include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 #include <windows.h>
 
 /* Import the plugin contract types from the SDK header. */
